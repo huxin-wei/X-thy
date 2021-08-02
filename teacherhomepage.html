@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		body{
+				margin: 0;background-color:gray;
+			}
+
+		#img1{
+			position: relative;
+			top: 10vmin;
+			left:10vmin;
+			width: 84vmin;
+			height: 84vmin;
+			float: left;
+		}
+		button{
+			width: 20vmin;
+			height: 12.3vmin;
+			border-radius: 1vh;
+		
+		}
+		button:hover{
+			background-color: #57ACF1;
+			transform: scale(1.2);
+		}
+		#button1{
+			position: absolute;
+			top: 30vmin;
+			left:20vmin;
+		}
+		#button1::after{
+			content: "new!";
+			text-align: center;
+			color: red;
+			background-color: transparent;
+		    position: relative;
+		    height: 10vmin;
+		    width: 10vmin;
+		    top: -4vmin;
+		    left: 6vmin;
+			z-index: 10;
+		}
+		#button2{
+			position: absolute;
+			top: 30vmin;
+			left: 70vmin;
+		}
+		#button3{
+			position: absolute;
+			top: 60vmin;
+			left:20vmin;
+		}
+		#button4{
+			position: absolute;
+			top: 60vmin;
+			left: 70vmin;
+		}
+		#button4::after{
+			content: "new!";
+			text-align: center;
+			color: red;
+			background-color: transparent;
+            position: relative;
+            height: 10vmin;
+            width: 10vmin;
+            top: -4vmin;
+            left: 3vmin;
+			z-index: 10;
+		}
+		#loggout{
+			position: absolute;
+		    top: 0vmin;
+			right: 0vmin;
+		}
+		form{
+			color: silver;
+			position: absolute;
+			top:15vmin;
+			left:95vmin ;
+		}
+	</style>
+	<body>
+		<div >
+			<img src="img/67650062_2008603299244107_3549077591472209920_n.jpg" id="img1">
+			<button id="button1">reply appointment </button>
+			<button id="button2">schedule</button>
+			<button id="button3">file management</button>
+			<button id="button4">feedback</button>
+			<form action="" method="post">
+				settings</br>
+			username:</br>
+			<input type="text" name="" /></br>
+			password:</br>
+			<input type="password" name="" /></br>
+			cancel	time deadline:</br>
+			<input type="text" id="" value="" />hour(s)before courses</br>
+			<input type="submit" id="" name="change" value="change" />
+			</form>
+			
+			
+			<button id="loggout">loggout</button>
+			
+		</div>
+	</body>
+</html>
