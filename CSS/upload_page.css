@@ -1,0 +1,233 @@
+* {
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+}
+h1{
+    font-family: 'Lato','sens-serif';
+    font-weight: 300;
+    font-size: 48px;
+}
+.header{
+    position: fixed;
+    width: 100%;
+    z-index: -10;
+    top: 0;
+    text-align: center;
+    background: linear-gradient(60deg,rgba(84,58,183,1) 0%,rgba(0,172,193,1) 100%);
+    color: wheat;
+}
+.lnner-header{
+    height: 65vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.parallax>use{
+    /* 贝塞尔曲线 */
+    animation: move 25s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+.parallax>use:nth-child(1){
+    animation-delay: -2s;
+    animation-duration: 7s;
+}
+.parallax>use:nth-child(2){
+    animation-delay: -3s;
+    animation-duration: 10s;
+}
+.parallax>use:nth-child(3){
+    animation-delay: -4s;
+    animation-duration: 13s;
+}
+.parallax>use:nth-child(4){
+    animation-delay: -5s;
+    animation-duration: 20s;
+}
+.waves{
+    position: relative;
+    width: 100%;
+    height: 15vh;
+    margin-bottom: -7px;
+    min-height: 100px;
+    max-height: 150px;
+}
+@keyframes move{
+    0%{
+        transform: translate3d(-90px,0,0);
+    }
+    100%{
+        transform: translate3d(85px,0,0);
+    }
+}
+  
+.tooltip {
+    display: none;
+    color: red;
+    position: absolute;
+    z-index: 1000;
+}
+
+@media only screen and (max-width: 700px) {
+    /* CSS that should be displayed if width is equal to or less than 800px goes here */
+    .content-wrapper{
+        min-width: 100%;
+        background-color: aliceblue;
+        padding: 20px 0px 20px 0px;
+    }
+
+    .upload-wrapper{
+        min-width: 90%;
+    }
+
+    .file-wrapper p{
+        width: 80%;
+        /* background-color: black; */
+    }
+}
+
+.content-wrapper{
+    width: 70%;
+    margin: 50px auto 50px auto;
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.75);
+    font-family: Tahoma, Verdana, sans-serif;
+}
+
+.upload-wrapper{
+    margin: auto;
+    padding: 20px;
+    /* max-width: 600px; */
+    min-height: 400px;
+    /* background-color: antiquewhite; */
+}
+
+.select-file-wrapper{
+    margin: 30px auto 30px auto;
+    display: block;
+    text-align: center;
+}
+
+.select-file-wrapper p{
+    color:rgb(97, 93, 93);
+}
+
+button{
+    cursor: pointer;
+    border: 0 !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+button.default{
+    padding: 0px 30px 0px 30px;
+    color: rgb(78, 77, 77);
+    /* transition: background-color 0.05s linear; */
+}
+
+button.default:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(155, 154, 154);
+}
+
+button.default:active {
+    color: rgb(255, 255, 255);
+    background-color: rgb(78, 77, 77);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.scaleup:hover{
+    transform: scale(1.1);
+}
+
+.right{
+    float: right;
+}
+
+.left{
+    float: left;
+}
+
+.clear{
+    clear: both;
+}
+
+.light-blue{
+    color: #49cbec;
+}
+
+button.select-file{
+    padding: 10px 30px;
+    font-size: 18px;
+    background-color: #02bdeb;
+    color: #ffffff;
+}
+
+button.select-file:hover{
+    background-color: #059cc2;
+    color: #ffffff;
+}
+
+button.select-file:active{
+    background-color: #0a7b97;
+    color: #ffffff;
+}
+
+.all-files-wrapper{
+    margin: auto;
+    max-width: 600px;
+}
+
+.file-wrapper{
+    /* margin: auto; */
+    vertical-align: middle;
+    padding: 15px 10px 15px 10px;
+    /* background-color: aquamarine; */
+    border-bottom: 1px solid rgb(214, 213, 213);
+}
+
+.file-wrapper p{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    max-width: 90%;
+    color: rgb(75, 75, 75);
+}
+
+button.delete{
+    color:rgb(243, 122, 122);
+    background-color: Transparent;
+    border: 0 !important;
+    box-shadow: none;
+}
+
+button.delete:hover{
+    color:rgb(248, 71, 71);
+    cursor: pointer;
+    text-shadow: rgba(250, 38, 38, 0.438) 0px 5px 7px;
+}
+
+button.delete:active{
+    color:rgb(241, 26, 26);
+    cursor: pointer;
+    border: 0 !important;
+    text-shadow: rgba(223, 16, 16, 0.582) 0px 5px 20px;
+}
+
+button.delete .tooltip{
+    margin-left: 28px; /* moves the tooltip to the right */
+    margin-top: 15px; /* moves it down */
+}
+
+button.delete:hover .tooltip {
+    display: inline-block;
+    color:rgb(240, 17, 17);
+    background-color: rgb(255, 230, 230);
+    padding: 5px;
+    text-shadow: none;
+    border-radius: 3px;
+    margin-left: 28px; /* moves the tooltip to the right */
+    margin-top: 15px; /* moves it down */
+}
