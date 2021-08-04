@@ -12,22 +12,23 @@ body{
     z-index: 1000;
 }
 
-@media only screen and (max-width: 700px) {
-    /* CSS that should be displayed if width is equal to or less than 800px goes here */
-    .content-wrapper{
-        min-width: 100%;
-        background-color: aliceblue;
-        padding: 20px 0px 20px 0px;
-    }
 
-    .upload-wrapper{
-        min-width: 90%;
-    }
 
-    .file-wrapper p{
-        width: 80%;
-        /* background-color: black; */
-    }
+.blue-background{
+    position: fixed;
+    background: linear-gradient(60deg,rgba(84,58,183,1) 0%,rgba(0,172,193,1) 100%);
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    z-index: -20;
+}
+.content-wrapper{
+    color: rgb(97, 93, 93);
+    width: 70%;
+    margin: 50px auto 50px auto;
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.75);
+    font-family: Tahoma, Verdana, sans-serif;
 }
 
 .upload-wrapper{
@@ -44,20 +45,26 @@ body{
     text-align: center;
 }
 
-.select-file-wrapper p{
-    color:rgb(97, 93, 93);
+button, button:hover, button:active{
+    cursor: pointer;
 }
 
-button{
-    cursor: pointer;
+.shadow-box{
     border: 0 !important;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.shadow-box:active{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.pd-inline-30{
+    padding-inline: 30px;
+}
+
 button.default{
-    padding: 0px 30px 0px 30px;
     color: rgb(78, 77, 77);
-    /* transition: background-color 0.05s linear; */
+    border: none;
 }
 
 button.default:hover{
@@ -68,11 +75,51 @@ button.default:hover{
 button.default:active {
     color: rgb(255, 255, 255);
     background-color: rgb(78, 77, 77);
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    transform: scale(0.95);
+}
+
+button.add{
+    color: rgb(224, 252, 252);
+    background-color: rgb(111, 190,246);
+    border-radius: 10px;
+}
+
+button.add:hover{
+    color: rgb(255, 255, 255);
+    background-color: rgb(97, 166, 216);
+}
+
+button.add:active{
+    color: rgb(255, 255, 255);
+    background-color: rgb(72, 121, 156);
 }
 
 .scaleup:hover{
     transform: scale(1.1);
+}
+
+.pd-lr-20{
+    padding: 0 20px;
+}
+
+.pd-20{
+    padding: 20px;
+}
+
+.pd-15{
+    padding: 15px;
+}
+
+.mg-top-50{
+    margin-top: 50px;
+}
+
+.mg-bt-10{
+    margin-bottom: 10px;
+}
+
+.fz-15{
+    font-size: 15px;
 }
 
 .right{
@@ -138,13 +185,11 @@ button.delete{
 
 button.delete:hover{
     color:rgb(248, 71, 71);
-    cursor: pointer;
     text-shadow: rgba(250, 38, 38, 0.438) 0px 5px 7px;
 }
 
 button.delete:active{
     color:rgb(241, 26, 26);
-    cursor: pointer;
     border: 0 !important;
     text-shadow: rgba(223, 16, 16, 0.582) 0px 5px 20px;
 }
@@ -164,4 +209,110 @@ button.delete:hover .tooltip {
     border-radius: 3px;
     margin-left: 28px; /* moves the tooltip to the right */
     margin-top: 15px; /* moves it down */
+}
+
+/*----*/
+button.edit{
+    color:rgb(63, 127, 179);
+    background-color: Transparent;
+    border: 0 !important;
+    box-shadow: none;
+}
+
+button.edit:hover{
+    color:rgb(71, 207, 248);
+    text-shadow: rgba(38, 172, 250, 0.438) 0px 5px 7px;
+}
+
+button.edit:active{
+    color:rgb(26, 241, 241);
+    border: 0 !important;
+    text-shadow: rgba(16, 106, 223, 0.582) 0px 5px 20px;
+}
+
+button.edit .tooltip{
+    color: rgb(0, 183, 255);
+    margin-left: 28px; /* moves the tooltip to the right */
+    margin-top: 15px; /* moves it down */
+}
+
+button.edit:hover .tooltip {
+    display: inline-block;
+
+    background-color: rgb(230, 255, 255);
+    padding: 5px;
+    text-shadow: none;
+    border-radius: 3px;
+    margin-left: 28px; /* moves the tooltip to the right */
+    margin-top: 15px; /* moves it down */
+}
+
+lesson-content-wrapper{
+    
+}
+
+.lesson-form form{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+    background-color: white;
+    padding: 25px;
+    box-shadow: rgba(0, 0, 0, 0.308) 0px 1px 14px;
+}
+
+.content-wrapper input, .content-wrapper select, .content-wrapper textarea{
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid rgb(207, 207, 207);
+    background-color: #fdfdfd;
+}
+
+.content-wrapper input:focus, .content-wrapper select:focus, .content-wrapper textarea:focus{
+    background-color: #fdfdfd;
+    outline: none;
+}
+
+.all-lessons-wrapper{
+    margin: 50px auto;
+    width: 75%;
+    
+}
+
+.lesson-wrapper{
+    margin: 10px;
+    border-bottom: 1px solid rgb(238, 238, 238);
+}
+
+.lesson-wrapper p{
+    font-size: 15px;
+    margin: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+    /* CSS that should be displayed if width is equal to or less than ...px goes here */
+    .content-wrapper{
+        min-width: 100%;
+        background-color: aliceblue;
+        /* padding: 20px 0px 20px 0px; */
+        padding: 0px 0px 20px 0px;
+    }
+
+    .upload-wrapper{
+        min-width: 90%;
+    }
+
+    .file-wrapper p{
+        width: 80%;
+        /* background-color: black; */
+    }
+
+    form{
+        min-width: 100%;
+    }
+
+    .all-lessons-wrapper{
+        width: 90%;
+    }
 }
