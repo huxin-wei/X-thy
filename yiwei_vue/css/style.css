@@ -1,0 +1,463 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
+:root{
+	--orange:#f29a40
+}
+*{
+	font-family: 'Nunito', sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	outline: none;
+	border: none;
+	text-decoration: none;
+	/* text-transform 属性控制文本的大小写。如果值为 capitalize，则要对某些字母大写，但是并没有明确定义如何确定哪些字母要大写，这取决于用户代理如何识别出各个“词” */
+	text-transform: capitalize;
+	transition: all .2s linear; 
+}
+html{
+	font-size: 62.5%;
+	overflow-x: hidden;
+	/* 滚动框通过一个用户代理预定义的时长、使用预定义的时间函数，来实现平稳的滚动，用户代理应遵循其平台的约定，如果有的话。 */
+	scroll-behavior: smooth;
+}
+/* ::-webkit-scrollbar   定义了滚动条整体的样式 */
+html::-webkit-scrollbar{
+	width: .7rem;
+}
+/*滚动条里面轨道*/
+html::-webkit-scrollbar-track{
+	background: #fff;
+}
+/*滚动条里面小方块*/
+html::-webkit-scrollbar-thumb{
+	background: var(--orange);
+}
+body{
+	background: #eee;
+	padding-right: 5rem;
+}
+section{
+	padding: 2rem 9%;
+	min-height: 100vh;
+}
+.heading{
+	text-align: center;
+	padding-bottom: 2rem;
+	font-size: 6rem;
+	text-transform: uppercase;
+	color: #222;
+}
+.heading span{
+	text-transform: uppercase;
+	color: var(--orange);
+}
+.btn{
+	display: inline-block;
+	margin-top: 1rem;
+	padding: .8rem 3rem;
+	background: #222;
+	color: #fff;
+	font-size: 1.7rem;
+	cursor: pointer;
+}
+.btn:hover{
+	background: var(--orange);
+	letter-spacing: .2rem;
+}
+header{
+	position: fixed;
+	top: 0;
+	right: 0;
+	min-height: 100vh;
+	/* 
+	 vh就是当前屏幕可见高度的1%，也就是说
+	 height:100vh == height:100%;
+	 但是有个好处是当元素没有内容时候，设置height:100%该元素不会被撑开，
+	 但是设置height:100vh，该元素会被撑开屏幕高度一致。
+	 */
+	display: inline-flex;
+	/* 它会根据子元素所有的div大小自适应宽度和高度 */
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	z-index: 1000;
+}
+header .navbar{
+	/* vertical-lr：垂直方向内内容从上到下，水平方向从左到右 */
+	writing-mode: vertical-lr;
+	padding: 1.5rem;
+}
+header .navbar a{
+	padding: 1.5rem;
+	font-size: 2rem;
+	color: #222;
+}
+header .navbar a:hover{
+	color: var(--orange);
+}
+#menu-bars{
+	position: fixed;
+	z-index: 10000;
+	top: 1rem;
+	left: 1rem;
+	padding: 1rem 1.5rem;
+	border-radius: 0.5rem;
+	color: #fff;
+	background: var(--orange);
+	cursor: pointer;
+	font-size: 3rem;
+	display: none;
+}
+
+
+
+
+
+
+
+/* media queries */
+@media (max-width:991px) {
+	html{
+		font-size: 55%;
+	}
+	body{
+		padding-right: 0;
+	}
+	header{
+		width: 100%;
+		left: -120%;
+	}
+	header.active{
+		left: 0%;
+	}
+	#menu-bars{
+		/* 不管父元素怎么设定，恢复到浏览器最初始时的 display属性。 */
+		display: initial;
+	}
+	header .navbar{
+		writing-mode: horizontal-tb;
+	}
+	header .navbar a{
+		display: block;
+		font-size: 3rem;
+	}
+	section{
+		padding: 2rem;
+	}
+	
+}
+@media (max-width:450px) {
+	html{
+		font-size: 50%;
+	}
+	.heading{
+		font-size: 4rem;
+	}
+	.contact .row form .inputBox input{
+		width: 100%;
+	}
+}
+.home{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+.home #particles-js{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+.home::before{
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+.home .content{
+	text-align: center;
+	position: relative;
+	z-index: 1;
+}
+.home .content img{
+	height: 25rem;
+	width: 25rem;
+	border-radius: 50%;
+	/* object-fit 属性指定元素的内容应该如何去适应指定容器的高度与宽度。
+	 保持原有尺寸比例。但部分内容可能被剪切
+	 */
+	object-fit: cover;
+	border: 1rem solid var(--orange);
+}
+.home .content h3{
+	font-size: 4rem;
+	color: #222;
+	text-transform: uppercase;
+}
+.home .content h3 span{
+	color: var(--orange);
+	text-transform: uppercase;
+}
+.home .content p{
+	color: #222;
+	font-size: 2.5rem;
+	line-height: 2;
+}
+.about .row{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	align-items: center;
+}
+.about .row .image{
+	text-align: center;
+	flex: 1 1 25rem;
+}
+.about .row .image img{
+	width: 30rem;
+	border-radius: .5rem;
+	border: 1rem solid #fff;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+}
+.about .row .content{
+	flex: 1 1 55rem;
+}
+.about .row .content h3{
+	color: #222;
+	font-size: 4rem;
+}
+.about .row .content h3 span{
+	color: var(--orange);
+}
+.about .row .content .info{
+	color: #333;
+	font-size: 1.7rem;
+	padding: 1rem 0;
+	line-height: 2;
+}
+.about .row .content .box-container{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	padding: 1rem 0;
+}
+.about .row .content .box-container .box{
+	flex: 1 1 20rem;
+}
+.about .row .content .box-container .box p{
+	font-size: 1.7rem;
+	color: #222;
+	padding: .5rem 0;
+	line-height: 2;
+}
+.about .row .content .box-container .box p span{
+	color: var(--orange);
+}
+.services .box-container{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+.services .box-container .box{
+	flex: 1 1 30rem;
+	border: .5rem;
+	background: #fff;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+	padding: 2rem;
+	text-align: center;
+	overflow: hidden;
+}
+.services .box-container .box h3{
+	color: #222;
+	font-size: 2.5rem;
+	padding-top: 1rem;
+	
+}
+.services .box-container .box p{
+	color: #333;
+	font-size: 1.7rem;
+	padding: 1rem 0;
+	line-height: 2;
+	
+}
+.services .box-container .box .content{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: -100%;
+	background: #fff9;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+}
+.services .box-container .box:hover .content{
+	left: 0;
+}
+.directions{
+	position: relative;
+}
+.directions .box-container .dir{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	font-size: 2.5rem;
+}
+.portfolio .box-container{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+.portfolio .box-container .box{
+	flex: 1 1 30rem;
+	border-radius: .5rem;
+	border: 1rem solid #fff;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+	position: relative;
+	overflow: hidden;
+	height: 25rem;
+}
+.portfolio .box-container .box img{
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+.portfolio .box-container .box .content{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: -100%;
+	background: #fff9;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.portfolio .box-container .box:hover .content{
+	left: 0;
+} 
+.blogs .box-container{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+.blogs .box-container .box{
+	flex: 1 1 30rem;
+	border-radius: .5rem;
+	background: #fff;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+	padding: 2rem;
+}
+.blogs .box-container .box img{
+	height: 20rem;
+	width: 100%;
+	border-radius: .5rem;
+	object-fit: cover;
+}
+.blogs .box-container .box h3{
+	color: var(--orange);
+	font-size: 2.5rem;
+	padding: .5rem 0;
+}
+.blogs .box-container .box p{
+	color: #666;
+	font-size: 1.5rem;
+	padding: .5rem 0;
+}
+.contact .row{
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+.contact .row .image{
+	flex: 1 1 40rem;
+}
+.contact .row .image img{
+	width: 100%;
+}
+.contact .row form{
+	flex: 1 1 40rem;
+	padding: 1rem 2rem;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+	border-radius: .5rem;
+	background: #fff;
+}
+.contact .row form .inputBox{
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.contact .row form .inputBox input,
+.contact .row form .box,
+.contact .row form textarea{
+	width: 100%;
+	border-radius: .5rem;
+	font-size: 1.7rem;
+	color: #333;
+	padding: 1rem;
+	margin: 1rem 0;
+	border: .1rem solid rgba(0,0,0,.1);
+	text-transform: none;
+}
+.contact .row form .inputBox input:focus,
+.contact .row form .box:focus,
+.contact .row form textarea:focus{
+	border-color: var(--orange);
+}
+.contact .row form .inputBox input{
+	width: 49%;
+}
+.contact .row form textarea{
+	height: 20rem;
+	/* resize 属性规定是否可由用户调整元素尺寸。 */
+	resize: none;
+}
+.contact .row form .btn{
+	margin: .5rem 0;
+}
+.footer{
+	padding: 2.5rem;
+	font-size: 2rem;
+	color: #666;
+	background: #FFF;
+	text-align: center;
+	vertical-align: middle;
+}
+.footer span{
+	color: var(--orange);
+}
+
+@keyframes smoke{
+				0%{
+					opacity: 1;
+					filter: blur(0);
+					transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+				}
+				50%{
+					opacity: 1;
+					pointer-events: none;
+				}
+				100%{
+					opacity: 0;
+					filter: blur(20px);
+					transform: translateX(300px) translateY(-300px) rotate(720deg) scale(4);
+				}
+}
+
+.directions .box-container .dir span{
+				position: relative;
+				display: inline-block;
+				cursor: pointer;
+}
+ .directions .box-container .dir span.active{
+				animation: smoke 2s linear forwards;
+				transform-origin: bottom;
+}
+
