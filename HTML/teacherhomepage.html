@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		body{
+				margin: 0;background-color:gray;
+			}
+
+		#img1{
+			position: absolute;
+			top: 10vmin;
+			left:10vmin;
+			width: 84vmin;
+			height: 84vmin;
+			float: left;
+		}
+		button{
+			width: 20vmin;
+			height: 12.3vmin;
+			border-radius: 1vh;
+		
+		}
+		button:hover{
+			background-color: #57ACF1;
+			transform: scale(1.2);
+		}
+		#button1{
+			position: absolute;
+			top: 30vmin;
+			left:20vmin;
+		}
+		#button2{
+			position: absolute;
+			top: 30vmin;
+			left: 70vmin;
+		}
+		#button3{
+			position: absolute;
+			top: 60vmin;
+			left:20vmin;
+		}
+		#button4{
+			position: absolute;
+			top: 60vmin;
+			left: 70vmin;
+		}
+		#loggout{
+			position: absolute;
+		    top: 0vmin;
+			right: 0vmin;
+		}
+		form{
+			color: silver;
+			position: absolute;
+			top:15vmin;
+			left:95vmin ;
+		}
+		#s1{
+			text-align: center;
+			color: red;
+			background-color: transparent;
+			position: relative;
+			height: 10vmin;
+			width: 10vmin;
+			top: 30vmin;
+			left: 32vmin;
+		}
+		#s2{
+			text-align: center;
+			color: red;
+			background-color: transparent;
+			position: relative;
+			height: 10vmin;
+			width: 10vmin;
+			top: 60vmin;
+			left: 75vmin;
+			
+		}
+	</style>
+	<script type="text/javascript">
+		function update(){
+		var s1=document.getElementById("s1");
+		s1.style.color="transparent";
+		var s2=document.getElementById("s2");
+		s2.style.color="transparent";
+		}
+	</script>
+	<body onload="update()">
+		<div >
+			<img src="img/67650062_2008603299244107_3549077591472209920_n.jpg" id="img1">
+			<button id="button1">reply appointment </button>
+			<span id="s1">new!</span>
+			<button id="button2">schedule</button>
+			<button id="button3">file management</button>
+			<button id="button4">feedback</button>
+			<span id="s2">new!</span>
+			<button onclick="update">refresh appointment and feedback</button>
+			<form action="" method="post">
+				settings</br>
+			username:</br>
+			<input type="text" name="user" /></br>
+			password:</br>
+			<input type="password" name="pwd" /></br>
+			cancel	time deadline:</br>
+			<input type="number" id="" value="5" />hour(s)before courses</br>
+			<input type="submit" id="" name="change" value="change" />
+			</form>
+			
+			<button id="loggout">loggout</button>
+			
+		</div>
+	</body>
+</html>

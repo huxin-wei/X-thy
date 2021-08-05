@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+	button{
+			float: right;
+	}
+    input{
+		float: right;
+	}
+	.calendar{
+	width:450px;
+	background:#fff;
+	float: left;
+}
+.body-list ul{
+	width:100%;
+	font-family:arial;
+	font-weight:bold;
+	font-size:14px;
+}
+.body-list ul li{
+	width:14.28%;
+	height:36px;
+	line-height:36px;
+	list-style-type:none;
+	display:block;
+	box-sizing:border-box;
+	float:left;
+	text-align:center;
+}
+.lightgrey{
+	color:#a8a8a8; 
+}
+.darkgrey{
+	color:#565656; 
+}
+.green{
+	color:#6ac13c;
+}
+.greenbox{
+	border:1px solid #6ac13c;
+	background:#e9f8df; /*lightgreen background*/
+}
+	</style>
+	<body>
+<div class="calendar">
+  <div class="title">
+	<h1 class="green" >course timetable</h1>
+    <h2 class="green" id="calendar-title">Month</h1> <input type="file" id="upload" name="upload schedule" />
+    <h2 class="green small" id="calendar-year">Year</h2>
+    <button id="prev" onclick="preMonth">Prev Month</button>
+    <button id="next" onclick="nextMonth()">Next Month</button></br>
+  </div>
+  <div class="body">
+    <div class="lightgrey body-list">
+      <ul>
+        <li>MON</li>
+        <li>TUE</li>
+        <li>WED</li>
+        <li>THU</li>
+        <li>FRI</li>
+        <li>SAT</li>
+        <li>SUN</li>
+      </ul>
+    </div>
+    <div class="darkgrey body-list">
+      <ul id="days">
+      </ul>
+    </div>
+  </div>
+</div>
+	</body>
+		<script>
+	var month_leap = [31,29,31,30,31,30,31,31,30,31,30,31];
+	var month_normal = [31,28,31,30,31,30,31,31,30,31,30,31];
+	var month_name = ["January","Febrary","March","April","May","June","July","Auguest","September","October","November","December"];
+	var holder = document.getElementById("days");
+	var prev = document.getElementById("prev");
+	var next = document.getElementById("next");
+	var ctitle = document.getElementById("calendar-title");
+	var cyear = document.getElementById("calendar-year");
+	var my_date = new Date();
+	console.log(my_date)
+	var my_year = my_date.getFullYear();
+	var my_month = my_date.getMonth();
+	var my_day = my_date.getDate();
+	console.log(my_year)
+	console.log(my_month)
+	function refreshDate(){
+		var str = "";
+		var totalDay = daysinMonth(my_month, my_year); //get numbers of days by month and year
+		var firstDay = dayStart(my_month, my_year); //get weekday of the first day in the month
+		var myclass;
+		for(var i=1; i<firstDay; i++){ 
+			str += "<li></li>"; //set blanks before first day
+		}
+		for(var i=1; i<=totalDay; i++){
+			if((( my_year==my_date.getFullYear() && my_month<my_date.getMonth())||i<my_day && my_year==my_date.getFullYear() && my_month==my_date.getMonth()) || my_year<my_date.getFullYear()  ){ 
+				myclass = " class='lightgrey'"; //dates before today in lightgrey
+			}else if (i==my_day && my_year==my_date.getFullYear() && my_month==my_date.getMonth()){
+				myclass = " class='green greenbox'"; //today in green box
+			}else{
+				myclass = " class='darkgrey'"; //dates after today
+			}
+			str += "<li"+myclass+">"+i+"</li>"; //创建日期节点
+			
+		}
+		holder.innerHTML = str; //set and show dates
+		ctitle.innerHTML = month_name[my_month]; //show month
+		cyear.innerHTML = my_year; //show year
+		function isleapyear(year){
+			return (year%4==0)&&(year % 100 != 0 || year % 400 == 0)
+		}
+		function daysinMonth(month,year){//get numbers of days by month and year
+			if(isleapyear(year)){
+				return month_leap[month];
+			}else{
+				return month_normal[month];
+			}
+		}
+		function dayStart(year,month){
+			var tmpDate = new Date(year, month, 1);
+	    	return (tmpDate.getDay());
+			}
+			
+	}
+	var pre=document.getElementById("prev");
+	var pre=document.getElementById("next");
+	prev.onclick = function(e){
+	e.preventDefault();
+	my_month--;
+	if(my_month<0){
+		my_year--;
+		my_month = 11;
+	}
+	refreshDate();
+}
+next.onclick = function(e){
+	e.preventDefault();
+	my_month++;
+	if(my_month>11){
+		my_year++;
+		my_month = 0;
+	}
+	refreshDate();
+}
+	refreshDate(); 
+		</script>
+	
+</html>
