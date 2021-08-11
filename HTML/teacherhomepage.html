@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title></title>
 	</head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
 	<style>
 		body{
 				margin: 0;background-color:gray;
@@ -47,6 +48,11 @@
 			top: 60vmin;
 			left: 70vmin;
 		}
+		#update{
+			position: absolute;
+			top: 10vmin;
+			left: 70vmin;
+		}
 		#loggout{
 			position: absolute;
 		    top: 0vmin;
@@ -60,7 +66,7 @@
 		}
 		#s1{
 			text-align: center;
-			color: red;
+			color: transparent;
 			background-color: transparent;
 			position: relative;
 			height: 10vmin;
@@ -70,7 +76,7 @@
 		}
 		#s2{
 			text-align: center;
-			color: red;
+			color: transparent;
 			background-color: transparent;
 			position: relative;
 			height: 10vmin;
@@ -81,23 +87,24 @@
 		}
 	</style>
 	<script type="text/javascript">
+		var news=0;
 		function update(){
+		if(news!=0){//simulate getting news from server
 		var s1=document.getElementById("s1");
-		s1.style.color="transparent";
-		var s2=document.getElementById("s2");
-		s2.style.color="transparent";
+		s1.style.color="red";}
+		news+=1;
 		}
 	</script>
 	<body onload="update()">
 		<div >
-			<img src="img/67650062_2008603299244107_3549077591472209920_n.jpg" id="img1">
+			<img src="../img/67650062_2008603299244107_3549077591472209920_n.jpg" id="img1">
 			<button id="button1">reply appointment </button>
 			<span id="s1">new!</span>
 			<button id="button2">schedule</button>
 			<button id="button3">file management</button>
-			<button id="button4">feedback</button>
+			<button id="button4">courses</button>
 			<span id="s2">new!</span>
-			<button onclick="update">refresh appointment and feedback</button>
+			<button id ="update" onclick="update()">refresh</button>
 			<form action="" method="post">
 				settings</br>
 			username:</br>
