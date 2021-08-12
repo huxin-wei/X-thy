@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		
+		li{
+		width:20%;
+		height:10vh;
+		line-height:10vh;
+		list-style-type:none;
+		display:block;
+		box-sizing:border-box;
+		float:left;
+		text-align:center;
+	}
+	#prevPage{
+		float: left;
+	}
+	#nextPage{
+		float: right;
+	}
+	</style>
+	<body>
+		<h1 style="text-align: center">booking records</h1>
+		<div id="listborder">
+			<ul id="list">
+			</ul>
+			
+		</div>
+		</br>		</br>		</br>
+		<div >
+		<button id="prevPage">prev page</button>
+		<button id="nextPage">next page</button>
+		</div>
+	</body>
+	<script>
+		var list=document.getElementById("list");
+		function load(num){
+			str="<li>ID:</li><li>time:</li><li><button >accept</button></li><li><button>reject</button></li><li><button>view details</button></li></br>"
+			for (var i=1;i<=num ;i++){
+				list.innerHTML+=str;
+				}
+			
+		}
+		load(3);
+	</script>
+</html>
