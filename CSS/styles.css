@@ -27,7 +27,7 @@ body{
     width: 70%;
     margin: 50px auto 50px auto;
     padding: 20px;
-    background-color: rgba(245, 245, 245, 0.75);
+    background-color: rgb(255, 255, 255);
     font-family: Tahoma, Verdana, sans-serif;
 }
 
@@ -115,6 +115,22 @@ button.add:active{
 }
 
 .mg-bt-10{
+    margin-bottom: 10px;
+}
+
+.mt-50{
+    margin-top: 50px;
+}
+
+.mt-30{
+    margin-top: 30px;
+}
+
+.mt-10{
+    margin-top: 10px;
+}
+
+.mb-10{
     margin-bottom: 10px;
 }
 
@@ -251,6 +267,23 @@ lesson-content-wrapper{
     
 }
 
+.availability-form form{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+    background-color: white;
+    padding: 25px;
+    box-shadow: rgba(0, 0, 0, 0.308) 0px 1px 8px;
+}
+
+.day-checkbox-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .lesson-form form{
     margin: auto;
     display: flex;
@@ -275,9 +308,13 @@ lesson-content-wrapper{
 }
 
 .all-lessons-wrapper{
-    margin: 50px auto;
+    margin: 40px auto;
     width: 75%;
-    
+}
+
+.all-availability-wrapper{
+    margin: 40px auto;
+    width: 400px;
 }
 
 .lesson-wrapper{
@@ -286,6 +323,16 @@ lesson-content-wrapper{
 }
 
 .lesson-wrapper p{
+    font-size: 15px;
+    margin: 10px;
+}
+
+.availability-wrapper{
+    margin: 10px;
+    border-bottom: 1px solid rgb(238, 238, 238);
+}
+
+.availability-wrapper p{
     font-size: 15px;
     margin: 10px;
 }
@@ -314,5 +361,9 @@ lesson-content-wrapper{
 
     .all-lessons-wrapper{
         width: 90%;
+    }
+
+    .all-availability-wrapper{
+        width: 50%;
     }
 }
