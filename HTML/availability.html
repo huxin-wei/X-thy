@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Availability</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../CSS/styles.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="blue-background"></div>
+    <div class="content-wrapper">
+        <div class="availability-content-wrapper">
+            <div>
+                <h1>Availability Management</h1>
+            </div>
+            <div class="button-panel mg-top-50">
+                <button type="button" class="add shadow-box scaleup right pd-20 fz-15">
+                    <span><i class="fa fa-plus" aria-hidden="true""></i></span> Add availability
+                </button>
+            </div>
+            <div class=" clear"></div>
+            <div class="availability-form mt-50" id="form">
+                <form>
+                    <div>
+                        <label for="time-start">From</label>
+                        <input type="time" id="time-start" name="time-from">
+                        <label for="time-end">To</label>
+                        <input type="time" id="time-end" name="time-end">
+                    </div>
+                    <div class="day-checkbox-wrapper mt-10">
+                        <div>
+                            <input type="checkbox" id="sunday" name="sunday" value="1">
+                            <label for="sunday">Sunday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="monday" name="monday" value="1">
+                            <label for="monday">Monday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tuesday" name="tuesday" value="1">
+                            <label for="tuesday">Tuesday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="wednesday" name="wednesday" value="1">
+                            <label for="wednesday">Wednesday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="thursday" name="thursday" value="1">
+                            <label for="thursday">Thursday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="friday" name="friday" value="1">
+                            <label for="friday">Friday</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="saturday" name="saturday" value="1">
+                            <label for="saturday">Saturday</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-30" style="position: relative">
+                        <button type="button" class="default left pd-15 shadow-box"
+                            style="position: absolute; bottom: 0">cancel</button>
+                        <button type="submit" class="add shadow-box scaleup right pd-lr-20 fz-15">
+                            <p>Add</p>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            <div class="all-availability-wrapper">
+                <div class="availability-wrapper">
+                    <h4>09:00 AM - 12:00 PM</h4>
+                    <h4>MON - FRI</h4>
+                    <div class="mb-10" style="height: 20px">
+                        <button type="button" class="left edit">
+                            <span class="tooltip">Edit</span>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
+                        </button>
+
+                        <button type="button" class="delete right">
+                            <span class="tooltip">Delete</span>
+                            <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="availability-wrapper">
+                    <h4>01:00 PM - 05:00 PM</h4>
+                    <h4>MON - FRI</h4>
+                    <div class="mb-10" style="height: 20px">
+                        <button type="button" class="left edit">
+                            <span class="tooltip">Edit</span>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
+                        </button>
+
+                        <button type="button" class="delete right">
+                            <span class="tooltip">Delete</span>
+                            <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="availability-wrapper">
+                    <h4>07:00 PM - 09:00 PM</h4>
+                    <h4>MON, WED</h4>
+                    <div class="mb-10" style="height: 20px">
+                        <button type="button" class="left edit">
+                            <span class="tooltip">Edit</span>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
+                        </button>
+
+                        <button type="button" class="delete right">
+                            <span class="tooltip">Delete</span>
+                            <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
