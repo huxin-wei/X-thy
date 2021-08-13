@@ -1,31 +1,56 @@
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<meta charset="utf-8">
 		<title></title>
 	</head>
 	<style type="text/css">
+	html{
+		font-size: 100%;
+	}
 	button{
 			float: right;
+			font-size: 100%;
 	}
+    .start{
+		position: absolute;
+		top: 35%;
+		left:65% ;
+	}
+
     input{
 		float: right;
 	}
+	.halfH{
+	width: 10%;
+	color: red;
+	position: absolute;
+	top :20%;
+	right:30%;
+}
+   .anH{
+	width: 10%;
+	color: red;
+	position: absolute;
+	top :20%;
+	right:10%;
+}
 	.calendar{
-	width:450px;
+	width:50%;
 	background:#fff;
 	float: left;
 }
-.body-list ul{
+   .body-list ul{
 	width:100%;
 	font-family:arial;
 	font-weight:bold;
-	font-size:14px;
+	font-size:24px;
 }
 .body-list ul li{
 	width:14.28%;
-	height:36px;
-	line-height:36px;
+	height:10vh;
+	line-height:10vh;
 	list-style-type:none;
 	display:block;
 	box-sizing:border-box;
@@ -45,15 +70,30 @@
 	border:1px solid #6ac13c;
 	background:#e9f8df; /*lightgreen background*/
 }
+	@media screen and (max-width: 800px) {
+    html {
+      font-size: 50%;
+    }
+	button{
+		font-size: 100%;
+	}
+	.body-list ul{
+		font-size: 16px;
+	}
+	.body-list ul li{
+		font-size: 16px;
+	}
+  }
 	</style>
 	<body>
 <div class="calendar">
   <div class="title">
 	<h1 class="green" >course timetable</h1>
-    <h2 class="green" id="calendar-title">Month</h1> <input type="file" id="upload" name="upload schedule" />
-    <h2 class="green small" id="calendar-year">Year</h2>
-    <button id="prev" onclick="preMonth">Prev Month</button>
-    <button id="next" onclick="nextMonth()">Next Month</button></br>
+    <h2 class="green" id="calendar-title">Month</h1>
+    <h2 class="green small" id="calendar-year">Year</h2> <input type="file" id="upload" name="upload schedule" /></br>
+     <button id="nextmonth" onclick="nextMonth()">Next Month</button>
+     <button id="prevmonth" onclick="preMonth">Prev Month</button>
+   </br>
   </div>
   <div class="body">
     <div class="lightgrey body-list">
@@ -71,26 +111,50 @@
       <ul id="days">
       </ul>
     </div>
+    
   </div>
+</div>
+<div class="detail">
+	<button class="halfH">half an hour interval</button>
+	<button class="anH">an hour interval</button>
+	<span  class="start">
+	start time:</br>
+    <input type="number" id="" value="1" /></br>
+	  <ul>
+	  <li>8:00</li>
+	  <li>9:00</li>
+	  <li>10:00</li>
+	  <li>11:00</li>
+	  <li>12:00</li>
+	  <li>13:00</li>
+	  <li>14:00</li>
+	</ul>
+	<input type="submit"value="submit">
+	<span>
 </div>
 	</body>
 		<script>
-	var month_leap = [31,29,31,30,31,30,31,31,30,31,30,31];
-	var month_normal = [31,28,31,30,31,30,31,31,30,31,30,31];
 	var month_name = ["January","Febrary","March","April","May","June","July","Auguest","September","October","November","December"];
+	var month_normal = [31,28,31,30,31,30,31,31,30,31,30,31];
+	var month_leap = [31,29,31,30,31,30,31,31,30,31,30,31];
+	
 	var holder = document.getElementById("days");
 	var prev = document.getElementById("prev");
 	var next = document.getElementById("next");
 	var ctitle = document.getElementById("calendar-title");
 	var cyear = document.getElementById("calendar-year");
-	var my_date = new Date();
-	console.log(my_date)
+	
+	var my_date = new Date();//today
+	
 	var my_year = my_date.getFullYear();
 	var my_month = my_date.getMonth();
 	var my_day = my_date.getDate();
+	
+	console.log(my_date)//test
 	console.log(my_year)
 	console.log(my_month)
-	function refreshDate(){
+	
+	function createCalender(){
 		var str = "";
 		var totalDay = daysinMonth(my_month, my_year); //get numbers of days by month and year
 		var firstDay = dayStart(my_month, my_year); //get weekday of the first day in the month
@@ -106,7 +170,7 @@
 			}else{
 				myclass = " class='darkgrey'"; //dates after today
 			}
-			str += "<li"+myclass+">"+i+"</li>"; //创建日期节点
+			str += "<li"+myclass+">"+i+"</li>"; //create dates block
 			
 		}
 		holder.innerHTML = str; //set and show dates
@@ -122,33 +186,33 @@
 				return month_normal[month];
 			}
 		}
-		function dayStart(year,month){
+		function dayStart(year,month){///get weekday of the first day in the month
 			var tmpDate = new Date(year, month, 1);
 	    	return (tmpDate.getDay());
 			}
 			
 	}
-	var pre=document.getElementById("prev");
-	var pre=document.getElementById("next");
-	prev.onclick = function(e){
+	var pre=document.getElementById("prevmonth");
+	var next=document.getElementById("nextmonth");
+    pre.onclick = function(e){
 	e.preventDefault();
 	my_month--;
 	if(my_month<0){
 		my_year--;
 		my_month = 11;
 	}
-	refreshDate();
+	createCalender();
 }
-next.onclick = function(e){
+    next.onclick = function(e){
 	e.preventDefault();
 	my_month++;
 	if(my_month>11){
 		my_year++;
 		my_month = 0;
 	}
-	refreshDate();
+	createCalender();
 }
-	refreshDate(); 
+	createCalender(); 
 		</script>
 	
 </html>
