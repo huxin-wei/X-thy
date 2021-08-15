@@ -5,10 +5,12 @@
 		<title>Upload</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="../CSS/styles.css">
+        <link
 		<style>
 
 		</style>
 	</head>
+    <script src="../js/lesson.js"></script>
 	<body>
 		<div class="blue-background"></div>
 		<div class="content-wrapper">
@@ -17,119 +19,16 @@
                     <h1>Lessons Management</h1>
                 </div>
                 <div class="button-panel mg-top-50">
-                    <button type="button" class="add shadow-box scaleup right pd-20 fz-15">
+                    <button type="button" class="add shadow-box scaleup right pd-20 fz-15" onclick="showForm()">
                         <span><i class="fa fa-plus" aria-hidden="true""></i></span> Create new lesson
                     </button>
                 </div>
                 <div class="clear"></div>
-                <div class="lesson-form mg-top-50" id="form">
-                    <form class="">
-                        <label for="lesson">Lesson</label>
-                        <input type="text" id="lesson" name="lesson" class="shadow-input">
 
-                        <label for="description">Description</label>
-                        <textarea id="description" name="description" rows="5"  class="shadow-input"></textarea>
-                        <div>
-                            <label name="duration">Duration</label>
-                            <select id="duration" name="duration" class="shadow-input">
-                                <option value="30">30</option>
-                                <option value="60" selected>60</option>
-                                <option value="90">90</option>
-                                <option value="120">120</option>
-                                <option value="180">180</option>
-                                <option value="240">240</option>
-                            </select>
-                            <span> minutes</span>
-                        </div>
+                <div id="create-lesson-form"></div>
 
-                        <div>
-                            <label name="price" for="price">
-                                Price
-                            </label>
-                            <input type="text" id="price" name="price" style="width: 120px" class="shadow-input">
-
-                            </input>
-                            <span>$</span>
-                        </div>
-
-                        <div style="position: relative">
-                            <button type="button" class="default left pd-15 shadow-box" style="position: absolute; bottom: 0">cancel</button>
-                            <button type="submit" class="add shadow-box scaleup right pd-lr-20 fz-15">
-                                <p>Add</p>
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-                <div class="all-lessons-wrapper">
-                    <div class="lesson-wrapper">
-                        <h4>Electric Guitar (60m)</h4>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi quidem et enim, ullam hic nulla delectus eaque voluptatem, quaerat recusandae doloribus. At ipsum totam odio autem exercitationem inventore rerum delectus?</p>
-                        <p><b>60 minutes</b></p>
-                        <p><b>$85</b></p>
-                        <div class="mg-bt-10" style="height: 20px">
-                            <button type="button" class="left edit" >
-                                <span class="tooltip">Edit</span>
-                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                            
-                            <button type="button" class="delete right">
-                                <span class="tooltip">Delete</span>
-                                <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="lesson-wrapper">
-                        <h4>Electric Guitar (30m)</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur ducimus excepturi doloribus ea illum explicabo officiis, soluta necessitatibus, Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi officia fugiat facilis, molestiae rerum nostrum, numquam consectetur aspernatur quod similique delectus necessitatibus natus tempora eveniet dolorem voluptate a error incidunt. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione quod id, magni veritatis est dolorum sint velit laboriosam eveniet animi architecto, dolorem totam! Delectus nemo corporis natus veniam ab distinctio? Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi repellendus dignissimos fugiat, officia dolor expedita magnam placeat velit nihil accusantium ducimus, quae error neque, voluptate corporis esse nemo? Consequuntur, nostrum. facere perspiciatis aliquam fugit inventore eligendi, dignissimos similique cupiditate repellendus incidunt voluptatum. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi quidem et enim, ullam hic nulla delectus eaque voluptatem, quaerat recusandae doloribus. At ipsum totam odio autem exercitationem inventore rerum delectus?</p>
-                        <p><b>30 minutes</b></p>
-                        <p><b>$50</b></p>
-                        <div class="mg-bt-10" style="height: 20px">
-                            <button type="button" class="left edit" >
-                                <span class="tooltip">Edit</span>
-                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                            
-                            <button type="button" class="delete right">
-                                <span class="tooltip">Delete</span>
-                                <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="lesson-wrapper">
-                        <h4>Acoustic Guitar (60m)</h4>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi quidem et enim, ullam hic nulla delectus eaque voluptatem, quaerat recusandae doloribus. At ipsum totam odio autem exercitationem inventore rerum delectus?</p>
-                        <p><b>60 minutes</b></p>
-                        <p><b>$70</b></p>
-                        <div class="mg-bt-10" style="height: 20px">
-                            <button type="button" class="left edit" >
-                                <span class="tooltip">Edit</span>
-                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                            
-                            <button type="button" class="delete right">
-                                <span class="tooltip">Delete</span>
-                                <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="lesson-wrapper">
-                        <h4>Acoustic Guitar (30m)</h4>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi quidem et enim, ullam hic nulla delectus eaque voluptatem, quaerat recusandae doloribus. At ipsum totam odio autem exercitationem inventore rerum delectus?</p>
-                        <p><b>30 minutes</b></p>
-                        <p><b>$40</b></p>
-                        <div class="mg-bt-10" style="height: 20px">
-                            <button type="button" class="left edit" >
-                                <span class="tooltip">Edit</span>
-                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                            
-                            <button type="button" class="delete right">
-                                <span class="tooltip">Delete</span>
-                                <i class="fa fa-trash-o" aria-hidden="true" style="font-size: 25px;"></i>
-                            </button>
-                        </div>
-                    </div>
+                <div id="lessons" class="all-lessons-wrapper" >
+                   
                 </div>
             </div>
 		</div>
