@@ -28,3 +28,6 @@ create table if not exists upload(
     file_location varchar(255) not null
 );
 
+select * from lesson;
+describe lesson;
+
