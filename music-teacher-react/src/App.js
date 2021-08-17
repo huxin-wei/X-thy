@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
-import Lesson from './components/Lesson'
+import Lesson from './components/LessonPanel'
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
           <div className="wrapper">
             <Sidebar />
             <div className="content-wrapper">
-              <div className="border container-fluid">
+              <div className="container-fluid">
                 <Switch>
                   <Route path="/appointment">
                     <Appointment />

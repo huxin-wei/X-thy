@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
-import CreateLessonForm from './CreateLessonForm'
+import React from 'react'
 
-function Lesson() {
-
+function Lesson(props) {
+    console.log('lesson Panel rerender')
     return (
-        <div className="mt-2">
-            <CreateLessonForm />
+        <div>
+            
         </div>
     )
 }
