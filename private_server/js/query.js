@@ -1,9 +1,9 @@
 let db_connection = require('./music_teacher_db')
 
-const addLesson = (lesson, description, duration = 60, price = 0) => {
+const addLesson = (lesson, description, price_30m = 0, price_60m = 0) => {
     return new Promise((resolve, reject) => {
-        db_connection.query('insert into lesson (lesson_name, description, duration, price, status) values(?, ?, ?, ?, ?)',
-        [lesson, description, duration, price, 'active'], (err, rows) => {
+        db_connection.query('insert into lesson (lesson_name, description, price_30m, price_60m, status) values(?, ?, ?, ?, ?)',
+        [lesson, description, price_30m, price_60m, 'active'], (err, rows) => {
             if (err){
                 return reject(err)
             }
