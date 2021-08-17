@@ -44,8 +44,6 @@ router.post('/', async(req, res) => {
 })
 
 router.delete('/:lessonId', async(req, res) => {
-
-
     try {
         const lessonId = parseInt(req.params.lessonId)
         await deleteLesson(lessonId)
