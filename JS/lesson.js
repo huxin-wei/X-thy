@@ -11,28 +11,25 @@ const showForm = () => {
 
         <label for="description">Description</label>
         <textarea id="description" name="description" rows="5"  class="shadow-input"></textarea>
+
         <div>
-            <label name="duration">Duration</label>
-            <select id="duration" name="duration" class="shadow-input">
-                <option value="30">30</option>
-                <option value="60" selected>60</option>
-                <option value="90">90</option>
-                <option value="120">120</option>
-                <option value="180">180</option>
-                <option value="240">240</option>
-            </select>
-            <span> minutes</span>
+            Price Rate
         </div>
-
         <div>
-            <label name="price" for="price">
-                Price
+            <label name="price-30" for="price-30">
+                30 munites
             </label>
-            <input type="text" id="price" name="price" style="width: 120px" class="shadow-input">
-
-            </input>
+            <input type="text" id="price-30" name="price-30" style="width: 120px" class="shadow-input">
             <span>$</span>
         </div>
+        <div>
+            <label name="price-60" for="price-60">
+                60 munites
+            </label>
+            <input type="text" id="price-60" name="price-60" style="width: 120px" class="shadow-input">
+            <span>$</span>
+        </div>
+
 
         <div style="position: relative">
             <button type="button" onclick="hideForm()" class="default left pd-15 shadow-box" style="position: absolute; bottom: 0" >cancel</button>
@@ -57,14 +54,14 @@ const createNewLesson = (event) => {
     const lesson = document.getElementById("lesson").value
 
     //Lesson name is require
-    if (!lesson){
+    if (!lesson) {
         document.getElementById("warning").innerHTML = 'Require lesson name'
         return
     }
 
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-type': 'Application/json'},
+        headers: { 'Content-type': 'Application/json' },
         body: JSON.stringify({
             lesson: document.getElementById("lesson").value,
             description: document.getElementById("description").value,
@@ -81,7 +78,7 @@ const createNewLesson = (event) => {
             document.getElementById("warning").innerHTML = ''
             fetchLessons()
         })
-        .catch( err => {
+        .catch(err => {
             console.log(err)
             document.getElementById("warning").innerHTML = err
         })
@@ -97,23 +94,23 @@ const deleteLesson = (event) => {
     console.log(lessonId)
     const requestOptions = {
         method: 'DELETE',
-        headers: { 'Content-type': 'Application/json'},
+        headers: { 'Content-type': 'Application/json' },
     }
 
     fetch(`${url}/lesson/${lessonId}`, requestOptions)
-    .then(res => res.json())
-    .then(() => {
-        fetchLessons()
-    })
-    .catch(error => {
-        console.log(error)
-    })
+        .then(res => res.json())
+        .then(() => {
+            fetchLessons()
+        })
+        .catch(error => {
+            console.log(error)
+        })
 }
 
 const fetchLessons = () => {
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-type': 'Application/json'},
+        headers: { 'Content-type': 'Application/json' },
     }
 
     let str = ''
@@ -154,3 +151,16 @@ const fetchLessons = () => {
 }
 
 fetchLessons()
+
+{/* <div>
+<label name="duration">Duration</label>
+<select id="duration" name="duration" class="shadow-input">
+    <option value="30">30</option>
+    <option value="60" selected>60</option>
+    <option value="90">90</option>
+    <option value="120">120</option>
+    <option value="180">180</option>
+    <option value="240">240</option>
+</select>
+<span> minutes</span>
+</div> */}
