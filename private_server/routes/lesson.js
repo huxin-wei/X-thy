@@ -30,7 +30,7 @@ router.post('/', async(req, res) => {
             throw 'lesson name is required.'
         }
 
-        await addLesson(data.lesson, data.description, data.duration, data.price)
+        await addLesson(data.lesson, data.description, data.price30m, data.price60m)
         res.status(200).json({
         success: true
         })
