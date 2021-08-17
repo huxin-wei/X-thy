@@ -8,8 +8,8 @@ create table if not exists lesson(
 	lesson_id int primary key auto_increment,
     lesson_name varchar(70) not null,
     description varchar(500),
-    duration int not null,
-    price decimal(13,2) not null,
+    price_30m decimal(13,2) not null,
+	price_60m decimal(13,2) not null,
     status ENUM('active', 'inactive','deleted') not null
 );
 
