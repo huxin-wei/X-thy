@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, Router, NavLink } from 'react-router-dom'
-import { GiGuitar, GiSpellBook, GiTeacher } from "react-icons/gi";
+import { GiGuitar, GiSpellBook, GiTeacher, GiBookmark } from "react-icons/gi";
 import { ImUpload2 } from 'react-icons/im'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 
@@ -36,6 +36,16 @@ function Sidebar() {
                             to="/availability">
                             <GiTeacher size={size} />
                             <p>Availability</p>
+
+                        </NavLink>
+                    </li>
+                    <li data-toggle="tooltip" data-placement="right" title="book an appointment">
+                        <NavLink
+                            activeClassName="sidebar-link--active"
+                            className="sidebar-link"
+                            to="/booking">
+                            <GiBookmark size={size} />
+                            <p>Book appointment</p>
 
                         </NavLink>
                     </li>

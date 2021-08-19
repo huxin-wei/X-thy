@@ -10,6 +10,8 @@ router.get('/', async(req, res) => {
     try{
         let lessons = await getLessons()
         lessons = lessons.filter(lesson => lesson.status !== 'deleted')
+        console.log('success')
+        console.log(lessons)
         res.status(200).json({
             success: true,
             data: lessons
