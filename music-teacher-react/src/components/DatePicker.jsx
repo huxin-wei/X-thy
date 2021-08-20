@@ -31,11 +31,6 @@ function DatePicker(props) {
     // const handleDateChange = props.handleDateChange
 
     useEffect(() => {
-        // let d = new Date(year, month, 0)
-        // const endDate = d.getDate()
-        // if (date > endDate) {
-        //     setDate(endDate)
-        // } 
         resetCalendar()
     }, [month, year])
 
@@ -64,45 +59,11 @@ function DatePicker(props) {
         setDates(newDates)
     }
 
-    //
-    // useEffect(() => {
-    //     let newDates = []
-    //     let today = new Date()
-    //     let startDayOfMonth = new Date(year, month, 1)
-    //     let dayOfMonthAtStart = startDayOfMonth.getDay()
-    //     let endDayOfMonth = new Date(year, month + 1, 0)
-    //     let numDayOfMonth = endDayOfMonth.getDate()
-
-    //     let numObj = numDayOfMonth + dayOfMonthAtStart
-
-    //     let currentDate = 1 - dayOfMonthAtStart
-    //     for (let i = 0; i < numObj; i++) {
-    //         let theDate = new Date(year, month, currentDate)
-    //         let upComming = currentDate > 0 && (checkFutureDay(theDate, today) || checkSameDay(theDate, today))
-
-    //         let obj = {
-    //             id: currentDate,
-    //             upComming: upComming
-    //         }
-    //         newDates.push(obj)
-    //         currentDate++
-    //     }
-
-    //     setDates(newDates)
-
-    // }, [fullDateStr])
-
-
-
     const checkSameDay = (date1, date2) => {
         return date1.getDate() == date2.getDate() && date1.getMonth() == date2.getMonth() && date1.getFullYear() == date2.getFullYear()
     }
 
     const checkFutureDay = (date, thresholdDate) => {
-        // for(let i = 0; i < 10; i++){
-        //     let c = 9+9
-        //     console.log(c)
-        // }
         return date > thresholdDate
     }
 
@@ -126,12 +87,6 @@ function DatePicker(props) {
         setSelectedYear(year)
         setDate(parseInt(e.target.id))
     }
-
-    const getMonthActiveClass = () => {
-
-    }
-
-
 
     return (
         <div>
