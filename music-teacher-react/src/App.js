@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import LessonPanel from './components/LessonPanel'
 import Booking from './components/Booking'
+import AvailabilityPanel from './components/AvailabilityPanel';
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
                     <LessonPanel />
                   </Route>
                   <Route path="/availability">
-                    <Availability />
+                    <AvailabilityPanel />
                   </Route>
                   <Route path="/upload">
                     <Upload />

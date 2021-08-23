@@ -17,7 +17,7 @@ const MONTH = [
 ]
 
 const WEEK = [
-    'Sun', 'M', 'T', 'W', 'TH', 'F', 'S'
+    'Sun', 'Mon', 'Tu', 'Wed', 'Th', 'Fri', 'Sat'
 ]
 
 function DatePicker(props) {
@@ -26,9 +26,8 @@ function DatePicker(props) {
     const [year, setYear] = useState(props.year)
     const [selectedMonth, setSelectedMonth] = useState(props.month)
     const [selectedYear, setSelectedYear] = useState(props.year)
-    const [fullDateStr, setFullDateStr] = useState('')
     const [dates, setDates] = useState([])
-    // const handleDateChange = props.handleDateChange
+    const handleDateChange = props.onDateChange
 
     useEffect(() => {
         resetCalendar()
@@ -86,6 +85,7 @@ function DatePicker(props) {
         setSelectedMonth(month)
         setSelectedYear(year)
         setDate(parseInt(e.target.id))
+        handleDateChange(parseInt(e.target.id), month, year)
     }
 
     return (

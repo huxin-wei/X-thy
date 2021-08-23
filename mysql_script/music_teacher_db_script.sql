@@ -21,13 +21,47 @@ create table if not exists availability(
     status ENUM('active', 'inactive', 'deleted') not null
 );
 
-create table if not exists upload(
-	file_id int primary key auto_increment,
+create table if not exists appointment(
+	appointment_id int primary key auto_increment,
+    customer_name varchar(50) not null,
+    customer_email varchar(50) not null,
+    customer_phone varchar(20),
+    note varchar(255),
+    appointment_start timestamp not null,
+    appointment_end timestamp not null,
+	duration int not null,
+    lesson_id int not null,
+    total_fee int not null,
+    appointmnet_cancel_code varchar(50) not null,
+    appointmnet_status ENUM('active', 'inactive', 'owner-cancelled', 'booker-cancelled') not null
+);
+
+select * 
+from availability, (select appointment_start, appointment_end)
+
+where availability.days like '0' ;
+
+
+insert into upload(file_name, file_extension, file_location) values('cat', 'png', 'unknown');
+
+select * from lesson;
+delete from lesson;
+describe lesson;
+
+select * from availability;
+create table if not exists upload2(
     file_name varchar(50),
     file_extension varchar(5),
     file_location varchar(255) not null
 );
 
-select * from lesson;
-describe lesson;
+select * from upload;
 
+-- A solution to insert appointmnet record
+INSERT INTO upload (file_name, file_extension, file_location)
+SELECT 'thefile_2' as file_name, 'png' as file_extension, 'somewhere' as file_location
+FROM upload
+WHERE (file_name='thefile_3' and file_extension='png')
+HAVING COUNT(*) = 0;
+
+-- https://stackoverflow.com/questions/913841/mysql-conditional-insert

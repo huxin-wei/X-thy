@@ -30,7 +30,6 @@ function Lesson(props) {
                         <span className="align-middle" style={{ fontSize: 15 }}>DELETE</span>
                     </button>
                 </div>
-                <input type="date"></input>
             </div>
         </div>
     )
