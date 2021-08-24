@@ -4,11 +4,11 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let cors = require('cors')
-const {resolve} = require("path")
+let {resolve} = require("path")
 
-let indexRouter = require('./routes/index');
 let lessonRouter = require('./routes/lesson')
 let availabilityRouter = require('./routes/availability')
+let authRouter = require('./routes/auth')
 
 let app = express();
 
@@ -26,15 +26,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/lesson', lessonRouter);
 app.use('/api/availability', availabilityRouter)
+app.use('/api/auth', authRouter)
 
-// app.use('/', indexRouter);
 
 app.use(express.static(path.join(__dirname, 'yiwei_vue')))
 app.get('/', (req,res) => {
   let absolutePath = resolve('./yiwei_vue/index.html')
   res.sendFile(absolutePath)
 })
-
 
 // Serve Admin's React
 app.use(express.static(path.join(__dirname, 'build')))

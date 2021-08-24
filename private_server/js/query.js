@@ -1,5 +1,16 @@
 let db_connection = require('./music_teacher_db')
 
+const getUser = (email) => {
+    return new Promise((resolve, reject) => {
+        db_connection.query('select * from user where email = ? limit 1', [email], (err, rows) => {
+        if (err) {
+          return reject(err)
+        }
+        resolve(rows)
+      })
+    })
+}
+
 const addLesson = (lesson, description, price_30m = 0, price_60m = 0) => {
     return new Promise((resolve, reject) => {
         db_connection.query('insert into lesson (lesson_name, description, price_30m, price_60m, status) values(?, ?, ?, ?, ?)',
@@ -87,6 +98,7 @@ const getSameDayAppointmnet = (date) => {
 }
 
 module.exports = {
+    getUser,
     addLesson,
     getLessons,
     deleteLesson,
