@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import CreateLessonForm from './CreateLessonForm'
 import Lesson from './Lesson'
 
-const url = 'http://localhost:3001'
+const url = 'http://localhost:3001/api'
 
 function LessonPanel() {
     const [lessons, setLessons] = useState([])

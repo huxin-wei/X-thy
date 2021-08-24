@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <div className="test">
-        <Router>
+        <Router basename={'admin'}>
           <div className="wrapper">
             <Sidebar />
             <div className="content-wrapper">

@@ -13,6 +13,7 @@ node_modules
 
 # production
 /build
+private_server/build
 
 # misc
 .DS_Store

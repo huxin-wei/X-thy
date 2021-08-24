@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const MAX_DESCRIPTION_LENGTH = 500
 const MAX_LESSON_NAME_LENGTH = 70
-const url = 'http://localhost:3001'
+const url = 'http://localhost:3001/api'
 
 function CreateLessonForm() {
     const [showAddLesson, setShowAddLesson] = useState(false)

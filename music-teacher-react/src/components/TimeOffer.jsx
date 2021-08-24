@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const url = 'http://localhost:3001'
+const url = 'http://localhost:3001/api'
 
 function TimeOffer(props) {
     const [fetchErrors, setFetchErrors] = useState([])
@@ -51,13 +51,14 @@ function TimeOffer(props) {
             })
     }, [props.fullDate, props.duration])
 
-    const minutesToHHMM = (minutes) => {
+    const minutesToHhMmAPmString = (minutes) => {
         let hours = Math.floor(minutes/60)
         const suffix = hours >= 12 ? "PM":"AM"
         let minutePart = ((minutes%60) + '0').substring(0,2)
         hours = `${((hours + 11) % 12 + 1)}:${minutePart} ${suffix}`
         return hours
     }
+    
     return (
         <div>
             {
@@ -72,9 +73,8 @@ function TimeOffer(props) {
             }
             {
                 times.map(time => {
-
                     return(
-                        <button type="button" className="btn btn-primary mx-2 my-2" style={{width: 100}}>{minutesToHHMM(time)}</button>
+                        <button type="button" className="btn btn-primary mx-2 my-2" style={{width: 100}}>{minutesToHhMmAPmString(time)}</button>
                     )
                 })
 

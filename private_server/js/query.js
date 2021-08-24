@@ -36,10 +36,10 @@ const deleteLesson = (id) => {
     })
 }
 
-const addAvailability = (timeFrom, timeTo, days) => {
+const addAvailability = (startMinute, endMinute, days) => {
     return new Promise((resolve, reject) => {
-        db_connection.query('insert into availability (minute_start, minute_end, days) values(?, ?, ?)',
-        [timeFrom, timeTo, days], (err, rows) => {
+        db_connection.query('insert into availability (start_minute, end_minute, days) values(?, ?, ?)',
+        [startMinute, endMinute, days], (err, rows) => {
             if(err){
                 return reject(err)
             }
@@ -53,6 +53,18 @@ const getAvailability = (day) => {
         db_connection.query('select * from availability where status = ? and days like ?'
         , ['active', `%${day}%`],
         (err, rows) => {
+            if(err){
+                return reject(err)
+            }
+            resolve(rows)
+        })
+    })
+}
+
+const getAllAvailability = () => {
+    return new Promise((resolve, reject) => {
+        db_connection.query('select * from availability', [], 
+        (err, rows) =>{
             if(err){
                 return reject(err)
             }
@@ -79,6 +91,7 @@ module.exports = {
     getLessons,
     deleteLesson,
     addAvailability,
+    getAllAvailability,
     getAvailability,
     getSameDayAppointmnet
 }

@@ -16,8 +16,8 @@ create table if not exists lesson(
 create table if not exists availability(
 	availability_id int primary key auto_increment,
     days varchar(7) not null,
-    minute_start int not null,
-    minute_end int not null,
+    start_minute int not null,
+    end_minute int not null,
     status ENUM('active', 'inactive', 'deleted') not null
 );
 
@@ -36,9 +36,32 @@ create table if not exists appointment(
     appointmnet_status ENUM('active', 'inactive', 'owner-cancelled', 'booker-cancelled') not null
 );
 
+create table if not exists app(
+	appointment_start timestamp not null,
+    appointment_end timestamp not null
+);
+
+insert into app values('2021-08-21 8:30', '2021-08-21 9:00');
+insert into app values('2021-08-21 9:00', '2021-08-21 11:30');
+insert into app values('2021-08-21 13:30', '2021-08-21 14:30');
+
+alter table app add status varchar(10) first;
+update app set status = 'active';
+
+select * from app;
+select * from availability;
+select * from  lesson;
+delete from availability where availability_id > 5;
+update availability set days = '1234';
+
+ALTER TABLE availability CHANGE minute_start start_minute int;
+ALTER TABLE availability CHANGE minute_end end_minute int;
+ALTER TABLE lesson CHANGE 'sdsds' description varchar(500);
+
+select * from app where datediff('2021-08-21T12:33:17.000Z', appointment_start) = 0;
+
 select * 
 from availability, (select appointment_start, appointment_end)
-
 where availability.days like '0' ;
 
 

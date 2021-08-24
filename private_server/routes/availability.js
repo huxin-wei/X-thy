@@ -1,6 +1,6 @@
 let express = require('express')
 let router = express.Router()
-let {addAvailability, getAvailability, getSameDayAppointmnet} = require('./../js/query')
+let {addAvailability, getAvailability, getSameDayAppointmnet, getAllAvailability} = require('./../js/query')
 
 const checkTime = (msgList, timeFrom, timeTo) => {
     let from = parseInt(timeFrom)
@@ -36,6 +36,33 @@ const checkDay = (msgList, days) => {
         msgList.push('At least one day must be selected')
     }
 }
+
+router.get('/', async(req,res) => {
+    try{
+        const availabilities = await getAllAvailability()
+        if(availabilities.length < 1){
+            return res.status(203).json({
+                success: false,
+                message: 'No availability has been set.'
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: availabilities
+        })
+    } catch(error){
+        console.log(error)
+        res.status(203).json({
+            success: false,
+            message: error.message
+        })
+    }
+
+    return res.status(200).json({
+        success: true
+    })
+})
 
 router.post('/', async(req, res) => {
     const data = req.body
@@ -109,9 +136,9 @@ router.get('/offertime', async(req, res) => {
 
         // loop through available time
         avail_results.map(avail => {
-            let currentMinute = parseInt(avail.minute_start)
+            let currentMinute = parseInt(avail.start_minute)
             // loop 8:30 9:00 ... for 30 minutes session
-            while(currentMinute + duration <= avail.minute_end){
+            while(currentMinute + duration <= avail.end_minute){
                 let headDT = new Date(date + ' ' + convertTotalMinuteToHHMM(currentMinute))
                 let tailDT = new Date(date + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
                 let isFree = true
@@ -121,13 +148,6 @@ router.get('/offertime', async(req, res) => {
                     // console.log(app_result[i].appointment_end)
                     let appStart = new Date(app_result[i].appointment_start)
                     let appEnd = new Date(app_result[i].appointment_end)
-                    // console.log('\n')
-                    // console.log('appStart:', appStart)
-                    // console.log('appEnd:', appEnd)
-                    // console.log('headDt', headDT)
-                    // console.log('tailDt', tailDT)
-                    // console.log('now is:', new Date())
-                    // console.log('\n')
 
                     if( (headDT < appStart && tailDT > appStart) || (headDT < appEnd && tailDT > appEnd) || (headDT >= appStart && tailDT <= appEnd)){
                         isFree = false

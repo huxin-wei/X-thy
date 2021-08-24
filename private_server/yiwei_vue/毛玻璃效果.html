@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			body{
+				margin: 0;
+				padding: 0;
+				background-image: url(img/19060100_1147784841992628_8069880927884600141_n.jpg);
+				background-size: cover;
+				background-repeat: no-repeat;
+				/* background-attachment 属性设置背景图像是否固定或者随着页面的其余部分滚动 
+				 当页面的其余部分滚动时，背景图像不会移动。
+				 */
+				background-attachment: fixed;
+				align-items: center;/*垂直居中*/
+				justify-content: center;/*水平居中*/
+			}
+			.blur{
+				position: absolute;
+				/* bottom 属性规定元素的底部边缘。该属性定义了定位元素下外边距边界与其包含块下边界之间的偏移。 */
+				bottom:0;
+				width: 100%;
+				height: 100%;
+				backdrop-filter: blur(5px);
+				-webkit-backdrop-filter: blur(5px);
+				z-index: 20;
+				
+			}
+			.text{
+				color: #ffeeed;
+				text-align: center;
+				position: relative;
+				top: 45%;
+				/* 定义转换，只是用 Y 轴的值。 */
+				transform: translateY(-200);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="blur">
+			
+		</div>
+	</body>
+</html>
