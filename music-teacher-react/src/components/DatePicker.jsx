@@ -86,16 +86,17 @@ function DatePicker(props) {
         setSelectedYear(year)
         setDate(parseInt(e.target.id))
         handleDateChange(parseInt(e.target.id), month, year)
+        console.log('var:', parseInt(e.target.id), month, year)
     }
 
     return (
         <div>
             <div className="calendar-picker">
-                    <div style={{display: "flex", margin: "10px 3px", borderBottom: "2px solid #f2f2f2"}}>
-                        <h3 style={{margin: "auto", fontSize: 25}}>
-                            {`${date} ${MONTH[selectedMonth].month} ${selectedYear}`}
-                        </h3>
-                    </div>
+                <div style={{ display: "flex", margin: "10px 3px", borderBottom: "2px solid #f2f2f2" }}>
+                    <h3 style={{ margin: "auto", fontSize: 25 }}>
+                        {`${date} ${MONTH[selectedMonth].month} ${selectedYear}`}
+                    </h3>
+                </div>
 
                 <div className="year-spinner">
                     <button onClick={decrementYear} className="float-start" >
@@ -157,31 +158,3 @@ function DatePicker(props) {
 }
 
 export default DatePicker
-
-{/* <div className="date-item">
-<div style={{ margin: "auto" }}>
-    1
-</div>
-</div>
-<div className="date-item">&nbsp;</div>
-<div className="date-item date-item-past">
-<button disabled>
-    <div>
-        <p>3</p>
-    </div>
-</button>
-</div>
-<div className="date-item date-item-active date-item-upcomming">
-<button>
-    <div>
-        <p>4</p>
-    </div>
-</button>
-</div>
-<div className="date-item date-item-upcomming">
-<button>
-    <div>
-        <p>5</p>
-    </div>
-</button>
-</div> */}

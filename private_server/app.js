@@ -4,16 +4,40 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let cors = require('cors')
-let {resolve} = require("path")
+let { resolve } = require("path")
 
 let lessonRouter = require('./routes/lesson')
 let availabilityRouter = require('./routes/availability')
 let authRouter = require('./routes/auth')
+let bookingRouter = require('./routes/booking')
 
 let app = express();
 
-app.use(cors())
+// app.use(cors())
 
+// app.use(cors({origin: '*'}))
+
+// Add headers before the routes are defined
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
+
+app.disable('etag');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -27,29 +51,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/lesson', lessonRouter);
 app.use('/api/availability', availabilityRouter)
 app.use('/api/auth', authRouter)
-
+app.use('/api/booking', bookingRouter)
 
 app.use(express.static(path.join(__dirname, 'yiwei_vue')))
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
   let absolutePath = resolve('./yiwei_vue/index.html')
   res.sendFile(absolutePath)
 })
 
 // Serve Admin's React
 app.use(express.static(path.join(__dirname, 'build')))
-app.get('/admin(/)?(lesson)?(appointment)?(availability)?(booking)?(upload)?(logout)?', (req,res) => {
+app.get('/admin(/)?(lesson)?(appointment)?(availability)?(booking)?(upload)?(logout)?', (req, res) => {
   let absolutePath = resolve('./build/index.html')
   res.sendFile(absolutePath)
 })
 
-
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

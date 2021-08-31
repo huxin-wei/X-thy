@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {getUser} = require('./../js/query')
+const authenticateJWT = require('./../js/authenticateJWT')
 require('dotenv').config()
 
 const comparePasswords = (plainText, encrypted) => {
@@ -22,6 +23,8 @@ const generateAccessToken = (user) => {
 
 router.post('/login', async(req, res) => {
     let {email, password} = req.body
+    console.log(req.cookies)
+    console.log(req.cookie)
     console.log(req.body)
     console.log(email)
     console.log(password)
@@ -48,12 +51,13 @@ router.post('/login', async(req, res) => {
 
         //Compare passwords
         const isMatch = await comparePasswords(password, user.password)
-        console.log()
+
         if(isMatch){
             const token = generateAccessToken(user)
 
-            //set jsonweb token in cookie -- set to NEVER expires
-            res.cookie('ACCESS_TOKEN', token, {expires: new Date(253402300000000)})
+            //set jsonweb token in httpOnly cookie -- set to NEVER expires
+            res.cookie('ACCESS_TOKEN', token, {expires: new Date(253402300000000), httpOnly: true})
+
 
             return res.status(200).json({
                 success: true,
@@ -71,22 +75,18 @@ router.post('/login', async(req, res) => {
     }
 })
 
-// a middle ware to authenticate JWT
-const authenticateJWT = (req, res, next) => {
-    try{
-        const token = req.cookies.ACCESS_TOKEN
-        if(!token){
-            throw new Error('Unauthorized!')
-        }
-        const payload = jwt.verify(token, process.env.TOKEN_SECRET)
-        req.payload = payload
-        next()
+router.post('/logout', authenticateJWT, (req,res) => {
+    try {
+        res.clearCookie('ACCESS_TOKEN')
+        res.status(201).json({
+            success: true
+        })
     } catch(error){
-        return res.status(401).json({
+        res.status(203).json({
             success: false,
-            message: error.message
+            message: 'Something went wrong. Cannot safely logout now. Try later.'
         })
     }
-}
+})
 
 module.exports = router

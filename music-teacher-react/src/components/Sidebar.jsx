@@ -1,11 +1,40 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Link, Router, NavLink } from 'react-router-dom'
 import { GiGuitar, GiSpellBook, GiTeacher, GiBookmark } from "react-icons/gi";
 import { ImUpload2 } from 'react-icons/im'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
+import Cookies from 'js-cookie'
+import {AppContext} from './AppContext'
+
+const url = 'http://localhost:3001/api'
 
 function Sidebar() {
+    const {user, setUser} = useContext(AppContext)
     const size = 25
+
+    const logout = () => {
+        const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			}
+            
+		}
+        fetch(`${url}/auth/logout`, requestOptions)
+            .then(res => res.json())
+            .then(data => {
+                if(!data.success){
+                    throw new Error(data.message)
+                }
+                Cookies.remove('loggedIn')
+                setUser(null)
+            })
+            .catch(error => {
+                console.log(error.message)
+                
+            })
+    }
     return (
         <div className="sidebar-wrapper" >
             <div className="sidebar-upper-wrapper">
@@ -66,9 +95,10 @@ function Sidebar() {
                 <ul>
                     <li data-toggle="tooltip" data-placement="right" title="log out">
                         <NavLink
-                            activeClassName="sidebar-link--active"
                             className="sidebar-link"
-                            to="/logout">
+                            to="/" onClick={() => {
+                                logout()
+                            }}>
                             <RiLogoutBoxRLine size={size} />
                             <p>Logout</p>
 

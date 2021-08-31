@@ -1,61 +1,77 @@
 const express = require('express')
 const router = express.Router()
-const {addLesson, getLessons, deleteLesson} = require('./../js/query')
+const { addLesson, getLessons, deleteLesson } = require('./../js/query')
+const authenticateJWT = require('./../js/authenticateJWT')
 
-router.get('/test', function(req, res) {
-    res.send('respond with a resource');
-});
-
-router.get('/', async(req, res) => {
-    try{
+// Get all active lessons
+router.get('/active', async (req, res) => {
+    try {
         let lessons = await getLessons()
-        lessons = lessons.filter(lesson => lesson.status !== 'deleted')
-        console.log('success')
-        res.status(200).json({
+        lessons = lessons.filter(lesson => lesson.status == 'active')
+        return res.status(200).json({
             success: true,
-            data: lessons
+            lessons: lessons
         })
     } catch (error) {
         console.log(error)
-        res.status(203).json({
+        return res.status(203).json({
             sucess: false,
-            message: 'Something went wrong.'
+            message: 'Something went wrong. Cannot get the list of active lessons now.'
         })
     }
 });
 
-router.post('/', async(req, res) => {
-    const data = req.body
-    try {
-        if(!data.lesson){
-            throw 'lesson name is required.'
-        }
+// Add lesson
+router.post('/add', authenticateJWT, async (req, res) => {
+    // add authentication later
 
-        await addLesson(data.lesson, data.description, data.price30m, data.price60m)
-        res.status(200).json({
-        success: true
+    let {lesson, description, price30m, price60m} = req.body
+
+    if (!lesson) {
+        return res.status(203).json({
+            success: false,
+            message: 'Lesson name is required.'
         })
-    } catch(error){
+    }
+
+    try {
+        await addLesson(lesson, description, price30m, price60m)
+        return res.status(200).json({
+            success: true,
+            message: 'Successfully added.'
+        })
+    } catch (error) {
         console.log(error)
-        res.status(203).json({
-        success: false,
-        message: 'Failed to add new lesson'
+        return res.status(203).json({
+            success: false,
+            message: 'Something went wrong. Cannot process your request now.'
         })
     }
 })
 
-router.delete('/:lessonId', async(req, res) => {
+// Delete lesson
+router.delete('/delete/:lessonId', authenticateJWT, async (req, res) => {
+    //need middle ware for authentication
+
+    const lessonId = parseInt(req.params.lessonId)
+    if(!lessonId){
+        return res.status(203).json({
+            success: false,
+            message: 'Invalid lesson ID.'
+        })
+    }
+
     try {
-        const lessonId = parseInt(req.params.lessonId)
         await deleteLesson(lessonId)
         res.status(200).json({
             success: true
         })
-    } catch(error){
+    } catch (error) {
+        console.log('in lesson')
         console.log(error)
         res.status(203).json({
             success: false,
-            message: 'Something went wrong.'
+            message: 'Something went wrong. Cannot process your request now.'
         })
     }
 })
