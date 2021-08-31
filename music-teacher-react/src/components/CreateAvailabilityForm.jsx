@@ -83,7 +83,8 @@ function CrateAvailabilityForm(props) {
 				timeFrom: timeFrom,
 				timeTo: timeTo,
 				days: getSelectedDaysValue()
-			})
+			}),
+			credentials: 'include'
 		}
 
 		fetch(`${url}/availability/`, requestOptions)

@@ -8,9 +8,9 @@ const getUser = (email) => {
       if (err) {
         return reject(err)
       }
+      connection.end()
       resolve(rows)
     })
-    connection.end()
   })
 }
 
@@ -22,9 +22,9 @@ const addLesson = (lesson, description, price_30m = 0, price_60m = 0) => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
@@ -36,9 +36,10 @@ const getLesson = (lessonId) => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
+
   })
 }
 
@@ -50,9 +51,10 @@ const getLessons = () => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
+
   })
 }
 
@@ -65,9 +67,9 @@ const deleteLesson = (id) => {
           console.log(err)
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
@@ -79,9 +81,9 @@ const addAvailability = (startMinute, endMinute, days) => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
@@ -94,9 +96,9 @@ const deleteAvailability = (id) => {
           console.log(err)
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
@@ -110,9 +112,9 @@ const getAvailability = (day) => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
@@ -124,9 +126,9 @@ const getAllAvailability = () => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
@@ -139,44 +141,13 @@ const getSameDayAppointmnet = (date) => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
   })
 }
 
 
-
-// const bookAppointment = (name, email, phone, note, startTime, endTime, duration, lessonId, fee, cancelCode, startMinute, endMinute, dayOfWeek) => {
-//   return new Promise((resolve, reject) => {
-//     let connection = createConnection(dbInfo)
-
-//     //insert into conditionally to avoid appointment crashing.
-//     connection.query(`INSERT INTO booking (customer_name, customer_email, customer_phone, note, 
-//       appointment_start, appointment_end, duration, lesson_id, fee, appointment_cancel_code, status) 
-//       SELECT ?,?,?,?,?,?,?,?,?,?,? 
-//       FROM booking 
-//       WHERE EXISTS (SELECT 1
-//                     FROM availability
-//                     WHERE days like ? AND start_minute <= ? AND end_minute >=  ?
-//                     LIMIT 1)
-//         AND ? > ?
-//         AND NOT EXISTs (SELECT 1 FROM booking 
-//                         WHERE datediff(?, appointment_start) = 0 AND 
-//                         (? < appointment_start AND ? > appointment_start) OR 
-//                         (? >= appointment_start AND ? < appointment_end) 
-//                         LIMIT 1) `
-//       ,
-//       [name, email, phone, note, startTime, endTime, duration, lessonId, fee, cancelCode, 'active', `%${dayOfWeek}%`, startMinute, endMinute, endTime, startTime,
-//         startTime, startTime, endTime, startTime, startTime],
-//       (err, rows) => {
-//         if (err) {
-//           return reject(err)
-//         }
-//         resolve(rows)
-//       })
-//   })
-// }
 
 const bookAppointment = (currentTime, name, email, phone, note, startTime, endTime, duration, lessonId, fee, cancelCode, startMinute, endMinute, dayOfWeek) => {
   return new Promise((resolve, reject) => {
@@ -203,6 +174,7 @@ const bookAppointment = (currentTime, name, email, phone, note, startTime, endTi
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
   })
@@ -216,9 +188,39 @@ const getAllAppointments = () => {
         if (err) {
           return reject(err)
         }
+        connection.end()
         resolve(rows)
       })
-    connection.end()
+  })
+}
+
+const getUpcomingAppointment = (now) => {
+  return new Promise((resolve, reject) => {
+    let connection = createConnection(dbInfo)
+    connection.query('select appointment_id, appointment_start, duration, customer_name from booking where appointment_start >= ?', [now],
+    (err, rows) => {
+      if(err){
+        return reject(err)
+      }
+      connection.end()
+      resolve(rows)
+    })
+  })
+}
+
+const getAppointmentById = (id) => {
+  return new Promise((resolve, reject) => {
+    let connection = createConnection(dbInfo)
+    connection.query(`select * from booking
+    inner join lesson as L
+    ON booking.lesson_id = L.lesson_id where appointment_id = ?`, [id],
+    (err, rows) => {
+      if(err){
+        return reject(err)
+      }
+      connection.end()
+      resolve(rows)
+    })
   })
 }
 
@@ -233,6 +235,8 @@ module.exports = {
   getAllAvailability,
   getAvailability,
   getSameDayAppointmnet,
+  getUpcomingAppointment,
+  getAppointmentById,
   bookAppointment,
   getAllAppointments
 }

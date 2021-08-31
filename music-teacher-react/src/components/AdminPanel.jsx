@@ -4,15 +4,7 @@ import Sidebar from './Sidebar';
 import LessonPanel from './LessonPanel';
 import Booking from './Booking';
 import AvailabilityPanel from './AvailabilityPanel';
-
-
-function Appointment() {
-  return (
-    <div>
-      Appointment
-    </div>
-  )
-}
+import AppointmentPanel from './AppointmentPanel';
 
 
 function Upload() {
@@ -33,7 +25,7 @@ function AdminPanel() {
           <div className="container-fluid">
             <Switch>
               <Route path="/appointment">
-                <Appointment />
+                <AppointmentPanel />
               </Route>
               <Route path="/lesson">
                 <LessonPanel />

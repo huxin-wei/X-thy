@@ -18,7 +18,8 @@ function Sidebar() {
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json'
-			}
+			},
+            credentials: 'include'
             
 		}
         fetch(`${url}/auth/logout`, requestOptions)

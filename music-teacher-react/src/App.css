@@ -2,7 +2,9 @@
 :root {
   --sidebar-width: 150px;
   --date-grid-max-width: 200px;
+  --web-base-color-lighter: #fcc567;
   --web-base-color: #f29a04;
+  --web-base-color-daker: #a76e0b;
 }
 
 body{
@@ -365,6 +367,90 @@ body{
 .class-offer-active h3{
   color:white;
 }
+
+.appointment-panel{
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.appointment-menu-btn{
+  color: white;
+  background-color: #86b5fc;
+  padding: 10px 5px;
+  text-decoration: none;
+  max-width: 100px;
+  text-align: center;
+  margin-right: 2px;
+  border: none;
+}
+
+
+.appointment-menu-btn:hover{
+  color: white;
+  background-color: #2055a5;
+  transform: translateY(-10px);
+}
+
+.appointment-menu-btn:active{
+  background-color: #053275;
+  transform: scale(1.2);
+}
+
+.appointment-menu-btn--active{
+  background-color: #053275;
+  transition: border-bottom .5s ease-in-out;
+  color: white;
+}
+
+.appointment-head{
+  padding: 10px 7px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.appointment-head-upcoming:hover{
+  background-color: rgb(112, 183, 241);
+  color: white;
+  
+}
+
+.appointment-head-upcoming{
+  background-color: rgb(215, 236, 253);
+  color: rgb(12, 94, 114);
+}
+
+.appointment-info-upcoming-wrapper{
+  font-size: 15px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(116, 116, 116);
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+/* .sidebar-link {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 5px;
+  text-decoration: none;
+  width: 100%;
+}
+
+.sidebar-link p{
+  padding-left: 10px;
+  margin: 0;
+}
+
+.sidebar-link:hover {
+  color: white;
+  transform: translateY(-2px);
+}
+
+.sidebar-link--active {
+  transition: border-bottom .5s ease-in-out;
+  color: white;
+  background-color: black;
+} */
+
 
 
 

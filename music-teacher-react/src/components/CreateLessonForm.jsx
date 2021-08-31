@@ -81,7 +81,8 @@ function CreateLessonForm(props) {
 				description: description,
 				price30m: price30m,
 				price60m: price60m
-			})
+			}),
+			credentials: 'include'
 		}
 
 		fetch(`${url}/lesson/add`, requestOptions)

@@ -10,6 +10,8 @@ let lessonRouter = require('./routes/lesson')
 let availabilityRouter = require('./routes/availability')
 let authRouter = require('./routes/auth')
 let bookingRouter = require('./routes/booking')
+let appointmentRouter = require('./routes/appointment')
+
 
 let app = express();
 
@@ -52,6 +54,7 @@ app.use('/api/lesson', lessonRouter);
 app.use('/api/availability', availabilityRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/booking', bookingRouter)
+app.use('/api/appointment', appointmentRouter)
 
 app.use(express.static(path.join(__dirname, 'yiwei_vue')))
 app.get('/', (req, res) => {

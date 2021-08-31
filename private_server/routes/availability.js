@@ -136,6 +136,7 @@ router.get('/offertime', async (req, res) => {
         const app_result = await getSameDayAppointmnet(date)
         console.log(app_result)
         let offeredTimes = []
+        const now = new Date()
 
         // loop through available time
         avail_results.map(avail => {
@@ -144,10 +145,12 @@ router.get('/offertime', async (req, res) => {
                 let headDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute))
                 let tailDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
                 let isFree = true
+                if(headDT < now){
+                    break // already past
+                }
 
                 for (let i = 0; i < app_result.length; i++) {
-                    // console.log(app_result[i].appointment_start)
-                    // console.log(app_result[i].appointment_end)
+                    
                     let apppointment_start = new Date(app_result[i].appointment_start)
                     let apppointment_end = new Date(app_result[i].appointment_end)
 
