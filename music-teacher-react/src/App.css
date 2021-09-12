@@ -8,7 +8,7 @@
 }
 
 body{
-  background-color: #eee;
+  background-color: rgb(255, 255, 255);
 }
 
 *{
@@ -403,7 +403,7 @@ body{
 }
 
 .appointment-head{
-  padding: 10px 7px;
+  /* padding: 10px 5px; */
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
@@ -424,6 +424,95 @@ body{
   background-color: rgb(255, 255, 255);
   color: rgb(116, 116, 116);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.calendar p{
+  text-align: center;
+  /* padding: 2px 5px; */
+  margin: 0 auto;
+}
+
+.mw-1000{
+  max-width: 1000px;
+}
+
+.calendar-wrapper{
+  overflow-x: scroll;
+  height: 90vh;
+}
+
+
+.calendar tr, .calendar th{
+  border: 1px solid #03a9f4;
+}
+
+.calendar table{
+  background-color: yellow;
+  margin: auto;
+  border-collapse: separate;
+  display: block;
+}
+
+.calendar th:first-child {
+  min-width: 100px;
+}
+
+.calendar th:not(:first-child), .calendar td{
+  min-width: 125px;
+}
+
+.calendar thead, .calendar tbody{
+  display: inline-block;
+}
+
+.calendar thead{
+  position: sticky;
+  top: 1px;
+  z-index: 9999;
+}
+
+.calendar th{
+    background-color: lightgrey;
+}
+
+.header-fixed{
+  position: sticky;
+  width: 5em;
+  left: 0;
+  text-align: center;
+}
+
+.calendar td:not(header-fixed) {
+  z-index: 0;
+}
+
+.headcol {
+  position: absolute;
+  width: 5em;
+  left: 0;
+  top: auto;
+  border-top-width: 1px;
+  margin-top: -1px;
+}
+
+.td-with-data{
+  height: 1px;
+}
+
+.td-with-data div{
+  height: 100%;
+  cursor: pointer;
+  background-color: #08b1bd;
+  color: white;
+}
+
+.td-with-data div:hover{
+  background-color: #08bed6;
+
+}
+
+.td-with-data div:active{
+  background-color: #1dbaf8;
 }
 
 /* .sidebar-link {

@@ -5,10 +5,10 @@ const getUser = (email) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
     connection.query('select * from user where email = ? limit 1', [email], (err, rows) => {
+      connection.end()
       if (err) {
         return reject(err)
       }
-      connection.end()
       resolve(rows)
     })
   })
@@ -19,10 +19,10 @@ const addLesson = (lesson, description, price_30m = 0, price_60m = 0) => {
     let connection = createConnection(dbInfo)
     connection.query('insert into lesson (lesson_name, description, price_30m, price_60m, status) values(?, ?, ?, ?, ?)',
       [lesson, description, price_30m, price_60m, 'active'], (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -33,10 +33,10 @@ const getLesson = (lessonId) => {
     const connection = createConnection(dbInfo)
     connection.query('select * from lesson where lesson_id = ? AND status = ?',
       [lessonId, 'active'], (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
 
@@ -48,10 +48,10 @@ const getLessons = () => {
     let connection = createConnection(dbInfo)
     connection.query('select * from lesson',
       (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
 
@@ -62,12 +62,12 @@ const deleteLesson = (id) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
     connection.query('update lesson set status = ? where lesson_id = ?',
-      ['deleted', id], (err, rows) => {
+    ['deleted', id], (err, rows) => {
+        connection.end()
         if (err) {
           console.log(err)
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -78,10 +78,10 @@ const addAvailability = (startMinute, endMinute, days) => {
     let connection = createConnection(dbInfo)
     connection.query('insert into availability (start_minute, end_minute, days) values(?, ?, ?)',
       [startMinute, endMinute, days], (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -92,11 +92,11 @@ const deleteAvailability = (id) => {
     let connection = createConnection(dbInfo)
     connection.query(`delete from availability where availability_id = ?`,
       [id], (err, rows) => {
+        connection.end()
         if (err) {
           console.log(err)
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -109,10 +109,10 @@ const getAvailability = (day) => {
     connection.query('select * from availability where days like ?'
       , [`%${day}%`],
       (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -123,10 +123,10 @@ const getAllAvailability = () => {
     let connection = createConnection(dbInfo)
     connection.query('select * from availability', [],
       (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -138,10 +138,10 @@ const getSameDayAppointmnet = (date) => {
     connection.query('select * from booking where status = ? and datediff(?, appointment_start) = 0'
       , ['active', date],
       (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -171,10 +171,10 @@ const bookAppointment = (currentTime, name, email, phone, note, startTime, endTi
       [currentTime, name, email, phone, note, startTime, endTime, duration, lessonId, fee, cancelCode, 'active', `%${dayOfWeek}%`, startMinute, endMinute, endTime, startTime,
         startTime, startTime, endTime, startTime, startTime],
       (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -185,10 +185,10 @@ const getAllAppointments = () => {
     let connection = createConnection(dbInfo)
     connection.query('select * from booking', [],
       (err, rows) => {
+        connection.end()
         if (err) {
           return reject(err)
         }
-        connection.end()
         resolve(rows)
       })
   })
@@ -199,10 +199,10 @@ const getUpcomingAppointment = (now) => {
     let connection = createConnection(dbInfo)
     connection.query('select appointment_id, appointment_start, duration, customer_name from booking where appointment_start >= ?', [now],
     (err, rows) => {
+      connection.end()
       if(err){
         return reject(err)
       }
-      connection.end()
       resolve(rows)
     })
   })
@@ -215,10 +215,30 @@ const getAppointmentById = (id) => {
     inner join lesson as L
     ON booking.lesson_id = L.lesson_id where appointment_id = ?`, [id],
     (err, rows) => {
+      connection.end()
       if(err){
         return reject(err)
       }
+      resolve(rows)
+    })
+  })
+}
+
+const getAppointmentBetween = (beginDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    let connection = createConnection(dbInfo)
+
+    connection.query(`select appointment_id, customer_name, L.lesson_name, appointment_start, duration 
+    FROM booking
+    INNER JOIN lesson as L
+    ON booking.lesson_id = L.lesson_id 
+    WHERE appointment_start >= ? AND appointment_start < ?` , [beginDate, endDate],
+    (err, rows) => {
       connection.end()
+      if(err){
+        return reject(err)
+      }
+      console.log(rows)
       resolve(rows)
     })
   })
@@ -238,5 +258,6 @@ module.exports = {
   getUpcomingAppointment,
   getAppointmentById,
   bookAppointment,
-  getAllAppointments
+  getAllAppointments,
+  getAppointmentBetween
 }

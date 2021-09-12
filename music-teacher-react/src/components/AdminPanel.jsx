@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import LessonPanel from './LessonPanel';
 import Booking from './Booking';
 import AvailabilityPanel from './AvailabilityPanel';
-import AppointmentPanel from './AppointmentPanel';
+import Calendar from './Calendar';
 
 
 function Upload() {
@@ -19,29 +19,29 @@ function Upload() {
 function AdminPanel() {
   return (
     <div>
-      <div>
+      <div style={{position: "relative"}}>
         <Sidebar />
-        <div className="content-wrapper">
-          <div className="container-fluid">
-            <Switch>
-              <Route path="/appointment">
-                <AppointmentPanel />
-              </Route>
-              <Route path="/lesson">
-                <LessonPanel />
-              </Route>
-              <Route path="/availability">
-                <AvailabilityPanel />
-              </Route>
-              <Route path="/upload">
-                <Upload />
-              </Route>
-              <Route path="/booking">
-                <Booking />
-              </Route>
-            </Switch>
+
+          <div className="content-wrapper">
+              <Switch>
+                <Route path="/calendar">
+                  <Calendar />
+                </Route>
+                <Route path="/lesson">
+                  <LessonPanel />
+                </Route>
+                <Route path="/availability">
+                  <AvailabilityPanel />
+                </Route>
+                <Route path="/upload">
+                  <Upload />
+                </Route>
+                <Route path="/booking">
+                  <Booking />
+                </Route>
+              </Switch>
           </div>
-        </div>
+
       </div>
     </div>
   )

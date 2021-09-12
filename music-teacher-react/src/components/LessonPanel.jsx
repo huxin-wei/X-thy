@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import CreateLessonForm from './CreateLessonForm'
 import Lesson from './Lesson'
-import { EatLoading } from 'react-loadingg'
+import { API_URL } from '../JS/variables'
 
-const url = 'http://localhost:3001/api'
 
 function LessonPanel() {
 	const [lessons, setLessons] = useState([])
@@ -47,7 +46,7 @@ function LessonPanel() {
 			},
 			credentials: 'include'
 		}
-		fetch(`${url}/lesson/active`, requestOptions)
+		fetch(`${API_URL}/api/lesson/active`, requestOptions)
 			.then(res => res.json())
 			.then(data => {
 				if (!data.success) {
@@ -85,16 +84,22 @@ function LessonPanel() {
 				showForm ?
 					<CreateLessonForm handleClose={() => setShowForm(false)} signalAddSuccess={signalAddSuccess} />
 					:
-					<button className="btn btn-primary" onClick={() => setShowForm(true)}>
-						Add
-					</button>
+					<div style={{ textAlign: "center" }}>
+						<button className="btn btn-primary" onClick={() => setShowForm(true)}>
+							Add Lesson
+						</button>
+					</div>
 			}
 
-			<div className="pt-5 ps-3 pe-3">
+			<div className="pt-3" style={{ textAlign: "center" }}>
 
 				{/* {LOADING && ERROR} */}
 				{
-					isLoading ? <EatLoading color="orange" />
+					isLoading ?
+						<div className="text-center">
+							<div className="spinner-border" role="status" style={{ color: "orange" }}>
+							</div>
+						</div>
 						: (error &&
 							<div className="alert alert-danger" role="alert">
 								{error}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {AppContext} from './AppContext'
 import Cookies from 'js-cookie'
+import { API_URL } from '../JS/variables'
 
-const url = 'http://localhost:3001/api'
 function Login() {
     const {user, setUser} = useContext(AppContext)
     const [email, setEmail] = useState('')
@@ -36,7 +36,7 @@ function Login() {
         setIsLoading(true)
         setError(false)
 
-        fetch(`${url}/auth/login`, requestOptions)
+        fetch(`${API_URL}/api/auth/login`, requestOptions)
             .then((res) => {
                 console.log(res)
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { TiEdit, TiTrash } from 'react-icons/ti'
+import { API_URL } from '../JS/variables';
 
-const url = 'http://localhost:3001/api'
 
 function Availability({availability, removeAvailability}) {
 	const [isLoading, setIsLoading] = useState(false)
@@ -54,7 +54,7 @@ function Availability({availability, removeAvailability}) {
 			credentials: 'include'
 		}
 
-		fetch(`${url}/availability/delete/${availability.availability_id}`, requestionOptions)
+		fetch(`${API_URL}/api/availability/delete/${availability.availability_id}`, requestionOptions)
 			.then(res => res.json())
 			.then(data => {
 				if (!data.success) {

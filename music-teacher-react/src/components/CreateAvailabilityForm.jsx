@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-
-const url = 'http://localhost:3001/api'
-
-
+import { API_URL } from '../JS/variables'
 
 const EVERYDAY_INDEX = 7
 
@@ -87,7 +84,7 @@ function CrateAvailabilityForm(props) {
 			credentials: 'include'
 		}
 
-		fetch(`${url}/availability/`, requestOptions)
+		fetch(`${API_URL}/api/availability/`, requestOptions)
 			.then(res => {
 				if (res.status === 401) {
 					throw new Error('Unauthorized.')

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
-const url = 'http://localhost:3001/api'
+import { API_URL } from '../JS/variables'
 
 function TimeOffer(props) {
 	const [fetchErrors, setFetchErrors] = useState([])
@@ -25,7 +24,7 @@ function TimeOffer(props) {
 		const date = new Date(props.fullDate)
 		let day = date.getDay()
 
-		fetch(`${url}/availability/offertime?day=${day}&duration=${props.duration}&utcDate=${date}`, requestOptions)
+		fetch(`${API_URL}/api/availability/offertime?day=${day}&duration=${props.duration}&utcDate=${date}`, requestOptions)
 			.then(res => res.json())
 			.then((data) => {
 				if (!data.success) {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Switch, Route, NavLink } from 'react-router-dom';
 import Appointment from './Appointment';
+import { API_URL } from '../JS/variables';
 
-const url = 'http://localhost:3001/api'
 
 function AppointmentPanel() {
 	const [mode, setMoede] = useState('upcoming')
@@ -29,7 +29,7 @@ function AppointmentPanel() {
 			credentials: 'include'
 		}
 
-		fetch(`${url}/appointment/${mode}?now=${now}`, requestOptions)
+		fetch(`${API_URL}/api/appointment/${mode}?now=${now}`, requestOptions)
 			.then(res => res.json())
 			.then(data => {
 				if (!mountedRef.current) return null

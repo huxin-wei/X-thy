@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
-
+import { API_URL } from '../JS/variables'
 const MAX_DESCRIPTION_LENGTH = 500
 const MAX_LESSON_NAME_LENGTH = 70
-const url = 'http://localhost:3001/api'
 
 function CreateLessonForm(props) {
 	const [lessonName, setLessonName] = useState('')
@@ -85,7 +84,7 @@ function CreateLessonForm(props) {
 			credentials: 'include'
 		}
 
-		fetch(`${url}/lesson/add`, requestOptions)
+		fetch(`${API_URL}/api/lesson/add`, requestOptions)
 			.then(res => {
 				if (!res.ok) {
 					throw { message: `${res.status}: Cannot connect to the server.` }

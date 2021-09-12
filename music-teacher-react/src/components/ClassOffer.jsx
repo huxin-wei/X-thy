@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { EatLoading } from 'react-loadingg'
+import { API_URL } from '../JS/variables';
 
-const url = 'http://localhost:3001/api'
 function ClassOffer(props) {
     const [lessons, setLessons] = useState([])
     const [selectedLessonId, setSelectedLessonId] = useState(null)
@@ -22,7 +22,7 @@ function ClassOffer(props) {
                 'Accept': 'application/json'
             }
         }
-        fetch(`${url}/lesson/active`, requestOptions)
+        fetch(`${API_URL}/api/lesson/active`, requestOptions)
             .then(res => res.json())
             .then(data => {
                 if (!data.success) {

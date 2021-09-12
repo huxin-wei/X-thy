@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CreateAvailabilityForm from './CreateAvailabilityForm';
 import Availability from './Availability';
-import { EatLoading } from 'react-loadingg'
-
-const url = 'http://localhost:3001/api'
+import { API_URL } from '../JS/variables';
 
 function AvailabilityPanel() {
 	const [formMessage, setFormMessage] = useState({ success: false })
@@ -51,7 +49,7 @@ function AvailabilityPanel() {
 			}
 		}
 
-		fetch(`${url}/availability/all`, requestOptions)
+		fetch(`${API_URL}/api/availability/all`, requestOptions)
 			.then(res => res.json())
 			.then(res => {
 				if (!mountedRef.current) return null
@@ -93,36 +91,40 @@ function AvailabilityPanel() {
 				showForm ?
 					<CreateAvailabilityForm signalAddSuccess={signalAddSuccess} handleClose={() => setShowForm(false)} />
 					:
-					<div>
+					<div style={{ textAlign: "center" }}>
 						<button type="button" className="btn btn-primary mb-5" onClick={() => setShowForm(true)}>
 							Add availability
 						</button>
 					</div>
 			}
 
-				{/* {LOADING && ERROR} */}
-				{
-					isLoading ? <EatLoading color="orange"/>
-						: (error &&
-							<div className="alert alert-danger" role="alert">
-								{error}
-							</div>
-						)
-				}
+			{/* {LOADING && ERROR} */}
+			{
+				isLoading ?
+					<div className="text-center">
+						<div className="spinner-border" role="status" style={{color: "orange"}}>
+						</div>
+					</div>
+					: (error &&
+						<div className="alert alert-danger" role="alert">
+							{error}
+						</div>
+					)
+			}
 
 			{/* {Availability list} */}
-				{
-					availabilities.map(avail => {
-						return (
-							<Availability
-								key={avail.availability_id}
-								removeAvailability={removeAvailability}
-								availability={avail}
-							/>
-						)
+			{
+				availabilities.map(avail => {
+					return (
+						<Availability
+							key={avail.availability_id}
+							removeAvailability={removeAvailability}
+							availability={avail}
+						/>
+					)
 
-					})
-				}
+				})
+			}
 		</div>
 	)
 }

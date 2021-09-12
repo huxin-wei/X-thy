@@ -1,15 +1,16 @@
 import React, {useContext} from 'react'
 import { Link, Router, NavLink } from 'react-router-dom'
-import { GiGuitar, GiSpellBook, GiTeacher, GiBookmark } from "react-icons/gi";
+import { GiSpellBook, GiTeacher, GiBookmark } from "react-icons/gi";
+import {GoCalendar} from "react-icons/go"
 import { ImUpload2 } from 'react-icons/im'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import Cookies from 'js-cookie'
 import {AppContext} from './AppContext'
 
-const url = 'http://localhost:3001/api'
+const url = 'http://localhost:3001'
 
 function Sidebar() {
-    const {user, setUser} = useContext(AppContext)
+    const {setUser} = useContext(AppContext)
     const size = 25
 
     const logout = () => {
@@ -22,7 +23,7 @@ function Sidebar() {
             credentials: 'include'
             
 		}
-        fetch(`${url}/auth/logout`, requestOptions)
+        fetch(`${url}/api/auth/logout`, requestOptions)
             .then(res => res.json())
             .then(data => {
                 if(!data.success){
@@ -40,13 +41,13 @@ function Sidebar() {
         <div className="sidebar-wrapper" >
             <div className="sidebar-upper-wrapper">
                 <ul>
-                    <li data-toggle="tooltip" data-placement="right" title="my appointments">
+                    <li data-toggle="tooltip" data-placement="right" title="calendar">
                         <NavLink
                             activeClassName="sidebar-link--active"
                             className="sidebar-link"
-                            to="/appointment">
-                            <GiGuitar size={size} />
-                            <p>Appointments</p>
+                            to="/calendar">
+                            <GoCalendar size={size} />
+                            <p>Calendar</p>
                         </NavLink>
                     </li>
                     <li data-toggle="tooltip" data-placement="right" title="manage guitar lessons">

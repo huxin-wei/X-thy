@@ -5,19 +5,21 @@ import AdminPanel from './components/AdminPanel'
 import Login from './components/Login'
 import { AppContext } from './components/AppContext';
 import Cookies from 'js-cookie'
+import Loading from './components/Loading';
 //logged_in
 
 
 function App() {
   const [user, setUser] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    //console.log(document.cookies.logged_in)
-    // console.log(getCookie('loggedIn'))
-    // console.log(document.cookie)
+
     if (Cookies.get('loggedIn')) {
       setUser({ loggedIn: true })
     }
+
+    setIsLoading(false)
   }, [])
 
 
@@ -26,7 +28,13 @@ function App() {
     <AppContext.Provider value={{ user, setUser }} >
       <div>
         <Router basename={'admin'}>
-          {user ?
+          {
+          isLoading ? 
+            <Loading />
+
+          :
+          
+          user ?
 
             <AdminPanel />
             :

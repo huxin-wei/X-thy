@@ -164,7 +164,7 @@ router.get('/offertime', async (req, res) => {
                 if (isFree) {
                     offeredTimes.push(currentMinute)
                 }
-                currentMinute += duration
+                currentMinute += 30
             }
         })
 

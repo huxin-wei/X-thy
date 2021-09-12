@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-
-const url = 'http://localhost:3001/api'
+import Calendar from './Calendar'
+import { API_URL } from '../JS/variables';
 
 function Appointment({ id, time, duration, name, mode }) {
 	const [isToggled, setIsToggled] = useState(false)
@@ -54,7 +54,7 @@ function Appointment({ id, time, duration, name, mode }) {
 			credentials: 'include'
 		}
 
-		fetch(`${url}/appointment/id/${id}`, requestOptions)
+		fetch(`${API_URL}/api/appointment/id/${id}`, requestOptions)
 			.then(res => res.json())
 			.then(data => {
 				if (!mountedRef.current) return null
@@ -108,6 +108,7 @@ function Appointment({ id, time, duration, name, mode }) {
 					}
 				</div>
 			}
+
 		</div>
 	)
 }

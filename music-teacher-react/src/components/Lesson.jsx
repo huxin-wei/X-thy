@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TiEdit, TiTrash } from 'react-icons/ti'
+import { TiTrash } from 'react-icons/ti'
+import { API_URL } from '../JS/variables'
 
-const url = 'http://localhost:3001/api'
+const url = 'http://localhost:3001'
 
 function Lesson({ lessonId, lessonName, description, price30m, price60m, removeLesson }) {
 	const [error, setError] = useState('')
@@ -26,7 +27,7 @@ function Lesson({ lessonId, lessonName, description, price30m, price60m, removeL
 			credentials: 'include'
 		}
 
-		fetch(`${url}/lesson/delete/${lessonId}`, requestionOptions)
+		fetch(`${API_URL}/api/lesson/delete/${lessonId}`, requestionOptions)
 			.then(res => res.json())
 			.then(data => {
 				if (!data.success) {

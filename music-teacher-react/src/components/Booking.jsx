@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import DatePicker from './DatePicker'
 import TimeOffer from './TimeOffer'
 import ClassOffer from './ClassOffer'
-
-const url = 'http://localhost:3001/api'
+import { API_URL } from '../JS/variables';
 
 const today = new Date()
 const initDate = today.getDate()
@@ -90,7 +89,7 @@ function Booking(props) {
 		setIsLoading(true)
 		setSubmitErrors([])
 
-		fetch(`${url}/booking`, requestOptions)
+		fetch(`${API_URL}/api/booking`, requestOptions)
 			.then(res => res.json())
 			.then(data => {
 				if (!mountedRef.current) return null
@@ -118,7 +117,7 @@ function Booking(props) {
 	}
 
 	return (
-		<div style={{ maxWidth: 600, margin: "auto" }}>
+		<div style={{ maxWidth: 600, margin: "auto", padding: "40px 0px 150px 0px" }}>
 			{/* {CLASS selection} */}
 			<section>
 				<div className="guide-banner mb-4">
