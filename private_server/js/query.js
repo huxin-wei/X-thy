@@ -1,6 +1,14 @@
 const { createConnection } = require('mysql');
 let { dbInfo } = require('./music_teacher_db')
 
+
+// initially create tables
+//var connection = mysql.createConnection({multipleStatements: true});
+
+const createSystemTables = () => {
+
+}
+
 const getUser = (email) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
@@ -163,9 +171,9 @@ const bookAppointment = (currentTime, name, email, phone, note, startTime, endTi
                     LIMIT 1)
         AND ? > ?
         AND NOT EXISTs (SELECT 1 FROM booking 
-                        WHERE datediff(?, appointment_start) = 0 AND 
-                        (? < appointment_start AND ? > appointment_start) OR 
-                        (? >= appointment_start AND ? < appointment_end) 
+                        WHERE status = 'active' AND datediff(?, appointment_start) = 0 AND 
+                        ((? < appointment_start AND ? > appointment_start) OR 
+                        (? >= appointment_start AND ? < appointment_end))
                         LIMIT 1) `
       ,
       [currentTime, name, email, phone, note, startTime, endTime, duration, lessonId, fee, cancelCode, 'active', `%${dayOfWeek}%`, startMinute, endMinute, endTime, startTime,
@@ -224,7 +232,7 @@ const getAppointmentById = (id) => {
   })
 }
 
-const getAppointmentBetween = (beginDate, endDate) => {
+const getAppointmentBetween = (beginDate, endDate, status) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
 
@@ -232,13 +240,42 @@ const getAppointmentBetween = (beginDate, endDate) => {
     FROM booking
     INNER JOIN lesson as L
     ON booking.lesson_id = L.lesson_id 
-    WHERE appointment_start >= ? AND appointment_start < ?` , [beginDate, endDate],
+    WHERE booking.status = ? AND appointment_start >= ? AND appointment_start < ?` , [status, beginDate, endDate],
     (err, rows) => {
       connection.end()
       if(err){
         return reject(err)
       }
-      console.log(rows)
+      resolve(rows)
+    })
+  })
+}
+
+const cancelAppointmentByCode = (id, code) => {
+  return new Promise((resolve, reject) => {
+    let connection = createConnection(dbInfo)
+
+    connection.query(`UPDATE booking SET status = 'cancelled' where appointment_id = ? AND appointment_cancel_code = ?`, [id, code],
+    (err, rows) => {
+      connection.end()
+      if(err){
+        return reject(err)
+      }
+      resolve(rows)
+    })
+  })
+}
+
+const cancelAppointmentById = (id) => {
+  return new Promise((resolve, reject) => {
+    let connection = createConnection(dbInfo)
+
+    connection.query(`UPDATE booking SET status = 'cancelled' where appointment_id = ?`, [id],
+    (err, rows) => {
+      connection.end()
+      if(err){
+        return reject(err)
+      }
       resolve(rows)
     })
   })
@@ -259,5 +296,7 @@ module.exports = {
   getAppointmentById,
   bookAppointment,
   getAllAppointments,
-  getAppointmentBetween
+  getAppointmentBetween,
+  cancelAppointmentByCode,
+  cancelAppointmentById
 }

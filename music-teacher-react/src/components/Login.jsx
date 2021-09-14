@@ -48,6 +48,7 @@ function Login() {
                     throw new Error(data.message)
                 }
                 Cookies.set('loggedIn', true)
+                Cookies.set('email', data.email)
                 console.log(document.cookie)
                 setUser({loggedIn: true})
             })

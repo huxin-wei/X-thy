@@ -103,10 +103,6 @@ router.post('/', async (req, res) => {
     let startMinute = startDatetime.getHours() * 60 + startDatetime.getMinutes()
     let endMinute = startMinute + duration
     let dayOfWeek = startDatetime.getDay()
-    console.log('startMinute:', startMinute)
-    console.log('endMinute:', endMinute)
-    console.log('dayOfWeek:', dayOfWeek)
-
 
     try {
         const bookingResult = await bookAppointment(new Date(), name, email, phone, note, startDatetime,
@@ -118,8 +114,8 @@ router.post('/', async (req, res) => {
                 message: 'Sorry, I am not available at that time. Please choose a new one.'
             })
         }
-        // <h2>Hello ${firstname} ${lastname}</h2>
-        await transport.sendMail({
+
+        transport.sendMail({
             from: process.env.ADMIN_GMAIL_ADDRESS,
             to: email,
             subject: `Successfully booked for ${lesson.lesson_name} at ${startDatetime.toString()}`,
@@ -151,7 +147,7 @@ router.post('/', async (req, res) => {
                 </tr>
             </table>
             <p>Click this link if you want to cancel the appointment.</p>
-            <a href=${process.env.URL}/api/booking/cancel?id=${bookingResult.affectedRows}&cancelCode=${cancelCode}> Click here</a>
+            <a href=${process.env.URL}/api/appointment/usercancel?id=${bookingResult.insertId}&cancelCode=${cancelCode}> Click here</a>
             </div>`
         })
 
@@ -167,13 +163,5 @@ router.post('/', async (req, res) => {
         })
     }
 })
-
-// name: name,
-// email: email,
-// phone: phone,
-// note: note,
-// date: utcTimeStr,
-// duration: duration,
-// lessonId: lesson.lessonId
 
 module.exports = router

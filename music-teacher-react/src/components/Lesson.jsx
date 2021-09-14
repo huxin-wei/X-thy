@@ -14,6 +14,7 @@ function Lesson({ lessonId, lessonName, description, price30m, price60m, removeL
 			mountedRef.current = false
 		}
 	}, [])
+	
 	const deleteLesson = () => {
 		setIsLoading(true)
 		setError('')

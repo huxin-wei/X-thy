@@ -30,6 +30,7 @@ function Sidebar() {
                     throw new Error(data.message)
                 }
                 Cookies.remove('loggedIn')
+                Cookies.remove('email')
                 setUser(null)
             })
             .catch(error => {

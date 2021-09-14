@@ -123,7 +123,6 @@ router.get('/offertime', async (req, res) => {
     }
 
     let date = new Date(utcDateStr)
-    console.log('the date:', date)
     if (!date instanceof Date) {
         return res.status(203).json({
             success: false,

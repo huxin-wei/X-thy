@@ -120,7 +120,7 @@ function CreateLessonForm(props) {
 					</div>
 					<div className="mb-3">
 						<label htmlFor="description" className="form-label"><b>Description</b> ({MAX_DESCRIPTION_LENGTH - description.length} chars left)</label>
-						<textarea onChange={onDescriptionChange} className="form-control" id="description" rows={5} wrap="soft" />
+						<textarea onChange={onDescriptionChange} className="form-control" id="description" rows={5} maxLength={300} wrap="soft" />
 					</div>
 					<div className="mb-3">
 						<b>Price rates</b>

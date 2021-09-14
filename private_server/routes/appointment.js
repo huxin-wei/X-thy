@@ -1,6 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const {getUpcomingAppointment, getAppointmentById, getAppointmentBetween} = require('./../js/query')
+const { 
+    getUpcomingAppointment,
+    getAppointmentById,
+    getAppointmentBetween,
+    cancelAppointmentByCode,
+    cancelAppointmentById } = require('./../js/query')
 const authenticateJWT = require('./../js/authenticateJWT')
 
 router.get('/upcoming', authenticateJWT, async (req, res) => {
@@ -8,7 +13,7 @@ router.get('/upcoming', authenticateJWT, async (req, res) => {
 
     try {
         let appointments = await getUpcomingAppointment(now)
-        if(!appointments.length){
+        if (!appointments.length) {
             return res.status(203).json({
                 success: false,
                 message: 'There is no upcoming appointment.'
@@ -19,7 +24,7 @@ router.get('/upcoming', authenticateJWT, async (req, res) => {
             success: true,
             appointments: appointments
         })
-    } catch(error) {
+    } catch (error) {
         console.log(error)
         return res.status(203).json({
             success: false,
@@ -31,7 +36,7 @@ router.get('/upcoming', authenticateJWT, async (req, res) => {
 router.get('/week', authenticateJWT, async (req, res) => {
     let utcDateStr = req.query.utcDate
     console.log(utcDateStr)
-    if(!utcDateStr){
+    if (!utcDateStr) {
         return res.status(203).json({
             success: false,
             message: 'Date is required.'
@@ -43,7 +48,7 @@ router.get('/week', authenticateJWT, async (req, res) => {
     date.setMinutes(0)
     date.setMilliseconds(0)
 
-    if(date == 'Invalid Date'){
+    if (date == 'Invalid Date') {
         return res.status(203).json({
             success: false,
             message: 'Invalid date input.'
@@ -56,11 +61,9 @@ router.get('/week', authenticateJWT, async (req, res) => {
 
     let endDate = new Date(beginDate)
     endDate.setDate(beginDate.getDate() + 7)
-    console.log('before try')
-    // query appointment between these 2 dates
+
     try {
-        const appointments = await getAppointmentBetween(beginDate, endDate)
-        console.log('after async')
+        const appointments = await getAppointmentBetween(beginDate, endDate, 'active')
 
         return res.status(200).json({
             success: true,
@@ -78,9 +81,10 @@ router.get('/week', authenticateJWT, async (req, res) => {
 })
 
 router.get('/id/:id', authenticateJWT, async (req, res) => {
-    let {id} = req.params
+    console.log('visit app/id')
+    let { id } = req.params
     id = parseInt(id)
-    if(!id){
+    if (!id) {
         return res.status(203).json({
             success: false,
             message: 'Appointment ID is missing.'
@@ -89,7 +93,7 @@ router.get('/id/:id', authenticateJWT, async (req, res) => {
 
     try {
         const appointment = await getAppointmentById(id)
-        if(!appointment.length){
+        if (!appointment.length) {
             return res.status(203).json({
                 success: false,
                 message: 'Invalid appointment ID.'
@@ -110,7 +114,78 @@ router.get('/id/:id', authenticateJWT, async (req, res) => {
     }
 })
 
+router.get('/usercancel', async (req, res) => {
+    let { id, cancelCode } = req.query
+    id = parseInt(id)
+    if (!id || !cancelCode) {
+        return res.status(203).json({
+            success: false,
+            message: 'Require both appointment ID and cancel code.'
+        })
+    }
+
+    try {
+        const queryResult = await cancelAppointmentByCode(id, cancelCode)
+        console.log(queryResult)
+
+        if(queryResult.affectedRows){
+            // send delete success page
+            // send email??
+            
+            return res.status(200).json({
+                success: true
+            })
+        } else {
+            // send delete failed page
+            return res.status(203).json({
+                success: false
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(203).json({
+            success: false,
+            message: 'Something went wrong. Cannot process your request.'
+        })
+    }
+})
+
+router.post('/admincancel', authenticateJWT, async (req, res) => {
+    let { id, message } = req.body
+    id = parseInt(id)
+
+    if (!id) {
+        return res.status(203).json({
+            success: false,
+            message: 'Require appointment ID.'
+        })
+    }
+
+    try {
+        const queryResult = await cancelAppointmentById(id)
+
+        if(queryResult.affectedRows){
+            // send delete success page
+            // send email to the customer
 
 
+            
+            return res.status(200).json({
+                success: true
+            })
+        } else {
+            // send delete failed page
+            return res.status(203).json({
+                success: false
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(203).json({
+            success: false,
+            message: 'Something went wrong. Cannot process your request.'
+        })
+    }
+})
 
 module.exports = router

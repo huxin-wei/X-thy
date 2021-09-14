@@ -436,18 +436,22 @@ body{
   max-width: 1000px;
 }
 
-.calendar-wrapper{
-  overflow-x: scroll;
-  height: 90vh;
+/* .calendar tr{
+  border: 1px solid #d4d4d4;
+} */
+
+.calendar td{
+  border: 1px solid #d4d4d4;
+}
+
+.calendar th{
+  padding: 3px 0px;
+  border: 1px solid #e9e9e9;
 }
 
 
-.calendar tr, .calendar th{
-  border: 1px solid #03a9f4;
-}
 
 .calendar table{
-  background-color: yellow;
   margin: auto;
   border-collapse: separate;
   display: block;
@@ -468,11 +472,11 @@ body{
 .calendar thead{
   position: sticky;
   top: 1px;
-  z-index: 9999;
+  z-index: 1000;
 }
 
 .calendar th{
-    background-color: lightgrey;
+    background-color: rgb(238, 238, 238);
 }
 
 .header-fixed{
@@ -480,10 +484,20 @@ body{
   width: 5em;
   left: 0;
   text-align: center;
+  
 }
+
+/* .header-fixed .time{
+  position: absolute;
+  top: -10px;
+} */
 
 .calendar td:not(header-fixed) {
   z-index: 0;
+}
+
+.calendar td:not(:last-child){
+  border-right: 1px solid rgb(240, 240, 240);
 }
 
 .headcol {
@@ -504,6 +518,9 @@ body{
   cursor: pointer;
   background-color: #08b1bd;
   color: white;
+  max-width: 122px;
+  padding-top: 4px;
+  font-size: 12px;
 }
 
 .td-with-data div:hover{
@@ -540,6 +557,45 @@ body{
   background-color: black;
 } */
 
+.app-modal{
+  position: fixed;
+  z-index: 9999;
+  inset: 0 0 0 0;
+  background-color: rgba(0,0,0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.app-modal.show{
+  opacity: 1;
+  pointer-events: visible;
+}
+
+.app-modal-content{
+  max-width: 500px;
+  background-color: #fff;
+  overflow: auto;
+  max-height: 100vh;
+}
+.app-modal-header, .app-modal-footer{
+  padding: 10px;
+}
+
+.app-modal-title{
+  margin: 0;
+}
+
+.app-modal-body{
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  overflow-y: auto;
+  max-height: 800px;
+}
 
 
 
@@ -559,5 +615,13 @@ body{
   }
   .button-text{
     display: none;
+  }
+}
+
+@media only screen and(max-height: 600px){
+  .app-modal-body{
+    background-color: greenyellow;
+    overflow-y: auto;
+    max-height: 300px;
   }
 }

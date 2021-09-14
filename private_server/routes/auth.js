@@ -23,11 +23,6 @@ const generateAccessToken = (user) => {
 
 router.post('/login', async(req, res) => {
     let {email, password} = req.body
-    console.log(req.cookies)
-    console.log(req.cookie)
-    console.log(req.body)
-    console.log(email)
-    console.log(password)
     
     if (!email || !password){
         return res.status(203).json({
@@ -61,7 +56,8 @@ router.post('/login', async(req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: 'Successfully logged in.'
+                message: 'Successfully logged in.',
+                email: user.email
             })
         }
 
