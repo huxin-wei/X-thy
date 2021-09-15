@@ -24,7 +24,7 @@ function AdminPanel() {
           <div className="content-wrapper">
               <Switch>
                 <Route exact path="/">
-                  <Redirect to="/calendar"></Redirect>
+                  Greeting user
                 </Route>
                 <Route path="/calendar">
                   <Calendar />
