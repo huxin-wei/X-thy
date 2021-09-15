@@ -38,7 +38,8 @@ function Calendar() {
 			let aDate = dummyDate.setDate(beginDate.getDate() + i)
 			aWeek.push(aDate)
 		}
-
+		
+		console.log(aWeek)
 		setWeek(aWeek)
 	}, [date])
 
@@ -101,6 +102,9 @@ function Calendar() {
 		appointments.forEach(appt => {
 			let duration = appt.duration
 			let aDate = new Date(appt.appointmentStart)
+			console.log(`aappointment start: ${aDate}`)
+			console.log(`start date: ${startDate}`)
+			console.log(`end date: ${endDate}`)
 			console.log('in for each')
 			if (aDate >= startDate && aDate < endDate) {
 				console.log(++n)
@@ -122,9 +126,6 @@ function Calendar() {
 						type: 'spanned'
 					}
 				}
-			}
-			else {
-				return
 			}
 		})
 		console.log('final')
