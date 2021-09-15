@@ -13,6 +13,10 @@ function Availability({availability, removeAvailability}) {
 	]
 
 	const minutesToHhMmAPmString = (minutes) => {
+		// 12:00 AM is a special case for 12:00 AM - 12:00AM (terminal)
+		if(minutes == 24*60){
+			return '12:00 AM'
+		}
 		let hours = Math.floor(minutes / 60)
 		const suffix = hours >= 12 ? "PM" : "AM"
 		let minutePart = ((minutes % 60) + '0').substring(0, 2)
@@ -78,7 +82,7 @@ function Availability({availability, removeAvailability}) {
 				<div className="">
 					<div className="mb-2">
 						{getAvailDisplay()}
-						<p className="mb-1 text-secondary"><b>{start_time} - {end_time}</b></p>
+						<p className="mb-1 text-secondary"><b>{start_time == end_time ? 'All day' : `${start_time} - ${end_time}`}</b></p>
 					</div>
 					{/* <button type="button" title="edit" className="btn btn-secondary py-1">
                             <TiEdit size={20} />

@@ -21,8 +21,9 @@ function TimeOffer(props) {
 		}
 
 		console.log(props.fullDate)
-		const date = new Date(props.fullDate)
+		let date = new Date(props.fullDate)
 		let day = date.getDay()
+		date = date.toUTCString()
 
 		fetch(`${API_URL}/api/availability/offertime?day=${day}&duration=${props.duration}&utcDate=${date}`, requestOptions)
 			.then(res => res.json())

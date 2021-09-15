@@ -44,9 +44,7 @@ router.get('/week', authenticateJWT, async (req, res) => {
     }
 
     let date = new Date(utcDateStr)
-    date.setHours(0)
-    date.setMinutes(0)
-    date.setMilliseconds(0)
+    console.log(`date after turning from utcstr to date: ${date}`)
 
     if (date == 'Invalid Date') {
         return res.status(203).json({
@@ -57,13 +55,20 @@ router.get('/week', authenticateJWT, async (req, res) => {
 
     //set date to beginning of the week and start of the next week
     let beginDate = new Date(date)
+    console.log(`begin date is: ${beginDate}`)
     beginDate.setDate(beginDate.getDate() - beginDate.getDay())
 
     let endDate = new Date(beginDate)
     endDate.setDate(beginDate.getDate() + 7)
 
+    console.log(`end date is: ${endDate}`)
+
     try {
         const appointments = await getAppointmentBetween(beginDate, endDate, 'active')
+
+        appointments.forEach(appt => {
+            console.log(appt)
+        })
 
         return res.status(200).json({
             success: true,

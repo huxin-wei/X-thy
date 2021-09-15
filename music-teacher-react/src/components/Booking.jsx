@@ -69,6 +69,10 @@ function Booking(props) {
 			return setSubmitErrors(errors)
 		}
 
+		// convert to utc date
+		let a = new Date(`${fullDate} ${fullTime}`)
+		console.log(`date without turning to utc: `, a)
+		console.log(`date turning to utc first:`, a.toUTCString())
 
 		const requestOptions = {
 			method: 'POST',
@@ -81,11 +85,13 @@ function Booking(props) {
 				email: email,
 				phone: phone,
 				note: note,
-				date: `${fullDate} ${fullTime}`,
+				date: new Date(`${fullDate} ${fullTime}`),
 				duration: duration,
 				lessonId: lesson.lessonId
 			})
 		}
+
+		console.log('the date', '')
 		setIsLoading(true)
 		setSubmitErrors([])
 

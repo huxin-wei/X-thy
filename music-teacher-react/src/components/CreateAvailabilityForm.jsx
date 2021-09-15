@@ -43,6 +43,14 @@ function CrateAvailabilityForm(props) {
 	}
 
 	const getToMinute = () => {
+		// to midnight
+		console.log(toH)
+		console.log(toM)
+		console.log(toAP)
+		if (toH * 1 == 0 && toM * 1 == 0 && toAP == 'AM'){
+			console.log('visit')
+			return 24*60
+		}
 		return (toH * 1 + (toAP === 'AM'? 0 : 12)) * 60 + toM * 1
 	}
 
@@ -53,13 +61,21 @@ function CrateAvailabilityForm(props) {
 
 
 		if(timeFrom >= timeTo){
+			console.log('timefrom', timeFrom)
+			console.log('timeto', timeTo)
 			return setFetchErrors(['Incorrect time.'])
 		}
 
-		if (!mountedRef.current) return null
+		console.log('after')
+
+		if (!mountedRef.current) {
+			console.log('mountedRef false')
+			return null
+		}
 		setFetchErrors([])
 		setIsLoading(true)
 
+		console.log('1')
 		const days = getSelectedDaysValue()
 
 		if (!days) {
@@ -69,6 +85,7 @@ function CrateAvailabilityForm(props) {
 		} else {
 			setDayError('')
 		}
+		console.log('2')
 
 		const requestOptions = {
 			method: 'POST',

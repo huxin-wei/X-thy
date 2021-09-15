@@ -50,7 +50,7 @@ const transport = nodemailer.createTransport({
 // Book an appointment
 router.post('/', async (req, res) => {
     let { name, email, phone, note, date, duration, lessonId } = req.body
-    console.log('received date', date)
+    console.log('\nreceived date', date)
     let startDatetime = new Date(date)
     duration = parseInt(duration)
 
@@ -103,6 +103,7 @@ router.post('/', async (req, res) => {
     let startMinute = startDatetime.getHours() * 60 + startDatetime.getMinutes()
     let endMinute = startMinute + duration
     let dayOfWeek = startDatetime.getDay()
+
 
     try {
         const bookingResult = await bookAppointment(new Date(), name, email, phone, note, startDatetime,

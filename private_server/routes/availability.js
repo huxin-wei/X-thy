@@ -123,6 +123,10 @@ router.get('/offertime', async (req, res) => {
     }
 
     let date = new Date(utcDateStr)
+
+    console.log(`received utcDateStr is: ${utcDateStr}`)
+    console.log('the date is:', date)
+
     if (!date instanceof Date) {
         return res.status(203).json({
             success: false,
@@ -133,29 +137,36 @@ router.get('/offertime', async (req, res) => {
     try {
         const avail_results = await getAvailability(day)
         const app_result = await getSameDayAppointmnet(date)
-        console.log(app_result)
         let offeredTimes = []
         const now = new Date()
 
         // loop through available time
         avail_results.map(avail => {
             let currentMinute = parseInt(avail.start_minute)
+            console.log('currentMinute + duration <= avail.end_minute?', currentMinute + duration, avail.end_minute)
             while (currentMinute + duration <= avail.end_minute) {
                 let headDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute))
                 let tailDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
                 let isFree = true
+
                 if(headDT < now){
-                    break // already past
+                    console.log(`head dt is less than now headDt:${headDT} now: ${now}`)
+                    currentMinute += 30
+                    continue // already past
                 }
 
                 for (let i = 0; i < app_result.length; i++) {
                     
-                    let apppointment_start = new Date(app_result[i].appointment_start)
-                    let apppointment_end = new Date(app_result[i].appointment_end)
+                    let appointment_start = new Date(app_result[i].appointment_start)
+                    let appointment_end = new Date(app_result[i].appointment_end)
 
-                    if ((headDT < apppointment_start && tailDT > apppointment_start) ||
-                        (headDT < apppointment_end && tailDT > apppointment_end) ||
-                        (headDT >= apppointment_start && tailDT <= apppointment_end)) {
+                    console.log(`appointment start is: ${appointment_start}`)
+                    console.log(`appointment head is: ${headDT}`)
+
+                    if ((headDT < appointment_start && tailDT > appointment_start) ||
+                        (headDT < appointment_end && tailDT > appointment_end) ||
+                        (headDT >= appointment_start && tailDT <= appointment_end)) {
+                        console.log('visit false \n')
                         isFree = false
                         break
                     }

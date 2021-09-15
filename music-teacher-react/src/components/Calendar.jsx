@@ -127,7 +127,9 @@ function Calendar() {
 			const requestOptions = {
 				credentials: 'include'
 			}
-			fetch(`${API_URL}/api/appointment/week?utcDate=${date.toDateString()}`, requestOptions)
+			// console.log('date that i will fetch', date)
+			// console.log('date that i will fetch utc', date.toUTCString())
+			fetch(`${API_URL}/api/appointment/week?utcDate=${date.toUTCString()}`, requestOptions)
 				.then(res => res.json())
 				.then(data => {
 					if (!mountedRef) return null
