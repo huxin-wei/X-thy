@@ -45,6 +45,8 @@ function Calendar() {
 	useEffect(async () => {
 		if (!week.length) return
 
+		let n = 0
+
 		//fetch appointment
 		setError('')
 		setIsLoading(true)
@@ -52,33 +54,38 @@ function Calendar() {
 			setError(error.message)
 			setIsLoading(false)
 			console.log(error)
+			console.log(++n)
 		})
 
 		if (!appointments) {
 			setData([])
+			console.log('in if !appointment')
 			return
 		}
 
 		//find the ealiest time of a day
 		let min = appointments.length ? appointments[0].minuteStart : 0
-
+		console.log(++n)
 		for (let i = 1; i < appointments.length; i++) {
 			if (appointments[i].minuteStart < min) {
 				min = appointments[i].minuteStart
 			}
 		}
 
+		console.log('after find earliest day')
+
 		// find the index of time to be used in calendar
 		let indexToUse = Math.floor(min / 30)
 		let timeCol = TIME.splice(indexToUse)
 
+		console.log(++n)
 		// create 2D array to store each row (timeCol.length * 8)
 		let preparingData = new Array(timeCol.length)
-
+		console.log(++n)
 		for (let i = 0; i < preparingData.length; i++) {
 			preparingData[i] = new Array('', '', '', '', '', '', '', '')
 		}
-
+		console.log(++n)
 		// store time in first index of all data's index
 		for (let i = 0; i < preparingData.length; i++) {
 			preparingData[i][0] = {
@@ -86,14 +93,18 @@ function Calendar() {
 				data: timeCol[i]
 			}
 		}
-
+		console.log(++n)
 		let startDate = new Date(week[0])
 		let saturday = new Date(week[6])
 		let endDate = saturday.setDate(saturday.getDate() + 1)
 		// store appointment in 2D array
 		appointments.forEach(appt => {
-			if (appt.appointmentStart >= startDate && appt.appointmentStart < endDate) {
-				let colIndex = appt.appointmentStart.getDay() + 1 //first column is time, thus add 1
+			let duration = appt.duration
+			let aDate = new Date(appt.appointmentStart)
+			console.log('in for each')
+			if (aDate >= startDate && aDate < endDate) {
+				console.log(++n)
+				let colIndex = aDate.getDay() + 1 //first column is time, thus add 1
 
 				// find a row to push appt in
 				let rowIndex = Math.floor((appt.minuteStart - min) / 30)
@@ -104,7 +115,7 @@ function Calendar() {
 				}
 
 				// span row will overlap - assign the following rows in the same column to be blank when draw table
-				let numSpan = Math.floor(appt.duration / 30) - 1 // subtract one because first row already assign
+				let numSpan = Math.floor(duration / 30) - 1 // subtract one because first row already assign
 
 				for (let i = 0; i < numSpan; i++) {
 					preparingData[++rowIndex][colIndex] = {
@@ -116,6 +127,7 @@ function Calendar() {
 				return
 			}
 		})
+		console.log('final')
 
 		setIsLoading(false)
 		setError('')

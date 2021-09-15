@@ -35,7 +35,7 @@ function Sidebar() {
             })
             .catch(error => {
                 console.log(error.message)
-                
+                setUser(null)
             })
     }
     return (
