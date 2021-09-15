@@ -148,6 +148,8 @@ function Calendar() {
 						}
 
 					})
+					console.log(`appointments:\n`)
+					console.log(appointments)
 					resolve(appointments)
 				})
 				.catch(error => {

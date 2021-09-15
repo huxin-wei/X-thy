@@ -77,7 +77,7 @@ function TimeOffer(props) {
 							times.map((time, index) => {
 								let HHMMAPMstr = minutesToHhMmAPmString(time)
 								return (
-									<button key={index} type="button" className="btn btn-primary mx-2 my-2" style={{ width: 100 }}
+									<button key={index} type="button" className="btn btn-secondary mx-2 my-2" style={{ width: 100 }}
 										onClick={(e) => {
 											props.onTimeSelected(HHMMAPMstr)
 										}}
