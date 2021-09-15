@@ -21,6 +21,7 @@ function Calendar() {
 		let beginDate = new Date() // beginning of the week (Sunday)
 		beginDate.setHours(0)
 		beginDate.setMinutes(0)
+		beginDate.setSeconds(0)
 		beginDate.setMilliseconds(0)
 		setDate(beginDate)
 
