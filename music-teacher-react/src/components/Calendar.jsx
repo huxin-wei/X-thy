@@ -29,6 +29,9 @@ function Calendar() {
 
 		let aWeek = []
 		let beginDate = new Date(date.setDate(date.getDate() - date.getDay()))
+				
+		console.log(`date is: ... ${date}`)
+		console.log(`begin date is: ... ${beginDate}`)
 
 		beginDate = new Date(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate())
 
@@ -38,8 +41,8 @@ function Calendar() {
 			let aDate = dummyDate.setDate(beginDate.getDate() + i)
 			aWeek.push(aDate)
 		}
-		
-		console.log(aWeek)
+
+		console.log(`setting week to ${aWeek}`)
 		setWeek(aWeek)
 	}, [date])
 
@@ -181,7 +184,7 @@ function Calendar() {
 
 	const handleChangeWeek = (numWeek) => {
 		let d = new Date(date)
-		d.setDate(d.getDate() + 7 * numWeek)
+		d.setDate(d.getDate() + (7 * numWeek))
 		setDate(d)
 	}
 
