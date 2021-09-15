@@ -4,7 +4,7 @@ import AppModal from './AppModal'
 import Appointment from './Appointment'
 
 function Calendar() {
-	const [date, setDate] = useState(new Date())
+	const [date, setDate] = useState(null)
 	const [week, setWeek] = useState([])
 	const [data, setData] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
@@ -18,6 +18,11 @@ function Calendar() {
 
 
 	useEffect(() => {
+		let beginDate = new Date() // beginning of the week (Sunday)
+		beginDate.setHours(0)
+		beginDate.setMinutes(0)
+		beginDate.setMilliseconds(0)
+		setDate(beginDate)
 
 		return () => {
 			mountedRef.current = false
@@ -26,6 +31,7 @@ function Calendar() {
 
 	useEffect(() => {
 		if (!date) return
+		
 
 		let aWeek = []
 		let beginDate = new Date(date.setDate(date.getDate() - date.getDay())) // beginning of the week (Sunday)
@@ -51,7 +57,7 @@ function Calendar() {
 	}, [date])
 
 	useEffect(async () => {
-		if (!week.length) return
+		if (!week.length || !date) return
 
 		let n = 0
 
