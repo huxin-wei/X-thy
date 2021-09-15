@@ -136,14 +136,16 @@ router.get('/offertime', async (req, res) => {
 
     try {
         const avail_results = await getAvailability(day)
-        const app_result = await getSameDayAppointmnet(date)
+        const appt_result = await getSameDayAppointmnet(date)
         let offeredTimes = []
         const now = new Date()
 
         // loop through available time
         avail_results.map(avail => {
             let currentMinute = parseInt(avail.start_minute)
-            console.log('currentMinute + duration <= avail.end_minute?', currentMinute + duration, avail.end_minute)
+
+            //console.log('currentMinute + duration <= avail.end_minute?', currentMinute + duration, avail.end_minute)
+
             while (currentMinute + duration <= avail.end_minute) {
                 let headDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute))
                 let tailDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
@@ -155,10 +157,10 @@ router.get('/offertime', async (req, res) => {
                     continue // already past
                 }
 
-                for (let i = 0; i < app_result.length; i++) {
+                for (let i = 0; i < appt_result.length; i++) {
                     
-                    let appointment_start = new Date(app_result[i].appointment_start)
-                    let appointment_end = new Date(app_result[i].appointment_end)
+                    let appointment_start = new Date(appt_result[i].appointment_start)
+                    let appointment_end = new Date(appt_result[i].appointment_end)
 
                     console.log(`appointment start is: ${appointment_start}`)
                     console.log(`appointment head is: ${headDT}`)
