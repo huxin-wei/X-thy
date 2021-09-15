@@ -28,12 +28,16 @@ function Calendar() {
 		if (!date) return
 
 		let aWeek = []
-		let beginDate = new Date(date.setDate(date.getDate() - date.getDay()))
+		let beginDate = new Date(date.setDate(date.getDate() - date.getDay())) // beginning of the week (Sunday)
+
 				
 		console.log(`date is: ... ${date}`)
 		console.log(`begin date is: ... ${beginDate}`)
 
-		beginDate = new Date(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate())
+		beginDate = new Date(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate(), 0, 0, 0)
+		
+		console.log(`date is: ... ${date}`)
+		console.log(`begin date is: ... ${beginDate}`)
 
 		// push seven day in array
 		for (let i = 0; i < 7; i++) {
