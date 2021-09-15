@@ -64,7 +64,7 @@ app.get('/', (req, res) => {
 
 // Serve Admin's React
 app.use(express.static(path.join(__dirname, 'build')))
-app.get('/admin(/)?(lesson)?(appointment)?(availability)?(booking)?(upload)?(logout)?', (req, res) => {
+app.get('/admin(/)?(calendar)?(lesson)?(appointment)?(availability)?(booking)?(upload)?(logout)?', (req, res) => {
   let absolutePath = resolve('./build/index.html')
   res.sendFile(absolutePath)
 })

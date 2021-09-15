@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import LessonPanel from './LessonPanel';
 import Booking from './Booking';
@@ -21,9 +21,11 @@ function AdminPanel() {
     <div>
       <div style={{position: "relative"}}>
         <Sidebar />
-
           <div className="content-wrapper">
               <Switch>
+                <Route exact path="/">
+                  <Redirect to="/calendar"></Redirect>
+                </Route>
                 <Route path="/calendar">
                   <Calendar />
                 </Route>
