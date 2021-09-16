@@ -16,14 +16,18 @@ function Calendar() {
 	const TIME = ['12:00 AM', '12:30 AM', '1:00 AM', '1:30 AM', '2:00 AM', '2:30 AM', '3:00 AM', '3:30 AM', '4:00 AM', '4:30 AM', '5:00 AM', '5:30 AM', '6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM'
 	]
 
+	const setDateToBeginningOfWeek = (d) => {
+		d.setDate(d.getDate() - d.getDay())
+		d.setHours(0)
+		d.setMinutes(0)
+		d.setSeconds(0)
+	}
+
 
 	useEffect(() => {
-		let beginDate = new Date() // beginning of the week (Sunday)
-		beginDate.setHours(0)
-		beginDate.setMinutes(0)
-		beginDate.setSeconds(0)
-		beginDate.setMilliseconds(0)
-		setDate(beginDate)
+		let today = new Date()
+		setDateToBeginningOfWeek(today)
+		setDate(today)
 
 		return () => {
 			mountedRef.current = false
@@ -31,17 +35,15 @@ function Calendar() {
 	}, [])
 
 	useEffect(() => {
-		if (!date) return
-		
+		if(!date) return
 
 		let aWeek = []
-		let beginDate = new Date(date.setDate(date.getDate() - date.getDay())) // beginning of the week (Sunday)
 
-				
-		console.log(`date is: ... ${date}`)
-		console.log(`begin date is: ... ${beginDate}`)
+		let beginDate = new Date(date) // beginning of the week (Sunday)
+		setDateToBeginningOfWeek(beginDate)
 
-		beginDate = new Date(beginDate.getFullYear(), beginDate.getMonth(), beginDate.getDate(), 0, 0, 0)
+		// console.log(`date is: ... ${date}`)
+		// console.log(`begin date is: ... ${beginDate}`)
 		
 		console.log(`date is: ... ${date}`)
 		console.log(`begin date is: ... ${beginDate}`)
@@ -58,9 +60,7 @@ function Calendar() {
 	}, [date])
 
 	useEffect(async () => {
-		if (!week.length || !date) return
-
-		let n = 0
+		if(!week.length || !date  ) return
 
 		//fetch appointment
 		setError('')
@@ -69,18 +69,16 @@ function Calendar() {
 			setError(error.message)
 			setIsLoading(false)
 			console.log(error)
-			console.log(++n)
 		})
 
 		if (!appointments) {
 			setData([])
-			console.log('in if !appointment')
 			return
 		}
 
 		//find the ealiest time of a day
 		let min = appointments.length ? appointments[0].minuteStart : 0
-		console.log(++n)
+		
 		for (let i = 1; i < appointments.length; i++) {
 			if (appointments[i].minuteStart < min) {
 				min = appointments[i].minuteStart
@@ -93,14 +91,13 @@ function Calendar() {
 		let indexToUse = Math.floor(min / 30)
 		let timeCol = TIME.splice(indexToUse)
 
-		console.log(++n)
 		// create 2D array to store each row (timeCol.length * 8)
 		let preparingData = new Array(timeCol.length)
-		console.log(++n)
+
 		for (let i = 0; i < preparingData.length; i++) {
 			preparingData[i] = new Array('', '', '', '', '', '', '', '')
 		}
-		console.log(++n)
+
 		// store time in first index of all data's index
 		for (let i = 0; i < preparingData.length; i++) {
 			preparingData[i][0] = {
@@ -108,20 +105,20 @@ function Calendar() {
 				data: timeCol[i]
 			}
 		}
-		console.log(++n)
+
 		let startDate = new Date(week[0])
-		let saturday = new Date(week[6])
-		let endDate = saturday.setDate(saturday.getDate() + 1)
+		let endDate = new Date(startDate)
+		endDate.setDate(endDate.getDate() + 7)
+
 		// store appointment in 2D array
 		appointments.forEach(appt => {
 			let duration = appt.duration
 			let aDate = new Date(appt.appointmentStart)
-			console.log(`aappointment start: ${aDate}`)
-			console.log(`start date: ${startDate}`)
-			console.log(`end date: ${endDate}`)
-			console.log('in for each')
+			// console.log(`aappointment start: ${aDate}`)
+			// console.log(`start date: ${startDate}`)
+			// console.log(`end date: ${endDate}`)
+			// console.log('in for each')
 			if (aDate >= startDate && aDate < endDate) {
-				console.log(++n)
 				let colIndex = aDate.getDay() + 1 //first column is time, thus add 1
 
 				// find a row to push appt in
@@ -143,6 +140,7 @@ function Calendar() {
 			}
 		})
 		console.log('final')
+		console.log(`date is: ${date}`)
 
 		setIsLoading(false)
 		setError('')
@@ -156,6 +154,8 @@ function Calendar() {
 			}
 			// console.log('date that i will fetch', date)
 			// console.log('date that i will fetch utc', date.toUTCString())
+			console.log(`date before sending fetch: ${date}`)
+			console.log(`date before sending fetch (toUTCString): ${date.toUTCString()}`)
 			fetch(`${API_URL}/api/appointment/week?utcDate=${date.toUTCString()}`, requestOptions)
 				.then(res => res.json())
 				.then(data => {
