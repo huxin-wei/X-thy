@@ -112,7 +112,7 @@ function DatePicker(props) {
                         {
                             MONTH.map(monthObj => {
                                 return (
-                                    <div key={monthObj.value} className={`${parseInt(monthObj.value) == parseInt(month) ? 'month-item-active' : ''} month-item `}>
+                                    <div key={monthObj.value} className={`${parseInt(monthObj.value) == parseInt(month) ? 'light-blue-active' : ''} light-blue month-item`}>
                                         <button id={monthObj.value} onClick={monthHandle}>
                                             {monthObj.month}
                                         </button>

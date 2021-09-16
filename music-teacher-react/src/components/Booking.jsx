@@ -90,7 +90,6 @@ function Booking(props) {
 			})
 		}
 
-		console.log('the date', '')
 		setIsLoading(true)
 		setSubmitErrors([])
 
@@ -101,7 +100,6 @@ function Booking(props) {
 				if (!data.success) {
 					throw new Error(data.message)
 				}
-				console.log('hello')
 				setSubmitErrors([])
 				setIsLoading(false)
 				setFullTime('')

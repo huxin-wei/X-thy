@@ -18,7 +18,6 @@ const checkTime = (msgList, timeFrom, timeTo) => {
     }
 
     let duration = to - from
-    console.log(`duration: ${duration}`)
 
     if (duration <= 0) {
         msgList.push('Times conflict.')
@@ -69,7 +68,6 @@ router.get('/all', async (req, res) => {
 // Add availability
 router.post('/', authenticateJWT, async (req, res) => {
     const data = req.body
-    console.table(data)
     let errors = []
 
     checkTime(errors, data.timeFrom, data.timeTo)
@@ -124,64 +122,59 @@ router.get('/offertime', async (req, res) => {
 
     let date = new Date(utcDateStr)
 
-    console.log(`received utcDateStr is: ${utcDateStr}`)
-    console.log('the date is:', date)
-
     if (!date instanceof Date) {
         return res.status(203).json({
             success: false,
             message: ['Invalid date. Require UTC time string']
         })
     }
-
+    let counter = 0
     try {
         const avail_results = await getAvailability(day)
         const appt_result = await getSameDayAppointmnet(date)
-        let offeredTimes = []
+        let offeredTimes = new Set()
         const now = new Date()
 
         // loop through available time
         avail_results.map(avail => {
             let currentMinute = parseInt(avail.start_minute)
 
-            //console.log('currentMinute + duration <= avail.end_minute?', currentMinute + duration, avail.end_minute)
-
             while (currentMinute + duration <= avail.end_minute) {
                 let headDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute))
                 let tailDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
                 let isFree = true
 
-                if(headDT < now){
-                    console.log(`head dt is less than now headDt:${headDT} now: ${now}`)
+                if (headDT < now) {
                     currentMinute += 30
                     continue // already past
                 }
 
                 for (let i = 0; i < appt_result.length; i++) {
-                    
+
                     let appointment_start = new Date(appt_result[i].appointment_start)
                     let appointment_end = new Date(appt_result[i].appointment_end)
 
-                    console.log(`appointment start is: ${appointment_start}`)
-                    console.log(`appointment head is: ${headDT}`)
-
-                    if ((headDT < appointment_start && tailDT > appointment_start) ||
-                        (headDT < appointment_end && tailDT > appointment_end) ||
-                        (headDT >= appointment_start && tailDT <= appointment_end)) {
-                        console.log('visit false \n')
+                    // if ((headDT <= appointment_start && tailDT >= appointment_start) ||
+                    //     (headDT < appointment_end && tailDT > appointment_end) ||
+                    //     (headDT >= appointment_start && tailDT <= appointment_end)) {
+                    //     isFree = false
+                    //     break
+                    // }
+                    if ((headDT <= appointment_start && tailDT >= appointment_start) ||
+                        (headDT >= appointment_start && headDT < appointment_end)) {
                         isFree = false
                         break
                     }
                 }
                 if (isFree) {
-                    offeredTimes.push(currentMinute)
+                    offeredTimes.add(headDT.toUTCString())
                 }
                 currentMinute += 30
             }
         })
 
-        offeredTimes = [...new Set(offeredTimes)]
-        offeredTimes.sort((a, b) => a - b)
+        offeredTimes = Array.from(offeredTimes)
+        offeredTimes.sort((a, b) => new Date(a) - new Date(b))
 
         return res.status(200).json({
             success: true,
@@ -212,18 +205,17 @@ router.delete('/delete/:availabilityId', authenticateJWT, async (req, res) => {
 
     try {
         const deleteResult = await deleteAvailability(availabilityId)
-        if(!deleteResult.affectedRows){
+        if (!deleteResult.affectedRows) {
             return res.status(203).json({
                 success: false,
                 message: 'No such id.'
             })
         }
-        
+
         return res.status(200).json({
             success: true
         })
     } catch (error) {
-        console.log('in lesson')
         console.log(error)
         return res.status(203).json({
             success: false,

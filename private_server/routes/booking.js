@@ -50,7 +50,6 @@ const transport = nodemailer.createTransport({
 // Book an appointment
 router.post('/', async (req, res) => {
     let { name, email, phone, note, date, duration, lessonId } = req.body
-    console.log('\nreceived date', date)
     let startDatetime = new Date(date)
     duration = parseInt(duration)
 
@@ -147,8 +146,7 @@ router.post('/', async (req, res) => {
                     <td><b>Booking reference number: </b>${bookingResult.insertId}</td>
                 </tr>
             </table>
-            <p>Click this link if you want to cancel the appointment.</p>
-            <a href=${process.env.URL}/api/appointment/usercancel?id=${bookingResult.insertId}&cancelCode=${cancelCode}> Click here</a>
+            <p>To cancel the appointment <a href=${process.env.SERVER_URL}/api/appointment/usercancel?id=${bookingResult.insertId}&cancelCode=${cancelCode}> Click here</a></p>
             </div>`
         })
 

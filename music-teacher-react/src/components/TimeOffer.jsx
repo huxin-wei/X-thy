@@ -63,6 +63,10 @@ function TimeOffer(props) {
 		return hours
 	}
 
+	const getTotalMinutesFromDate = (date) => {
+		return date.getHours() * 60 + date.getMinutes()
+	}
+
 	return (
 		<div>
 			{
@@ -75,9 +79,11 @@ function TimeOffer(props) {
 					<div>
 						{
 							times.map((time, index) => {
-								let HHMMAPMstr = minutesToHhMmAPmString(time)
+								const date = new Date(time)
+								const minutes = getTotalMinutesFromDate(date)
+								let HHMMAPMstr = minutesToHhMmAPmString(minutes)
 								return (
-									<button key={index} type="button" className="btn btn-secondary mx-2 my-2" style={{ width: 100 }}
+									<button key={index} type="button" className="btn btn-secondary mx-2 my-2" style={{ width: 80, fontSize: 12 }}
 										onClick={(e) => {
 											props.onTimeSelected(HHMMAPMstr)
 										}}

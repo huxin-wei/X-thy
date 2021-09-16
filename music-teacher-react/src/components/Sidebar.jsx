@@ -20,7 +20,6 @@ function Sidebar() {
 				'Accept': 'application/json'
 			},
             credentials: 'include'
-            
 		}
         fetch(`${API_URL}/api/auth/logout`, requestOptions)
             .then(res => res.json())
@@ -34,7 +33,7 @@ function Sidebar() {
             })
             .catch(error => {
                 console.log(error.message)
-                setUser(null)
+                alert('Something went wrong. Cannot logout properly.')
             })
     }
     return (
