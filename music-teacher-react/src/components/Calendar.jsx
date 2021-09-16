@@ -5,6 +5,7 @@ import Appointment from './Appointment'
 
 function Calendar() {
 	const [date, setDate] = useState(null)
+	const [dateInputDisplay, setDateInputDisplay] = useState('')
 	const [week, setWeek] = useState([])
 	const [data, setData] = useState([])
 	const [isLoading, setIsLoading] = useState(false)
@@ -26,8 +27,10 @@ function Calendar() {
 
 	useEffect(() => {
 		let today = new Date()
+		setDateInputDisplay(formatDate2(today))
 		setDateToBeginningOfWeek(today)
 		setDate(today)
+
 
 		return () => {
 			mountedRef.current = false
@@ -35,7 +38,7 @@ function Calendar() {
 	}, [])
 
 	useEffect(() => {
-		if(!date) return
+		if (!date) return
 
 		let aWeek = []
 
@@ -44,7 +47,7 @@ function Calendar() {
 
 		// console.log(`date is: ... ${date}`)
 		// console.log(`begin date is: ... ${beginDate}`)
-		
+
 		console.log(`date is: ... ${date}`)
 		console.log(`begin date is: ... ${beginDate}`)
 
@@ -60,7 +63,7 @@ function Calendar() {
 	}, [date])
 
 	useEffect(async () => {
-		if(!week.length || !date) return
+		if (!week.length || !date) return
 
 		//fetch appointment
 		setError('')
@@ -193,9 +196,14 @@ function Calendar() {
 		return date.getHours() * 60 + date.getMinutes()
 	}
 
-	const handleChangeWeek = (numWeek) => {
+	const handleWeekChange = (numWeek) => {
 		let d = new Date(date)
 		d.setDate(d.getDate() + (7 * numWeek))
+	
+		let dDisplay = new Date(dateInputDisplay)
+		dDisplay.setDate(dDisplay.getDate() + (7 * numWeek))
+
+		setDateInputDisplay(formatDate2(dDisplay))
 		setDate(d)
 	}
 
@@ -231,6 +239,20 @@ function Calendar() {
 		setSelectedAppt(e.currentTarget.id)
 	}
 
+	function formatDate2(date) {
+		var d = new Date(date),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+	
+		if (month.length < 2) 
+			month = '0' + month;
+		if (day.length < 2) 
+			day = '0' + day;
+	
+		return [year, month, day].join('-');
+	}
+
 	return (
 		<div>
 			{
@@ -248,18 +270,20 @@ function Calendar() {
 			}
 			<div className="mx-auto text-center" style={{ overflowY: "auto", maxHeight: "100vh" }}>
 				<div className="mw-1000 mx-auto my-3">
-					<button className="me-5" onClick={() => handleChangeWeek(-1)}>previous</button>
-					<input type="date" onChange={(e) => {
-						let d = new Date(e.target.value)
-						console.log(`this value will be use to create date: ${e.target.value}`)
-						console.log(`date created by that value: ${d}`)
-						setDateToBeginningOfWeek(d)
-						console.log(`this run in input arrow function`)
-						console.log(`date after set: ${d}`)
-						setDate(d)
-					}} />
+					<button className="me-5" onClick={() => handleWeekChange(-1)}>previous</button>
+					<input type="date" value= {dateInputDisplay}
+						onChange={(e) => {
+							let d = new Date(e.target.value)
+							setDateInputDisplay(formatDate2(d))
+							console.log(`this value will be use to create date: ${e.target.value}`)
+							console.log(`date created by that value: ${d}`)
+							setDateToBeginningOfWeek(d)
+							console.log(`this run in input arrow function`)
+							console.log(`date after set: ${d}`)
+							setDate(d)
+						}} />
 					<button onClick={() => refresh()}>refresh</button>
-					<button className="ms-5" onClick={() => handleChangeWeek(1)}>next</button>
+					<button className="ms-5" onClick={() => handleWeekChange(1)}>next</button>
 				</div>
 				<div className="mw-1000 mx-auto" style={{ overflowX: "scroll", maxHeight: "90vh" }}>
 					<table className="calendar">
@@ -282,7 +306,7 @@ function Calendar() {
 						<tbody>
 							<tr>
 								<th className="header-fixed"></th>
-								<td colSpan={7} style={{height: "20px"}}></td>
+								<td colSpan={7} style={{ height: "20px" }}></td>
 							</tr>
 							{
 								data.map((row, index) => {
@@ -307,9 +331,9 @@ function Calendar() {
 
 														case 'time':
 															return (
-																<th className="header-fixed" key={index} style={{verticalAlign: "top"}}>
-																	<div style={{minHeight: 25}}>
-																	<p className="time" style={{position: "absolute", top: -12, right: 5}}>{col.data}</p>
+																<th className="header-fixed" key={index} style={{ verticalAlign: "top" }}>
+																	<div style={{ minHeight: 25 }}>
+																		<p className="time" style={{ position: "absolute", top: -12, right: 5 }}>{col.data}</p>
 																	</div>
 																</th>
 															)
@@ -337,12 +361,12 @@ function Calendar() {
 					show={selectedAppt ? true : false}
 					onClose={() => setSelectedAppt('')}
 					title={`Appointment: ${selectedAppt}`}>
-					<Appointment 
-						id={selectedAppt} 
+					<Appointment
+						id={selectedAppt}
 						onUpdate={() => {
 							refresh()
 							setSelectedAppt('')
-						}} 
+						}}
 					/>
 				</AppModal>
 			}
