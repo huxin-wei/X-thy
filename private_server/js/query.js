@@ -70,7 +70,7 @@ const deleteLesson = (id) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
     connection.query('update lesson set status = ? where lesson_id = ?',
-    ['deleted', id], (err, rows) => {
+      ['deleted', id], (err, rows) => {
         connection.end()
         if (err) {
           console.log(err)
@@ -143,8 +143,11 @@ const getAllAvailability = () => {
 const getSameDayAppointmnet = (date) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
-    connection.query('select * from booking where status = ? and datediff(?, appointment_start) = 0'
-      , ['active', date],
+    connection.query(`select * from booking 
+      WHERE status = ?
+        AND timestampdiff(minute, ?, appointment_start) < 1440
+        AND timestampdiff(minute, ?, appointment_start) >= 0`
+      , ['active', date, date],
       (err, rows) => {
         connection.end()
         if (err) {
@@ -206,13 +209,13 @@ const getUpcomingAppointment = (now) => {
   return new Promise((resolve, reject) => {
     let connection = createConnection(dbInfo)
     connection.query('select appointment_id, appointment_start, duration, customer_name from booking where appointment_start >= ?', [now],
-    (err, rows) => {
-      connection.end()
-      if(err){
-        return reject(err)
-      }
-      resolve(rows)
-    })
+      (err, rows) => {
+        connection.end()
+        if (err) {
+          return reject(err)
+        }
+        resolve(rows)
+      })
   })
 }
 
@@ -222,13 +225,13 @@ const getAppointmentById = (id) => {
     connection.query(`select * from booking
     inner join lesson as L
     ON booking.lesson_id = L.lesson_id where appointment_id = ?`, [id],
-    (err, rows) => {
-      connection.end()
-      if(err){
-        return reject(err)
-      }
-      resolve(rows)
-    })
+      (err, rows) => {
+        connection.end()
+        if (err) {
+          return reject(err)
+        }
+        resolve(rows)
+      })
   })
 }
 
@@ -241,13 +244,13 @@ const getAppointmentBetween = (beginDate, endDate, status) => {
     INNER JOIN lesson as L
     ON booking.lesson_id = L.lesson_id 
     WHERE booking.status = ? AND appointment_start >= ? AND appointment_start < ?` , [status, beginDate, endDate],
-    (err, rows) => {
-      connection.end()
-      if(err){
-        return reject(err)
-      }
-      resolve(rows)
-    })
+      (err, rows) => {
+        connection.end()
+        if (err) {
+          return reject(err)
+        }
+        resolve(rows)
+      })
   })
 }
 
@@ -256,13 +259,13 @@ const cancelAppointmentByCode = (id, code) => {
     let connection = createConnection(dbInfo)
 
     connection.query(`UPDATE booking SET status = 'cancelled' where appointment_id = ? AND appointment_cancel_code = ?`, [id, code],
-    (err, rows) => {
-      connection.end()
-      if(err){
-        return reject(err)
-      }
-      resolve(rows)
-    })
+      (err, rows) => {
+        connection.end()
+        if (err) {
+          return reject(err)
+        }
+        resolve(rows)
+      })
   })
 }
 
@@ -271,13 +274,13 @@ const cancelAppointmentById = (id) => {
     let connection = createConnection(dbInfo)
 
     connection.query(`UPDATE booking SET status = 'cancelled' where appointment_id = ?`, [id],
-    (err, rows) => {
-      connection.end()
-      if(err){
-        return reject(err)
-      }
-      resolve(rows)
-    })
+      (err, rows) => {
+        connection.end()
+        if (err) {
+          return reject(err)
+        }
+        resolve(rows)
+      })
   })
 }
 
