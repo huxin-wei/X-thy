@@ -38,6 +38,8 @@ function TimeOffer(props) {
 				console.log(data)
 				setIsLoading(false)
 				setFetchErrors([])
+				
+				data.times.sort((a,b) => new Date(a) - new Date(b))
 				setTimes(data.times)
 			})
 			.catch((err) => {

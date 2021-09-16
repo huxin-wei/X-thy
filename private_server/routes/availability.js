@@ -140,8 +140,14 @@ router.get('/offertime', async (req, res) => {
             let currentMinute = parseInt(avail.start_minute)
 
             while (currentMinute + duration <= avail.end_minute) {
-                let headDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute))
-                let tailDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
+                //let headDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute))
+                let headDT = new Date(date)
+                headDT.setMinutes(headDT.getMinutes() + currentMinute)
+
+                let tailDT = new Date(date)
+                tailDT.setMinutes(tailDT.getMinutes() + currentMinute + duration)
+
+                //let tailDT = new Date(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + convertTotalMinuteToHHMM(currentMinute + duration))
                 let isFree = true
 
                 if (headDT < now) {
