@@ -6,8 +6,7 @@ import { ImUpload2 } from 'react-icons/im'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import Cookies from 'js-cookie'
 import {AppContext} from './AppContext'
-
-const url = 'http://localhost:3001'
+import { API_URL } from '../JS/variables';
 
 function Sidebar() {
     const {setUser} = useContext(AppContext)
@@ -23,7 +22,7 @@ function Sidebar() {
             credentials: 'include'
             
 		}
-        fetch(`${url}/api/auth/logout`, requestOptions)
+        fetch(`${API_URL}/api/auth/logout`, requestOptions)
             .then(res => res.json())
             .then(data => {
                 if(!data.success){
