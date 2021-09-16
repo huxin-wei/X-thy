@@ -166,7 +166,7 @@ router.get('/offertime', async (req, res) => {
                     //     isFree = false
                     //     break
                     // }
-                    if ((headDT <= appointment_start && tailDT >= appointment_start) ||
+                    if ((headDT <= appointment_start && tailDT > appointment_start) ||
                         (headDT >= appointment_start && headDT < appointment_end)) {
                         isFree = false
                         break
