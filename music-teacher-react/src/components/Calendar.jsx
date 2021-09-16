@@ -60,7 +60,7 @@ function Calendar() {
 	}, [date])
 
 	useEffect(async () => {
-		if(!week.length || !date  ) return
+		if(!week.length || !date) return
 
 		//fetch appointment
 		setError('')
@@ -78,7 +78,7 @@ function Calendar() {
 
 		//find the ealiest time of a day
 		let min = appointments.length ? appointments[0].minuteStart : 0
-		
+
 		for (let i = 1; i < appointments.length; i++) {
 			if (appointments[i].minuteStart < min) {
 				min = appointments[i].minuteStart
@@ -249,7 +249,15 @@ function Calendar() {
 			<div className="mx-auto text-center" style={{ overflowY: "auto", maxHeight: "100vh" }}>
 				<div className="mw-1000 mx-auto my-3">
 					<button className="me-5" onClick={() => handleChangeWeek(-1)}>previous</button>
-					<input type="date" onChange={(e) => setDate(new Date(e.target.value))}/>
+					<input type="date" onChange={(e) => {
+						let d = new Date(e.target.value)
+						console.log(`this value will be use to create date: ${e.target.value}`)
+						console.log(`date created by that value: ${d}`)
+						setDateToBeginningOfWeek(d)
+						console.log(`this run in input arrow function`)
+						console.log(`date after set: ${d}`)
+						setDate(d)
+					}} />
 					<button onClick={() => refresh()}>refresh</button>
 					<button className="ms-5" onClick={() => handleChangeWeek(1)}>next</button>
 				</div>
