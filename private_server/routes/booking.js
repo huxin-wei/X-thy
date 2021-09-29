@@ -86,7 +86,8 @@ router.post('/', async (req, res) => {
         }
 
         // as the server use UTC time - convert time using toLocaleString() with timezone parameter
-        let convertedTime = new Date(startDatetime).toLocaleDateString("en-AU", {timeZone: "Australia/Brisbane"})
+        //new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Sydney" }).format(date))
+        let convertedTime = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Brisbane" }).format(startDatetime)
 
         const forwardEmails = getForwardEmails()
         transport.sendMail({
@@ -103,7 +104,7 @@ router.post('/', async (req, res) => {
                     <td><b>Name: </b>${name}</td>
                 </tr>
                 <tr>
-                    <td><b>Datetime: </b>${convertedTime} (Brisbane time)</td>
+                    <td><b>Datetime: </b>${convertedTime}</td>
                 </tr>
                 <tr>
                     <td><b>Duration: </b>${duration} minutes</td>
