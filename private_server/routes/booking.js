@@ -85,12 +85,15 @@ router.post('/', async (req, res) => {
             })
         }
 
+        // as the server use UTC time - convert time using toLocaleString() with timezone parameter
+        let convertedTime = new Date(startDatetime).toLocaleDateString("en-AU", {timeZone: "Australia/Brisbane"})
+
         const forwardEmails = getForwardEmails()
         transport.sendMail({
             from: process.env.ADMIN_GMAIL_ADDRESS,
             to: email,
             bcc: forwardEmails,
-            subject: `Successfully booked for ${lesson.lesson_name} at ${startDatetime.toString()}`,
+            subject: `Successfully booked for ${lesson.lesson_name} at ${convertedTime}`,
             html: `<div>
             <h1>Successfully booked for ${lesson.lesson_name}</h1>
             <p>Thank you for booking. I am looking forward to seeing you in the class.</p>
@@ -100,7 +103,7 @@ router.post('/', async (req, res) => {
                     <td><b>Name: </b>${name}</td>
                 </tr>
                 <tr>
-                    <td><b>Datetime: </b>${startDatetime.toString()}</td>
+                    <td><b>Datetime: </b>${convertedTime} (Brisbane time)</td>
                 </tr>
                 <tr>
                     <td><b>Duration: </b>${duration} minutes</td>

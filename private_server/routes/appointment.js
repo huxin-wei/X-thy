@@ -184,20 +184,19 @@ router.post('/admincancel', authenticateJWT, async (req, res) => {
             let appt = await getAppointmentById(id)
             appt = appt[0]
             const forwardEmails = getForwardEmails()
-            let apptStart = new Date(appt.appointment_start)
-            apptStart = apptStart.toString()
+
+            let convertedTime = new Date(appt.appointment_start).toLocaleDateString("en-AU", {timeZone: "Australia/Brisbane"})
 
             transport.sendMail({
                 from: process.env.ADMIN_GMAIL_ADDRESS,
                 to: appt.customer_email,
                 bcc: forwardEmails,
-                subject: `Admin cancelled appointment on ${apptStart}`,
-                html: `<h3>Appointment on ${apptStart} has been cancelled by admin.</h3>
-                    <p><b>note: </b>${message}</p>
-                    <p><b>class: </b>${appt.lesson_name}</p>
-                    <p><b>duration: </b>${appt.lesson_name}</p>
-                    <p><b>booking reference number: </b>${appt.appointment_id}</p>
-                    <p><b>booking date: </b>${(new Date(appt.booking_date)).toString()}</p>
+                subject: `Admin cancelled appointment on ${convertedTime}`,
+                html: `<h3>Appointment on ${convertedTime} has been cancelled by admin.</h3>
+                    <h4><b>Note: </b>${message}</h4>
+                    <p><b>Class: </b>${appt.lesson_name}</p>
+                    <p><b>Duration: </b>${appt.lesson_name}</p>
+                    <p><b>Booking reference number: </b>${appt.appointment_id}</p>
                 `
             })
             return res.status(200).json({

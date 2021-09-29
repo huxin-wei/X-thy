@@ -273,13 +273,13 @@ const bookAppointment = (currentTime, name, email, phone, note, startTime, endTi
                     LIMIT 1)
         AND ? > ?
         AND NOT EXISTs (SELECT 1 FROM booking 
-                        WHERE status = 'active' AND datediff(?, appointment_start) = 0 AND 
+                        WHERE status = 'active' AND 
                         ((? < appointment_start AND ? > appointment_start) OR 
                         (? >= appointment_start AND ? < appointment_end))
                         LIMIT 1) `
       ,
       [currentTime, name, email, phone, note, startTime, endTime, duration, lessonId, fee, cancelCode, 'active', `%${dayOfWeek}%`, startMinute, endMinute, endTime, startTime,
-        startTime, startTime, endTime, startTime, startTime],
+         startTime, endTime, startTime, startTime],
       (err, rows) => {
         connection.end()
         if (err) {
