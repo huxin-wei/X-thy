@@ -66,7 +66,6 @@ router.post('/login', async (req, res) => {
 
         throw new Error('Incorrect email or password')
     } catch (error) {
-        console.log(error)
         return res.status(401).json({
             success: false,
             message: error.message
@@ -94,7 +93,6 @@ router.get('/userinfo', authenticateJWT, async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'
@@ -160,7 +158,6 @@ router.post('/requestresetpasswordcode', async (req, res) => {
         throw new Error()
 
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'
@@ -207,7 +204,6 @@ router.post('/resetpasswordbycode', async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'
@@ -232,7 +228,6 @@ router.post('/changepassword', authenticateJWT, async (req, res) => {
     }
 
     if (pwdErrors.length) {
-        console.log(pwdErrors)
         return res.status(203).json({
             success: false,
             message: pwdErrors
@@ -278,7 +273,6 @@ router.post('/changepassword', authenticateJWT, async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: ['Something went wrong. Cannot process your request.']
@@ -328,7 +322,6 @@ router.post('/changeemail/code', authenticateJWT, async (req, res) => {
         user = user[0]
 
         let passwordMatch = await comparePasswords(password, user.password)
-        console.log('after comparepassword')
 
         if (passwordMatch) {
             // generate code and send to the new email to confirm
@@ -354,7 +347,6 @@ router.post('/changeemail/code', authenticateJWT, async (req, res) => {
                 throw new Error()
             }
         } else {
-            console.log('about to return in else')
             return res.status(203).json({
                 success: false,
                 message: 'Inccorrect password.'
@@ -362,7 +354,6 @@ router.post('/changeemail/code', authenticateJWT, async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process the request.'
@@ -398,7 +389,6 @@ router.post('/changeemail/change', async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'

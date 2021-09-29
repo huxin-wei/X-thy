@@ -57,7 +57,6 @@ router.get('/all', async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
         res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot get availability list.'
@@ -75,7 +74,6 @@ router.post('/', authenticateJWT, async (req, res) => {
     checkDay(errors, days)
 
     if (errors.length > 0) {
-        console.log(errors)
         return res.status(203).json({
             success: false,
             message: errors
@@ -181,7 +179,6 @@ router.get('/offertime', async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error.message)
         return res.status(203).json({
             success: false,
             message: [error.message]
@@ -215,7 +212,6 @@ router.delete('/delete/:availabilityId', authenticateJWT, async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'

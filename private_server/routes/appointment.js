@@ -8,7 +8,6 @@ const {
     cancelAppointmentById,
     getForwardEmails } = require('./../js/query')
 const { transport } = require('../js/miscMethod.js')
-const Intl = require('intl')
 const authenticateJWT = require('./../js/authenticateJWT')
 
 router.get('/upcoming', authenticateJWT, async (req, res) => {
@@ -28,7 +27,6 @@ router.get('/upcoming', authenticateJWT, async (req, res) => {
             appointments: appointments
         })
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process you request.'
@@ -67,7 +65,6 @@ router.get('/week', authenticateJWT, async (req, res) => {
             appointments: appointments
         })
     } catch (error) {
-        console.log(error.message)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request'
@@ -102,7 +99,6 @@ router.get('/id/:id', authenticateJWT, async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'
@@ -130,14 +126,12 @@ router.get('/usercancel', async (req, res) => {
             appt = appt[0]
             const forwardEmails = getForwardEmails()
 
-            let convertedTime = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Brisbane" }).format(appt.appointment_start)
-
             transport.sendMail({
                 from: process.env.ADMIN_GMAIL_ADDRESS,
                 to: appt.customer_email,
                 bcc: forwardEmails,
-                subject: `Successfully cancelled appointment on ${convertedTime}`,
-                html: `<h1>Appointment on ${apptStart} has been successfully cancelled.</h1>
+                subject: `Successfully cancelled appointment on ${appt.appointment_start.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })}`,
+                html: `<h3>Appointment on ${appt.appointment_start.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })} has been successfully cancelled.</h3>
                     <p><b>Class: </b>${appt.lesson_name}</p>
                     <p><b>Duration: </b>${appt.lesson_name}</p>
                     <p><b>Booking reference number: </b>${appt.appointment_id}</p>
@@ -156,7 +150,6 @@ router.get('/usercancel', async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'
@@ -184,14 +177,13 @@ router.post('/admincancel', authenticateJWT, async (req, res) => {
             let appt = await getAppointmentById(id)
             appt = appt[0]
             const forwardEmails = getForwardEmails()
-            let convertedTime = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Brisbane" }).format(appt.appointment_start)
             
             transport.sendMail({
                 from: process.env.ADMIN_GMAIL_ADDRESS,
                 to: appt.customer_email,
                 bcc: forwardEmails,
-                subject: `Admin cancelled appointment on ${convertedTime}`,
-                html: `<h3>Appointment on ${convertedTime} has been cancelled by admin.</h3>
+                subject: `Admin cancelled appointment on ${appt.appointment_start.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })}`,
+                html: `<h3>Appointment on ${appt.appointment_start.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })} has been cancelled by admin.</h3>
                     <h4><b>Note: </b>${message}</h4>
                     <p><b>Class: </b>${appt.lesson_name}</p>
                     <p><b>Duration: </b>${appt.lesson_name}</p>
@@ -208,7 +200,6 @@ router.post('/admincancel', authenticateJWT, async (req, res) => {
             })
         }
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request.'

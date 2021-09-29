@@ -41,7 +41,6 @@ router.post('/add', authenticateJWT, async (req, res) => {
             message: 'Successfully added.'
         })
     } catch (error) {
-        console.log(error)
         return res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request now.'
@@ -67,7 +66,6 @@ router.delete('/delete/:lessonId', authenticateJWT, async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log(error)
         res.status(203).json({
             success: false,
             message: 'Something went wrong. Cannot process your request now.'
