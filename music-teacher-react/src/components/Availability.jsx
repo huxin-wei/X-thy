@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { TiEdit, TiTrash } from 'react-icons/ti'
+import React, { useState, useRef } from 'react'
+import { TiTrash } from 'react-icons/ti'
 import { API_URL } from '../JS/variables';
 
 

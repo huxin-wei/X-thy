@@ -1,17 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const nodemailer = require('nodemailer')
-const { getLesson, bookAppointment, getAllAppointments } = require('../js/query')
+const { getForwardEmails, getLesson, bookAppointment } = require('../js/query')
+const { validateEmail, validateIfNotPast, generateRandomChars, transport} = require('../js/miscMethod.js')
 require('dotenv').config()
-
-function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
-function validateIfNotPast(baseDatetime) {
-    return Date.parse(baseDatetime) > Date.parse(new Date())
-}
 
 function lessonFinishBeforeMidnight(datetime, duration) {
     let hour = datetime.getHours()
@@ -20,32 +11,11 @@ function lessonFinishBeforeMidnight(datetime, duration) {
     return totalMinute <= 24 * 60
 }
 
-function makeid(length) {
-    let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() *
-            charactersLength));
-    }
-    return result;
-}
-
 function createCancelCode() {
-    let code = ''
-    const codeLength = 50
     let d = new Date
-    code = d.getTime() + '$'
-    return code + makeid(codeLength - code.length)
+    let code = d.getTime() + '$'
+    return code + generateRandomChars(10)
 }
-
-const transport = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-        user: process.env.ADMIN_GMAIL_ADDRESS,
-        pass: process.env.ADMIN_GMAIL_PASSWORD,
-    },
-});
 
 // Book an appointment
 router.post('/', async (req, res) => {
@@ -83,7 +53,7 @@ router.post('/', async (req, res) => {
         if (lesson.length < 1) {
             return res.status(203).json({
                 success: false,
-                message: `The lesson with ID: ${lessonId} does not exist. It might be deleted by admin.`
+                message: `The lesson with ID: ${lessonId} does not exist. It might be removed by admin.`
             })
         }
     } catch (error) {
@@ -115,9 +85,11 @@ router.post('/', async (req, res) => {
             })
         }
 
+        const forwardEmails = getForwardEmails()
         transport.sendMail({
             from: process.env.ADMIN_GMAIL_ADDRESS,
             to: email,
+            bcc: forwardEmails,
             subject: `Successfully booked for ${lesson.lesson_name} at ${startDatetime.toString()}`,
             html: `<div>
             <h1>Successfully booked for ${lesson.lesson_name}</h1>

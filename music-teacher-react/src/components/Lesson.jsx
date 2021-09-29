@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { TiTrash } from 'react-icons/ti'
 import { API_URL } from '../JS/variables'
 
-const url = 'http://localhost:3001'
-
 function Lesson({ lessonId, lessonName, description, price30m, price60m, removeLesson }) {
 	const [error, setError] = useState('')
 	const [isLoading, setIsLoading] = useState(false)

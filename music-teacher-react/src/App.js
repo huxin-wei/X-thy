@@ -14,7 +14,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-
     if (Cookies.get('loggedIn')) {
       setUser({ loggedIn: true })
     }
@@ -22,24 +21,21 @@ function App() {
     setIsLoading(false)
   }, [])
 
-
-
   return (
     <AppContext.Provider value={{ user, setUser }} >
       <div>
         <Router basename={'admin'}>
           {
-          isLoading ? 
-            <Loading />
+            isLoading ?
+              <Loading />
 
-          :
-          
-          user ?
+              :
 
-            <AdminPanel />
-            :
+              user ?
+                <AdminPanel />
+                :
 
-            <Login />
+                <Login />
 
           }
         </Router>

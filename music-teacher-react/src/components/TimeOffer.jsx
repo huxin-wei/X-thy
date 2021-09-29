@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { API_URL } from '../JS/variables'
 
 function TimeOffer(props) {
 	const [fetchErrors, setFetchErrors] = useState([])
 	const [times, setTimes] = useState([])
+	const [selectedTime, setSelectedTime] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
+	const mountedRef = useRef(true)
 
 	// UTC TIME
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC
+
+	useEffect(() => {
+		return () => {
+			mountedRef.current = false
+		}
+	}, [])
 
 	useEffect(() => {
 		setIsLoading(true)
@@ -20,7 +28,6 @@ function TimeOffer(props) {
 			}
 		}
 
-		console.log(props.fullDate)
 		let date = new Date(props.fullDate)
 		let day = date.getDay()
 		date = date.toUTCString()
@@ -28,30 +35,28 @@ function TimeOffer(props) {
 		fetch(`${API_URL}/api/availability/offertime?day=${day}&duration=${props.duration}&utcDate=${date}`, requestOptions)
 			.then(res => res.json())
 			.then((data) => {
+				if(!mountedRef.current) return null
 				if (!data.success) {
-					console.log(data)
 					throw new Error(data.message)
 				}
 				if (data.times.length === 0) {
-					throw new Error("I'm not available today. Check another day or decrease session time.")
+					throw new Error("Not available. Check other days or decrease session time.")
 				}
-				console.log(data)
 				setIsLoading(false)
 				setFetchErrors([])
-				
+
 				data.times.sort((a,b) => new Date(a) - new Date(b))
 				setTimes(data.times)
 			})
 			.catch((err) => {
+				if(!mountedRef.current) return null
 				setTimes([])
 				setIsLoading(false)
 				if (Array.isArray(err)) {
 					setFetchErrors(err)
-					console.log('it is array')
 				}
 				else {
 					setFetchErrors([err.message])
-					console.log('err is not array')
 				}
 				console.log(err)
 			})
@@ -78,15 +83,20 @@ function TimeOffer(props) {
 						</div>
 					</div>
 					:
-					<div>
+					<div style={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}>
 						{
 							times.map((time, index) => {
 								const date = new Date(time)
 								const minutes = getTotalMinutesFromDate(date)
 								let HHMMAPMstr = minutesToHhMmAPmString(minutes)
 								return (
-									<button key={index} type="button" className="btn btn-secondary mx-2 my-2" style={{ width: 80, fontSize: 12 }}
+									<button key={index} 
+									type="button" 
+									value={HHMMAPMstr} 
+									className={`btn ${ HHMMAPMstr == selectedTime? 'btn-primary' : 'btn-secondary'} mx-1 my-1`} 
+									style={{ width: 80, fontSize: 12 }}
 										onClick={(e) => {
+											setSelectedTime(HHMMAPMstr)
 											props.onTimeSelected(HHMMAPMstr)
 										}}
 									>{HHMMAPMstr}</button>

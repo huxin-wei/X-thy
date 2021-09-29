@@ -8,4 +8,5 @@ let dbInfo = {
     timezone: 'utc'
 }
 
-module.exports = {dbInfo};
+
+module.exports = {dbInfo, forwardEmail};

@@ -85,12 +85,6 @@ function CreateLessonForm(props) {
 		}
 
 		fetch(`${API_URL}/api/lesson/add`, requestOptions)
-			.then(res => {
-				if (!res.ok) {
-					throw { message: `${res.status}: Cannot connect to the server.` }
-				}
-				return res
-			})
 			.then(res => res.json())
 			.then((data) => {
 				if(!mountedRef.current) return null

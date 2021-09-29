@@ -156,16 +156,9 @@ router.get('/offertime', async (req, res) => {
                 }
 
                 for (let i = 0; i < appt_result.length; i++) {
-
                     let appointment_start = new Date(appt_result[i].appointment_start)
                     let appointment_end = new Date(appt_result[i].appointment_end)
 
-                    // if ((headDT <= appointment_start && tailDT >= appointment_start) ||
-                    //     (headDT < appointment_end && tailDT > appointment_end) ||
-                    //     (headDT >= appointment_start && tailDT <= appointment_end)) {
-                    //     isFree = false
-                    //     break
-                    // }
                     if ((headDT <= appointment_start && tailDT > appointment_start) ||
                         (headDT >= appointment_start && headDT < appointment_end)) {
                         isFree = false

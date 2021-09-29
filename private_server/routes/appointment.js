@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const { 
+const {
     getUpcomingAppointment,
     getAppointmentById,
     getAppointmentBetween,
     cancelAppointmentByCode,
-    cancelAppointmentById } = require('./../js/query')
+    cancelAppointmentById,
+    getForwardEmails } = require('./../js/query')
+const { transport } = require('../js/miscMethod.js')
 const authenticateJWT = require('./../js/authenticateJWT')
 
 router.get('/upcoming', authenticateJWT, async (req, res) => {
@@ -35,7 +37,6 @@ router.get('/upcoming', authenticateJWT, async (req, res) => {
 
 router.get('/week', authenticateJWT, async (req, res) => {
     let utcDateStr = req.query.utcDate
-    console.log(utcDateStr)
     if (!utcDateStr) {
         return res.status(203).json({
             success: false,
@@ -44,7 +45,6 @@ router.get('/week', authenticateJWT, async (req, res) => {
     }
 
     let date = new Date(utcDateStr)
-    console.log(`date after turning from utcstr to date: ${date}`)
 
     if (date == 'Invalid Date') {
         return res.status(203).json({
@@ -55,19 +55,11 @@ router.get('/week', authenticateJWT, async (req, res) => {
 
     // week begin at day A and end at day A in the next 7 days (7 days)
     let beginDate = new Date(date)
-    console.log(`begin date is: ${beginDate}`)
-
     let endDate = new Date(beginDate)
     endDate.setDate(beginDate.getDate() + 7)
 
-    console.log(`end date is: ${endDate}`)
-
     try {
         const appointments = await getAppointmentBetween(beginDate, endDate, 'active')
-
-        // appointments.forEach(appt => {
-        //     console.log(appt)
-        // })
 
         return res.status(200).json({
             success: true,
@@ -85,7 +77,6 @@ router.get('/week', authenticateJWT, async (req, res) => {
 })
 
 router.get('/id/:id', authenticateJWT, async (req, res) => {
-    console.log('visit app/id')
     let { id } = req.params
     id = parseInt(id)
     if (!id) {
@@ -130,12 +121,31 @@ router.get('/usercancel', async (req, res) => {
 
     try {
         const queryResult = await cancelAppointmentByCode(id, cancelCode)
-        console.log(queryResult)
 
-        if(queryResult.affectedRows){
+        if (queryResult.affectedRows) {
+            // get user's email from that appointment by apppointment id
+            // to send notification email to the user
+            let appt = await getAppointmentById(id)
+            appt = appt[0]
+            const forwardEmails = getForwardEmails()
+            let apptStart = new Date(appt.appointment_start)
+            apptStart = apptStart.toString()
+
+            transport.sendMail({
+                from: process.env.ADMIN_GMAIL_ADDRESS,
+                to: appt.customer_email,
+                bcc: forwardEmails,
+                subject: `Successfully cancelled appointment on ${apptStart}`,
+                html: `<h1>Appointment on ${apptStart} has been successfully cancelled.</h1>
+                    <p><b>class: </b>${appt.lesson_name}</p>
+                    <p><b>duration: </b>${appt.lesson_name}</p>
+                    <p><b>booking reference number: </b>${appt.appointment_id}</p>
+                    <p><b>booking date: </b>${(new Date(appt.booking_date)).toString()}</p>
+                `
+            })
+
             // send delete success page
-            // send email??
-            
+
             return res.status(200).json({
                 success: true
             })
@@ -168,12 +178,28 @@ router.post('/admincancel', authenticateJWT, async (req, res) => {
     try {
         const queryResult = await cancelAppointmentById(id)
 
-        if(queryResult.affectedRows){
-            // send delete success page
-            // send email to the customer
+        if (queryResult.affectedRows) {
+            // get user's email from that appointment by apppointment id
+            // to send notification email to the user
+            let appt = await getAppointmentById(id)
+            appt = appt[0]
+            const forwardEmails = getForwardEmails()
+            let apptStart = new Date(appt.appointment_start)
+            apptStart = apptStart.toString()
 
-
-            
+            transport.sendMail({
+                from: process.env.ADMIN_GMAIL_ADDRESS,
+                to: appt.customer_email,
+                bcc: forwardEmails,
+                subject: `Admin cancelled appointment on ${apptStart}`,
+                html: `<h3>Appointment on ${apptStart} has been cancelled by admin.</h3>
+                    <p><b>note: </b>${message}</p>
+                    <p><b>class: </b>${appt.lesson_name}</p>
+                    <p><b>duration: </b>${appt.lesson_name}</p>
+                    <p><b>booking reference number: </b>${appt.appointment_id}</p>
+                    <p><b>booking date: </b>${(new Date(appt.booking_date)).toString()}</p>
+                `
+            })
             return res.status(200).json({
                 success: true
             })

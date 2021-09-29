@@ -20,6 +20,7 @@ create table if not exists availability(
     end_minute int not null
 );
 
+drop table booking;
 create table if not exists booking(
 	appointment_id int primary key auto_increment,
     booking_date timestamp not null,
@@ -36,6 +37,7 @@ create table if not exists booking(
     update_date timestamp,
     status ENUM('active', 'admin_cancelled', 'booker_cancelled', 'cancelled') not null
 );
+
 select * from booking;
 show tables;
 delete from booking;
@@ -54,15 +56,55 @@ insert into testtime( select now());
 insert into testtime values( '2021-09-10 18:00:00');
 select * from testtime;
 
-create table if not exists user(
-	id int primary key auto_increment,
+create table if not exists admin(
+    user_id int auto_increment primary key,
     email varchar(50) unique not null,
     password varchar(60) not null
 );
 
-insert into user (email, password) values ('mcjordanguitar@gmail.com', '$2b$10$BaK6v4DiXSFY91T.xX2SuOUtFsxVezX5fUL1qL44EcfIGpWcwQv/i');
+
+create table if not exists code(
+	id int auto_increment primary key,
+    user_id int not null,
+    code varchar(20) not null,
+    type ENUM('email', 'password') not null,
+    code_created_time timestamp not null,
+    pending_value varchar(100)
+);
+
+SELECT * FROM admin;
+SELECT * FROM code;
+
+-- ALTER TABLE tableADD [COLUMN] column_name column_definition
+-- ALTER TABLE table_name MODIFY column_name varchar(new_length);
+ALTER TABLE admin MODIFY code varchar(15);
+
+ALTER TABLE admin ADD COLUMN pending_email varchar(50);
+
+ -- ALTER TABLE table_name RENAME COLUMN old_column_name TO new_column_name
+ 
+ ALTER TABLE admin RENAME COLUMN resetPwdCode to code;
+ ALTER TABLE admin RENAME COLUMN resetPwdCode_created_at to code_created_at;
+
+drop table admin;
+select * from code;
+select * from admin;
+select * from booking;
+update admin set email = 'takdanaitc@gmail.com';
+
+SELECT * from admin where exists (SELECT pending_value FROM code WHERE admin.email = code.email LIMIT 1);
+update admin set email = (SELECT pending_value FROM code WHERE admin.email = code.email AND code = 'cat');
+
+UPDATE admin a, code c SET a.email = c.pending_value WHERE  a.email = c.email AND type = 'email' AND code = 'D8Vzkwo5u7' ;
+
+
+insert into admin (email, password) values ('mcjordanguitar@gmail.com', '$2b$10$BaK6v4DiXSFY91T.xX2SuOUtFsxVezX5fUL1qL44EcfIGpWcwQv/i');
+select timestampdiff(minute,  "2021-09-20 13:01:52", now());
+
 
 select * from user;
+
+-- $2b$10$BaK6v4DiXSFY91T.xX2SuOUtFsxVezX5fUL1qL44EcfIGpWcwQv/i
 
 create table if not exists app(
 	appointment_start timestamp not null,
@@ -213,6 +255,10 @@ LIMIT 1
 -- https://stackoverflow.com/questions/913841/mysql-conditional-insert
 
 select now();
+select * from booking;
+select * from availability;
+
+delete from booking;
 
 SELECT * 
 FROM booking
@@ -222,3 +268,5 @@ where datediff('2021-08-28 13:00:00', appointment_start) = 0 AND
     ('2021-08-28 13:00:00' >= appointment_start AND '2021-08-28 13:30:00' <= appointment_end)
 LIMIT 1
     ;
+
+select timestampdiff(minute, '2021-05-18 14:00:00', '2021-05-19 14:00:00');

@@ -4,7 +4,6 @@ import Availability from './Availability';
 import { API_URL } from '../JS/variables';
 
 function AvailabilityPanel() {
-	const [formMessage, setFormMessage] = useState({ success: false })
 	const [availabilities, setAvailabilities] = useState([])
 	const mountedRef = useRef(true)
 	const [showForm, setShowForm] = useState(false)

@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { API_URL } from '../JS/variables'
 
-const EVERYDAY_INDEX = 7
-
-
 function CrateAvailabilityForm(props) {
 	const DAYS = [
 		{ id: 0, day: 'Sun', isChecked: false },
@@ -16,12 +13,9 @@ function CrateAvailabilityForm(props) {
 		{ id: 7, day: 'Everyday', isChecked: false },
 	]
 
-	const [timeFrom, setTimeFrom] = useState('')
-	const [timeTo, setTimeTo] = useState('')
-	const [selectedDays, setSelectedDays] = useState(DAYS)
+	const [selectedDays] = useState(DAYS)
 	const [isLoading, setIsLoading] = useState(false)
 	const [fetchErrors, setFetchErrors] = useState([])
-	const [dateError, setDateError] = useState('')
 	const [dayError, setDayError] = useState('')
 	const [fromH, setFromH] = useState(0)
 	const [fromM, setFromM] = useState(0)
@@ -29,6 +23,7 @@ function CrateAvailabilityForm(props) {
 	const [toH, setToH] = useState(0)
 	const [toM, setToM] = useState(0)
 	const [toAP, setToAP] = useState('AM')
+	const [dummy, setDummy] = useState(0)
 
 	const mountedRef = useRef(true)
 
@@ -44,11 +39,7 @@ function CrateAvailabilityForm(props) {
 
 	const getToMinute = () => {
 		// to midnight
-		console.log(toH)
-		console.log(toM)
-		console.log(toAP)
 		if (toH * 1 == 0 && toM * 1 == 0 && toAP == 'AM'){
-			console.log('visit')
 			return 24*60
 		}
 		return (toH * 1 + (toAP === 'AM'? 0 : 12)) * 60 + toM * 1
@@ -61,21 +52,16 @@ function CrateAvailabilityForm(props) {
 
 
 		if(timeFrom >= timeTo){
-			console.log('timefrom', timeFrom)
-			console.log('timeto', timeTo)
 			return setFetchErrors(['Incorrect time.'])
 		}
 
-		console.log('after')
 
 		if (!mountedRef.current) {
-			console.log('mountedRef false')
 			return null
 		}
 		setFetchErrors([])
 		setIsLoading(true)
 
-		console.log('1')
 		const days = getSelectedDaysValue()
 
 		if (!days) {
@@ -85,7 +71,6 @@ function CrateAvailabilityForm(props) {
 		} else {
 			setDayError('')
 		}
-		console.log('2')
 
 		const requestOptions = {
 			method: 'POST',
@@ -110,9 +95,7 @@ function CrateAvailabilityForm(props) {
 			})
 			.then(res => res.json())
 			.then((data) => {
-				console.log('data: ', data)
 				if (!mountedRef.current) return null
-				console.log('yo')
 				if (!data.success) {
 					throw new Error(data.message)
 				}
@@ -122,24 +105,19 @@ function CrateAvailabilityForm(props) {
 			.catch((err) => {
 				if (!mountedRef.current) return null
 				if (Array.isArray(err)) {
-					console.log('1', err)
 					setFetchErrors(err)
 				}
 				else {
-					console.log('2', err)
 					setFetchErrors([err.message])
 				}
 				setIsLoading(false)
 			})
 	}
 
-	console.log('Create availability form re render')
-
 	// return 056 if Sun, Fri, Sat is checked
 	const getSelectedDaysValue = () => {
 		let val = ''
-		selectedDays.map(day => {
-			if (day.id == EVERYDAY_INDEX) { return }
+		selectedDays.forEach(day => {
 			if (day.isChecked) {
 				val += day.id
 			}
@@ -147,57 +125,36 @@ function CrateAvailabilityForm(props) {
 		return val
 	}
 
-	const onTimeFromChange = (e) => {
-		let time = destructHHMM(e.target.value)
-
-		if (timeTo == '' || time < timeTo) {
-			setTimeFrom(time)
-			if (dateError) {
-				setDateError('')
-			}
-		} else {
-			e.target.value = ''
-			setDateError('Must be lesser.')
-		}
-	}
-
-	const onTimeToChange = (e) => {
-		let time = destructHHMM(e.target.value)
-
-		if (timeFrom == '' || time > timeFrom) {
-			setTimeTo(time)
-			if (dateError) {
-				setDateError('')
-			}
-		} else {
-			e.target.value = ''
-			setDateError('Must be greater.')
-		}
-	}
-
-	const destructHHMM = (hhmmStr) => {
-		let list = hhmmStr.split(':')
-		return list[0] * 60 + list[1] * 1
-	}
-
 	const onSelectedDayChange = (e) => {
-		setSelectedDays(selectedDays.map(day => {
-			if (e.target.id == 7) {
-				selectedDays.map(d => {
-					d.isChecked = e.target.checked
-				})
-			} else {
-				if (e.target.id == day.id) {
-					day.isChecked = e.target.checked
-					selectedDays[7].isChecked = false
+		if(e.target.id == 7){
+			// every day is check, check if all 7 days are checked. If not set isChecked = true. If they are, set all to false
+			let foundUnchecked = false
+			for(let i = 0; i < selectedDays.length - 1; i++){
+				if(!selectedDays[i].isChecked){
+					selectedDays[i].isChecked = true
+					foundUnchecked = true
 				}
 			}
 
-			return {
-				...day
+			// if there are no uncheck, uncheck them all
+			if(!foundUnchecked){
+				for(let i = 0; i < selectedDays.length; i++){
+					selectedDays[i].isChecked = false
+				}
+			} else {
+				// check the every day
+				selectedDays[selectedDays.length - 1].isChecked = true
 			}
-		}))
-		console.log(selectedDays)
+		} else {
+			for(let i = 0; i < selectedDays.length - 1; i++){
+				if(e.target.id == selectedDays[i].id){
+					selectedDays[i].isChecked = e.target.checked
+					selectedDays[7].isChecked = false
+				}
+			}
+		}
+
+		setDummy(dummy + 1)
 	}
 
 	return (
@@ -300,21 +257,13 @@ function CrateAvailabilityForm(props) {
 						{selectedDays.map((day) => {
 							return (
 								<div key={day.id}>
-									<input className="form-check-input" type="checkbox" id={day.id} onChange={onSelectedDayChange} checked={day.isChecked} />
+									<input className="form-check-input" type="checkbox" id={day.id} onChange={ e => {onSelectedDayChange(e)}} checked={day.isChecked} />
 									<label className="form-check-label" htmlFor={day.id}>{day.day}</label>
 								</div>
 							)
 						})}
 					</div>
 
-
-					{
-						dateError
-						&&
-						<div className="alert alert-danger" role="alert">
-							{dateError}
-						</div>
-					}
 					{
 						dayError
 						&&
@@ -324,8 +273,6 @@ function CrateAvailabilityForm(props) {
 					}
 					{
 						fetchErrors.map((error, index) => {
-							console.log(error)
-							console.log(`the error is: ${index}: ${error}`)
 							return (
 								<div key={index} className="alert alert-danger" role="alert">
 									{error}

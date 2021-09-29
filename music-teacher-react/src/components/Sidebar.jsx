@@ -1,8 +1,8 @@
 import React, {useContext} from 'react'
-import { Link, Router, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { GiSpellBook, GiTeacher, GiBookmark } from "react-icons/gi";
+import {MdAccountBox} from "react-icons/md"
 import {GoCalendar} from "react-icons/go"
-import { ImUpload2 } from 'react-icons/im'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
 import Cookies from 'js-cookie'
 import {AppContext} from './AppContext'
@@ -28,7 +28,6 @@ function Sidebar() {
                     throw new Error(data.message)
                 }
                 Cookies.remove('loggedIn')
-                Cookies.remove('email')
                 setUser(null)
             })
             .catch(error => {
@@ -79,14 +78,13 @@ function Sidebar() {
 
                         </NavLink>
                     </li>
-                    <li data-toggle="tooltip" data-placement="right" title="upload files">
+                    <li data-toggle="tooltip" data-placement="right" title="Account">
                         <NavLink
                             activeClassName="sidebar-link--active"
                             className="sidebar-link"
-                            to="/upload">
-                            <ImUpload2 size={size} />
-                            <p>Upload</p>
-
+                            to="/account">
+                            <MdAccountBox size={size} />
+                            <p>Account</p>
                         </NavLink>
                     </li>
                 </ul>

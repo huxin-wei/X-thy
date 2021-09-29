@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
 
 function AppModal({show, onClose, title, children}) {
 
     useEffect(() => {
+        const closeOnEscapeKeyDown = (e) => {
+            if( e.keyCode === 27) {
+                onClose()
+            } 
+        }
         document.addEventListener('keydown', closeOnEscapeKeyDown)
         return () => {
             document.removeEventListener('keydown', closeOnEscapeKeyDown)
         }
-    }, [])
+    })
 
-    const closeOnEscapeKeyDown = (e) => {
-        if( e.keyCode === 27) {
-            onClose()
-        } 
-    }
+
 
     return (
         <div className={`app-modal ${show? 'show' : ''}`} onClick={onClose}>

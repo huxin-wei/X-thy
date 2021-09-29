@@ -30,10 +30,6 @@ function DatePicker(props) {
     const handleDateChange = props.onDateChange
 
     useEffect(() => {
-        resetCalendar()
-    }, [month, year])
-
-    const resetCalendar = () => {
         let newDates = []
         let today = new Date()
         let startDayOfMonth = new Date(year, month, 1)
@@ -56,7 +52,7 @@ function DatePicker(props) {
             currentDate++
         }
         setDates(newDates)
-    }
+    }, [month, year])
 
     const checkSameDay = (date1, date2) => {
         return date1.getDate() == date2.getDate() && date1.getMonth() == date2.getMonth() && date1.getFullYear() == date2.getFullYear()
@@ -78,7 +74,6 @@ function DatePicker(props) {
 
     const monthHandle = (e) => {
         setMonth(parseInt(e.target.id))
-        console.log('month', e.target.id)
     }
 
     const onSelectDateHandle = (e) => {
@@ -86,7 +81,6 @@ function DatePicker(props) {
         setSelectedYear(year)
         setDate(parseInt(e.target.id))
         handleDateChange(parseInt(e.target.id), month, year)
-        console.log('var:', parseInt(e.target.id), month, year)
     }
 
     return (
@@ -98,12 +92,12 @@ function DatePicker(props) {
                     </h3>
                 </div>
 
-                <div className="year-spinner">
-                    <button onClick={decrementYear} className="float-start" >
+                <div style={{textAlign: "center"}}>
+                    <button onClick={decrementYear} className="float-start circle" >
                         <FaAngleLeft size={25} />
                     </button>
                     <span style={{ fontSize: 20 }}>{year}</span>
-                    <button onClick={incrementYear} className="float-end">
+                    <button onClick={incrementYear} className="float-end circle">
                         <FaAngleRight size={25} />
                     </button>
                 </div>
@@ -112,7 +106,7 @@ function DatePicker(props) {
                         {
                             MONTH.map(monthObj => {
                                 return (
-                                    <div key={monthObj.value} className={`${parseInt(monthObj.value) == parseInt(month) ? 'light-blue-active' : ''} light-blue month-item`}>
+                                    <div key={monthObj.value} className={`${parseInt(monthObj.value) == parseInt(month) ? 'month-item-active' : ''} month-item`}>
                                         <button id={monthObj.value} onClick={monthHandle}>
                                             {monthObj.month}
                                         </button>

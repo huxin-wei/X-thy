@@ -5,7 +5,7 @@ function Appointment({ id, onUpdate }) {
 	const [appointment, setAppointment] = useState(null)
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState('')
-	const [showForm, setShowForm] = useState(false)
+	const [showCancelForm, setShowCancelForm] = useState(false)
 	const [cancelText, setCancelText] = useState('')
 	const [cancelLoading, setCancelLoading] = useState(false)
 	const [cancelError, setCancelError] = useState('')
@@ -81,7 +81,7 @@ function Appointment({ id, onUpdate }) {
 		e.target.style.height = Math.min(e.target.scrollHeight, 300) + "px";
 		setCancelText(e.target.value)
 	}
-	
+
 	const handleCancelAppointment = (e) => {
 		e.preventDefault()
 		const requestOptions = {
@@ -103,14 +103,13 @@ function Appointment({ id, onUpdate }) {
 		fetch(`${API_URL}/api/appointment/admincancel?id=${appointment.appointment_id}}`, requestOptions)
 			.then(res => res.json())
 			.then(data => {
-				if(!mountedRef.current) return null
-				if(!data.success){
+				if (!mountedRef.current) return null
+				if (!data.success) {
 					throw new Error(data.message)
 				}
 				onUpdate()
-				
 			})
-			.catch(error=> {
+			.catch(error => {
 				console.log(error)
 				setCancelLoading(false)
 				setCancelError(error.message)
@@ -134,7 +133,7 @@ function Appointment({ id, onUpdate }) {
 				{
 					appointment &&
 					<div>
-						<p style={{color: "black"}}><b>Datetime: {convertDateAndTimeRangeString(new Date(appointment.appointment_start), appointment.duration)} ({appointment.duration} minutes)</b></p>
+						<p style={{ color: "black" }}><b>Datetime: {convertDateAndTimeRangeString(new Date(appointment.appointment_start), appointment.duration)} ({appointment.duration} minutes)</b></p>
 						<p><b>Appointment ID: </b>{appointment.appointment_id}</p>
 						<p><b>Lesson: </b>{appointment.lesson_name}</p>
 						<p><b>Customer: </b>{appointment.customer_name}</p>
@@ -147,27 +146,34 @@ function Appointment({ id, onUpdate }) {
 			</div>
 			<div className="mt-2">
 				{
-					!showForm ?
-						<button className="btn btn-danger float-end" onClick={() => setShowForm(true)}>
-							cancel appointment
-						</button>
-
-						:
-						(
-							cancelLoading ?
-								<button className="btn btn-danger py-1 float-end" type="button" disabled>
-									<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-								</button>
-								:
-								<div>
-									<form onSubmit={handleCancelAppointment} className="py-2">
-										<textarea onChange={onCancelTextChange} className="form-control" id="cancelText" rows={5} wrap="soft" placeholder="write message here" />
+					showCancelForm ?
+						<div>
+							<form onSubmit={handleCancelAppointment} className="py-2">
+								<textarea onChange={onCancelTextChange} className="form-control" id="cancelText" rows={5} wrap="soft" placeholder="write message here" />
+								{
+									cancelError
+									&&
+									<div className="alert alert-danger" role="alert">
+										{cancelError}
+									</div>
+								}
+								{
+									cancelLoading ?
+										<button className="btn btn-primary float-end" type="button" disabled>
+											<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+											<span className="sr-only">Loading...</span>
+										</button>
+										:
 										<button type="submit" title="delete" className="btn btn-danger my-2 float-end" >
 											<span className="align-middle button-text" style={{ fontSize: 12 }}>confirm cancellation</span>
 										</button>
-									</form >
-								</div>
-						)
+								}
+							</form >
+						</div>
+						:
+						<button className="btn btn-danger float-end" onClick={() => setShowCancelForm(true)}>
+							cancel appointment
+						</button>
 				}
 			</div>
 		</div>

@@ -11,7 +11,7 @@ const initYear = today.getFullYear()
 const INIT_FULLDATE = `${initYear}-${initMonth}-${initDate}`
 const INIT_DURATION = 60
 
-function Booking(props) {
+function Booking() {
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [phone, setPhone] = useState('')
@@ -38,7 +38,7 @@ function Booking(props) {
 		setDummy(dummy + 1)
 		setBookingSuccess(true)
 		setTimeout(() => {
-			if(!mountedRef.current) return null
+			if (!mountedRef.current) return null
 			setBookingSuccess(false)
 		}, 7000)
 	}
@@ -108,11 +108,9 @@ function Booking(props) {
 			.catch(error => {
 				if (!mountedRef.current) return null
 				if (Array.isArray(error)) {
-					console.log('1', error)
 					setSubmitErrors(error)
 				}
 				else {
-					console.log('2', error)
 					setSubmitErrors([error.message])
 				}
 				setIsLoading(false)
@@ -120,10 +118,10 @@ function Booking(props) {
 	}
 
 	return (
-		<div style={{ maxWidth: 600, margin: "auto", padding: "40px 0px 150px 0px" }}>
+		<div style={{ maxWidth: 600, margin: "auto", padding: "0px 0px 150px 0px" }}>
 			{/* {CLASS selection} */}
-			<section>
-				<div className="guide-banner mb-4">
+			<section className="booking">
+				<div className="guide-banner">
 					<h3>Select class</h3>
 				</div>
 				<ClassOffer selectLesson={setLesson} />
@@ -131,8 +129,8 @@ function Booking(props) {
 			</section>
 
 			{/* {SESSION DURATION selection} */}
-			<section>
-				<div className="guide-banner my-4">
+			<section className="booking">
+				<div className="guide-banner">
 					<h3>Select session duration</h3>
 				</div>
 				<div>
@@ -152,24 +150,24 @@ function Booking(props) {
 			</section>
 
 			{/* {DATE selection section} */}
-			<section>
-				<div className="guide-banner my-4">
+			<section className="booking">
+				<div className="guide-banner">
 					<h3>Select date</h3>
 				</div>
 				<DatePicker date={initDate} month={initMonth - 1} year={initYear} onDateChange={handleDateChange} />
 			</section>
 
 			{/* {TIME selection section} */}
-			<section>
-				<div className="guide-banner my-4">
+			<section className="booking">
+				<div className="guide-banner">
 					<h3>Select time</h3>
 				</div>
 				<TimeOffer duration={duration} fullDate={fullDate} onTimeSelected={setFullTime} dummy={dummy} />
 			</section>
 
 			{/* ...... {student information} ......... */}
-			<section>
-				<div className="guide-banner my-4">
+			<section className="booking">
+				<div className="guide-banner">
 					<h3>Your information</h3>
 				</div>
 				<form className="form-default-box">
@@ -201,8 +199,8 @@ function Booking(props) {
 			</section>
 
 			{/* {summary table} */}
-			<section>
-				<div className="guide-banner my-4">
+			<section className="booking">
+				<div className="guide-banner">
 					<h3>Confirm details & Book appointment</h3>
 				</div>
 				<table className="table mb-4" style={{ margin: "auto", maxWidth: 600 }}>
@@ -273,33 +271,30 @@ function Booking(props) {
 					</div>
 				}
 
-			{
-				bookingSuccess &&
-				<div className="alert alert-success" role="alert">
-					<p>Successfully booked. Booking details will be sent to your email address.</p>
-					<p>You can continue booking on this page.</p>
-				</div>
-			}
+				{
+					bookingSuccess &&
+					<div className="alert alert-success" role="alert">
+						<p>Successfully booked.Booking details will be sent to your email address.</p>
+						<p>You can continue booking on this page.</p>
+					</div>
+				}
 
 				{
 					isLoading ?
-						<button className="btn btn-primary float-end" type="button" disabled>
-							<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-							<span className="sr-only">Loading...</span>
-						</button>
+						<div style={{ display: "flex", justifyContent: "flex-end" }}>
+							<button className="btn btn-primary" type="button" disabled>
+								<span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+								<span className="sr-only">Loading...</span>
+							</button>
+						</div>
 						:
-						<button className="btn btn-primary d-inline-block float-end" onClick={() => { handleSubmit() }}>Book now</button>
+						<div style={{ display: "flex", justifyContent: "flex-end" }}>
+							<button className="btn btn-primary" onClick={() => { handleSubmit() }}>Book now</button>
+						</div>
 				}
 			</section>
 		</div>
 	)
 }
 
-
 export default Booking
-//handleDateChange={handleDateChange}
-
-{/* <button className="btn btn-primary float-end mt-3"
-onClick={() => {handleSubmit()}}>
-	BOOK APPOINTMENT
-</button> */}

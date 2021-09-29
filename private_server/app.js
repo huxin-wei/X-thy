@@ -11,7 +11,7 @@ let availabilityRouter = require('./routes/availability')
 let authRouter = require('./routes/auth')
 let bookingRouter = require('./routes/booking')
 let appointmentRouter = require('./routes/appointment')
-
+const {refreshForwardEmails} = require('./js/query')
 
 let app = express();
 
@@ -38,6 +38,14 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+
+// initialise forward email variable
+refreshForwardEmails()
+
+setInterval(() => {
+  refreshForwardEmails()
+}, 1000 * 60 * 30)
+
 
 app.disable('etag');
 // view engine setup
