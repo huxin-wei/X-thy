@@ -8,6 +8,7 @@ const {
     cancelAppointmentById,
     getForwardEmails } = require('./../js/query')
 const { transport } = require('../js/miscMethod.js')
+const Intl = require('intl')
 const authenticateJWT = require('./../js/authenticateJWT')
 
 router.get('/upcoming', authenticateJWT, async (req, res) => {
