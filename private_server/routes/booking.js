@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { getForwardEmails, getLesson, bookAppointment } = require('../js/query')
 const { validateEmail, validateIfNotPast, generateRandomChars, transport} = require('../js/miscMethod.js')
+const Intl = require('intl')
 require('dotenv').config()
 
 function lessonFinishBeforeMidnight(datetime, duration) {
@@ -97,6 +98,7 @@ router.post('/', async (req, res) => {
             subject: `Successfully booked for ${lesson.lesson_name} at ${convertedTime}`,
             html: `<div>
             <h1>Successfully booked for ${lesson.lesson_name}</h1>
+            <p>HEY Time should be correct</p>
             <p>Thank you for booking. I am looking forward to seeing you in the class.</p>
             <p>Here is your appointment information</p>
             <table>
