@@ -9,4 +9,4 @@ let dbInfo = {
 }
 
 
-module.exports = {dbInfo, forwardEmail};
+module.exports = {dbInfo};
