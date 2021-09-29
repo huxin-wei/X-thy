@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { getForwardEmails, getLesson, bookAppointment } = require('../js/query')
-const { validateEmail, validateIfNotPast, generateRandomChars, transport} = require('../js/miscMethod.js')
+const { validateEmail, validateIfNotPast, generateRandomChars, transport } = require('../js/miscMethod.js')
 const Intl = require('intl')
 require('dotenv').config()
 
@@ -79,6 +79,7 @@ router.post('/', async (req, res) => {
         const bookingResult = await bookAppointment(new Date(), name, email, phone, note, startDatetime,
             endDatetime, duration, lesson.lesson_id, fee, cancelCode, startMinute, endMinute, dayOfWeek)
 
+        console.log(startDatetime)
         if (bookingResult.affectedRows < 1) {
             return res.status(203).json({
                 success: false,
@@ -88,14 +89,17 @@ router.post('/', async (req, res) => {
 
         // as the server use UTC time - convert time using toLocaleString() with timezone parameter
         //new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Sydney" }).format(date))
-        let convertedTime = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Brisbane" }).format(startDatetime)
+        // let convertedTime = new Intl.DateTimeFormat('en-AU', { dateStyle: 'full', timeStyle: 'long', timeZone: "Australia/Brisbane" }).format(startDatetime)
+
+        // toLocaleString Method
+        console.log(`toLocaleString ${startDatetime.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })}`)
 
         const forwardEmails = getForwardEmails()
         transport.sendMail({
             from: process.env.ADMIN_GMAIL_ADDRESS,
             to: email,
             bcc: forwardEmails,
-            subject: `Successfully booked for ${lesson.lesson_name} at ${convertedTime}`,
+            subject: `Successfully booked for ${lesson.lesson_name} at ${startDatetime.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })}`,
             html: `<div>
             <h1>Successfully booked for ${lesson.lesson_name}</h1>
             <p>HEY Time should be correct</p>
@@ -103,10 +107,13 @@ router.post('/', async (req, res) => {
             <p>Here is your appointment information</p>
             <table>
                 <tr>
+                    <td><b>Test to locale: </b>${startDatetime.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })}</td>
+                </tr>
+                <tr>
                     <td><b>Name: </b>${name}</td>
                 </tr>
                 <tr>
-                    <td><b>Datetime: </b>${convertedTime}</td>
+                    <td><b>Datetime: </b>${startDatetime.toLocaleString('en-AU', { timeZone: "Australia/Brisbane" })}</td>
                 </tr>
                 <tr>
                     <td><b>Duration: </b>${duration} minutes</td>
@@ -136,7 +143,7 @@ router.post('/', async (req, res) => {
         console.log(error)
         return res.status(203).json({
             success: false,
-            message: 'Something went wrong. Cannot process your bookie'
+            message: 'Something went wrong. Cannot process your booking.'
         })
     }
 })
