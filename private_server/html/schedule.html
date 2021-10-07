@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<Month></Month>
+	</head>
+	<style type="text/css">
+	html{
+		font-size: 100%;
+	}
+	button{
+			float: right;
+			font-size: 100%;
+	}
+   
+    h1{
+		margin:auto;
+		text-align: center
+	}
+	h2{
+		margin:auto;
+		text-align: center
+	}
+	.halfH{
+	width: 10%;
+	color: red;
+	position: absolute;
+	top :15%;
+	right:30%;
+}
+   .anH{
+	width: 10%;
+	color: red;
+	position: absolute;
+	top :15%;
+	right:10%;
+}
+	.calendar{
+	width:50%;
+	background:#fff;
+	float: left;
+}
+   .body-list ul{
+	width:100%;
+	font-family:arial;
+	font-weight:bold;
+	font-size:24px;
+}
+.body-list ul li{
+	width:14.28%;
+	height:10vh;
+	line-height:10vh;
+	list-style-type:none;
+	display:block;
+	box-sizing:border-box;
+	float:left;
+	text-align:center;
+	box-shadow: 0 10px 20px #60608b, 0 6px 6px #5aaccc;
+}
+.lightgrey{
+	color:#a8a8a8; 
+}
+.darkgrey{
+	color:#565656; 
+}
+.darkgrey:hover{
+			background-color: #c2ee7b75;
+			transform: scale(1.2);
+		}
+.green{
+	color:#6ac13c;
+}
+.greenbox{
+	border:1px solid #6ac13c;
+	background:#e9f8df; /*lightgreen background*/
+}
+	@media screen and (max-width: 800px) {
+    html {
+      font-size: 50%;
+    }
+	button{
+		font-size: 100%;
+	}
+	.body-list ul{
+		font-size: 16px;
+	}
+	.body-list ul li{
+		font-size: 16px;
+	}
+  }
+  #timeblock{
+	position: absolute;
+	  width: 30%;
+	  left: 65%;
+	  top: 20%;
+	  border: dotted;
+	  border-width: thin;
+	  border-radius: 5%
+  }
+  #timeblock ul li{
+	width:30%;
+    background-color: #9dd181;
+	float: left;
+	list-style-type:none;
+  }
+  #timeblock ul li:hover{
+			transform: scale(1.2);
+			box-shadow: 0 10px 20px #60608b, 0 6px 6px #5e8392;
+  }
+	</style>
+	<body>
+<div class="calendar">
+  <div class="Month">
+	<h1 class="green" >Calendar</h1>
+    <h2 class="green" id="calendar-Month">Month</h1>
+    <h2 class="green small" id="calendar-year">Year</h2></br>
+    <button id="nextmonth" onclick="nextMonth()">Next Month</button>
+	<button id="prevmonth" onclick="preMonth()">Prev Month</button>
+    </br>
+  </div>
+  <div class="body">
+    <div class="lightgrey body-list">
+      <ul>
+        <li>MON</li>
+        <li>TUE</li>
+        <li>WED</li>
+        <li>THU</li>
+        <li>FRI</li>
+        <li>SAT</li>
+        <li>SUN</li>
+      </ul>
+    </div>
+    <div class=" body-list">
+      <ul id="days">
+      </ul>
+    </div>
+    
+  </div>
+</div>
+<div class="detail">
+	<h1 class="green">time blocks</h1>
+	<span>below shows available time blocks,change time blocks' status by click,green means available,red means unavailable,and remember to submit</span>
+     <div id="timeblock">
+		<ul >
+
+		</ul>
+		
+     </div>
+	
+</div>
+	</body>
+	<script>
+	var month_name = ["January","Febrary","March","April","May","June","July","Auguest","September","October","November","December"];
+	var month_normal = [31,28,31,30,31,30,31,31,30,31,30,31];
+	var month_leap = [31,29,31,30,31,30,31,31,30,31,30,31];
+	
+	var holder = document.getElementById("days");
+	var prev = document.getElementById("prev");
+	var next = document.getElementById("next");
+	var Month = document.getElementById("calendar-Month");
+	var year = document.getElementById("calendar-year");
+	
+	var today_date = new Date();//today
+	var today_year = today_date.getFullYear();
+	var today_month = today_date.getMonth();
+	var today_day = today_date.getDate();
+	
+    var submitarray=new Array();
+
+
+	function createCalender(){
+		var str = "";
+		var totalDay = daysinMonth(today_month, today_year); //get numbers of days by month and year
+		var firstDay = dayStart(today_month,today_year); //get weekday of the first day in the month
+		console.log(today_month)
+		var myclass;
+		for(var i=1; i<firstDay; i++){ 
+			str += "<li> </li>"; //set blanks before first day
+		}
+		for(var i=1; i<=totalDay; i++){
+			if((i<today_day && today_year==today_date.getFullYear() && today_month==today_date.getMonth()) || today_year<today_date.getFullYear() || ( today_year==today_date.getFullYear() && today_month<today_date.getMonth())){ 
+				myclass = " class='lightgrey'"; //dates before today in lightgrey
+				str += "<li"+myclass+" >"+i+"</li>"; //create dates block with onclick 
+			}else if (i==today_day && today_year==today_date.getFullYear() && today_month==today_date.getMonth()){
+				myclass = " class='green greenbox'"; //today in green box
+				str += "<li"+myclass+"onclick='select("+i+")' >"+i+"</li>"; //create dates block with onclick 
+			}else{
+				myclass = " class='darkgrey'"; //dates after today
+				str += "<li"+myclass+"onclick='select("+i+")' >"+i+"</li>"; //create dates block with onclick 
+			}
+			
+			
+		}
+		holder.innerHTML = str; //set and show dates
+		Month.innerHTML = month_name[today_month]; //show month
+		year.innerHTML = today_year; //show year
+		function isleapyear(year){
+			return (year%4==0)&&(year % 100 != 0 || year % 400 == 0)
+		}
+		function daysinMonth(month,year){//get numbers of days by month and year
+			if(isleapyear(year)){
+				return month_leap[month];
+			}else{
+				return month_normal[month];
+			}
+		}
+		function dayStart(month,year){///get weekday of the first day in the month
+			var DateStart = new Date(year, month, 1);
+	    	return (DateStart.getDay());
+			}
+			
+	}
+	var pre=document.getElementById("prevmonth");
+	var next=document.getElementById("nextmonth");
+    pre.onclick = function(e){
+	e.preventDefault();
+	today_month--;
+	if(today_month<0){
+		today_year--;
+		today_month = 11;
+	}
+	createCalender();
+}
+    next.onclick = function(e){
+	e.preventDefault();
+	today_month++;
+	if(today_month>11){
+		today_year++;
+		today_month = 0;
+	}
+	createCalender();
+}
+function select(date){
+	month=document.getElementById("calendar-Month").innerText;
+	year=document.getElementById("calendar-year").innerText;
+	selectDay= new Date(month+' '+date.toString()+' '+year);
+	// console.log(date);
+	// console.log(month);
+	// console.log(year);
+	// console.log(month+' '+date.toString()+' '+year);
+	// console.log(selectDay.toString().split("GMT")[0]+"GMT");
+    document.getElementById("timeblock").innerHTML="checking ,please wait seconds"
+	                                                                                            //below ensure the date to be 00:00:00 GMT 
+fetch("/api/availability/offertime?day="+selectDay.getDay().toString()+"&duration=30&utcDate="+selectDay.toString().split("GMT")[0]+"GMT", {"credentials":"include","headers":{'Content-Type': 'application/json','Accept': 'application/json'},"body":null,"method":"GET","mode":"cors"})
+			.then(res => res.json())
+			.then((data) => {
+				if (!data.success) {
+					// console.log(data)
+					throw new Error(data.message)
+				}
+				
+				if (data.times.length === 0) {
+					
+					throw new Error("not available on that day. try another")
+					
+				}
+				// console.log(data)
+                var blocks="<ul>"
+				for (var i=0; i<data.times.length; i++){
+				   time=data.times[i];
+				   str=time.split(" ")[4].slice(0,5);
+
+                blocks+="<li id='"+time+"' onclick='change(this.id)'>"+str+"</li>";
+				if(i%2==1){
+					blocks+="</br>"
+				}
+				}
+				document.getElementById("timeblock").innerHTML=blocks+"</ul></br><input type='button' onclick='submit()' style='position:relative; left:30%' value='submit'>"
+			})
+			.catch((err) => {
+				// console.log(err);
+				document.getElementById("timeblock").innerText=err;
+			})
+			
+			
+		}
+    function change(id){
+		block=document.getElementById(id);
+		
+		if(block.style.backgroundColor!="rgba(218, 75, 75, 0.918)"){
+			block.style.backgroundColor="#da4b4bea";
+		}
+		else if (block.style.backgroundColor=="rgba(218, 75, 75, 0.918)"){
+			block.style.backgroundColor="#9dd181";		
+		}
+	}
+	function submit(){
+		
+       
+		alert("submitting,please wait seconds");
+		var submitarray=new Array();
+		var liarray=document.getElementById('timeblock').getElementsByTagName('li')
+        for(var i =liarray.length-1;i>=0;i--){
+			time=liarray[i].getAttribute("id");
+			if(document.getElementById(time).style.backgroundColor=="rgba(218, 75, 75, 0.918)")//selected to be unavailable
+			{
+              submitarray.push(time)
+			}
+		}
+
+        var submitdictionary={};
+		var next=0
+		for (var i=0;i<submitarray.length;i++){
+			
+			time= submitarray[i]
+			datetime=new Date(submitarray[i]);
+			
+			nextTimeblock =new Date(datetime);
+			nextTimeblock.setMinutes(datetime.getMinutes()+30);
+			// console.log("next:"+nextTimeblock.toUTCString)
+            if(next!=0 )//next exist in array
+			{
+			if(next==nextTimeblock.toUTCString())  //could be combined
+			{
+			
+			submitdictionary[time]= submitdictionary[next]+30;
+            delete submitdictionary[next];
+			}else{//could not be combined
+				submitdictionary[time]=30;
+			}
+
+			}else{//next does not exist in array
+				submitdictionary[time]=30;
+			}
+            next=time
+			// console.log(submitdictionary)
+		}
+     for (var index in submitdictionary){
+		 setbusy(index,submitdictionary[index]);
+	 }
+	 alert("refreshing")
+	 location.reload();
+	}
+   
+	
+	function setbusy(date,duration){
+console.log(date)
+console.log(duration)
+		const requestOptions = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json'
+			},
+			body: JSON.stringify({
+				date:  date,
+				duration: duration
+			})
+			};
+		//  console.log(requestOptions);
+		
+		fetch("/api/unavailable/set", requestOptions)
+			.then(res => res.json())
+			.then((data) => {
+				if (!data.success) {
+					// console.log(data)
+					throw new Error(data.message)
+				}else{
+					alert("set "+duration+" minutes start from "+time+" unavailable successfully")}
+				
+			})
+			.catch((err) => {
+				alert(err);
+			});
+	}
+
+	
+	createCalender(); 
+	document.getElementById("timeblock").innerText="please select date from calender first"
+		</script>
+	
+</html>

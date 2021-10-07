@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			@import url("http://fonts.googleapis.com/css?family=Source+Sans+Pro:400");
+			* {
+			    margin: 0;
+			    padding: 0;
+			    list-style-type: none;
+			}
+			body {
+			    background: #eee;
+			    font-family: "Source Sans Pro", sans-serif;
+			    letter-spacing: 0.05em;
+			}
+			h1 {
+			    text-transform: uppercase;
+			    text-align: center;
+			    margin-top: 40px;
+			}
+			.guitar-neck {
+			    position: relative;
+			    margin-top: 40px;
+			    left: 50%;
+			    margin-left: -450px;
+			    width: 960px;
+			    height: 250px;
+			    background: #755628;
+			    box-shadow: inset -1px 0px 11px 0px rgba(0, 0, 0, 0.75);
+			}
+			.guitar-neck .open-notes {
+			    position: absolute;
+			    top: 3px;
+			    left: -35px;
+			}
+			.guitar-neck .open-notes li {
+			    text-transform: capitalize;
+			    margin-bottom: 20px;
+			    font-size: 18px;
+			    color: #fff;
+			}
+			.guitar-neck .open-notes li.active {
+			    color: #fa990f;
+			}
+			.guitar-neck .fret {
+			    float: left;
+			    width: 3px;
+			    height: 250px;
+			    background: #d7d6d6;
+			    margin-left: 75px;
+			    border-right: 2px solid #686868;
+			}
+			.guitar-neck .fret.first {
+			    position: absolute;
+			    width: 50px;
+			    left: -52px;
+			    top: 0;
+			    margin-left: 0;
+			    background: #211f1d;
+			}
+			.guitar-neck .dots {
+			    position: absolute;
+			    width: 642px;
+			    height: 20px;
+			    top: 44%;
+			    left: 19.5%;
+			}
+			.guitar-neck .dots li {
+			    float: left;
+			    width: 20px;
+			    height: 20px;
+			    border-radius: 50%;
+			    background: #383530;
+			    margin-right: 140px;
+			}
+			.guitar-neck .strings {
+			    position: absolute;
+			    left: 0;
+			    top: 10px;
+			    width: 960px;
+			    height: 250px;
+			}
+			.guitar-neck .strings li {
+			    height: 1px;
+			    display: inline-block;
+			    width: 100%;
+			    background: #c8bb93;
+			    margin-bottom: 38px;
+			    border-bottom: 2px solid #958963;
+			    box-sizing: border-box;
+			}
+			.guitar-neck .strings li:nth-child(2) {
+			    height: 2px;
+			}
+			.guitar-neck .strings li:nth-child(3) {
+			    height: 3px;
+			}
+			.guitar-neck .strings li:nth-child(4) {
+			    height: 4px;
+			}
+			.guitar-neck .strings li:nth-child(5) {
+			    height: 5px;
+			}
+			.guitar-neck .strings li:nth-child(6) {
+			    height: 6px;
+			}
+			.guitar-neck .notes {
+			    position: absolute;
+			    left: 17px;
+			    top: -7px;
+			    width: 960px;
+			    height: 258px;
+			    overflow-x: hidden;
+			}
+			.guitar-neck .notes .mask {
+			    position: absolute;
+			    right: -189px;
+			    bottom: 0;
+			    width: 1184px;
+			    height: 30px;
+			}
+			.guitar-neck .notes .mask ul {
+			    position: relative;
+			    float: left;
+			}
+			.guitar-neck .notes .mask ul li {
+			    float: left;
+			    width: 30px;
+			    height: 30px;
+			    margin-right: 50px;
+			    background: #fa990f;
+			    color: #fff;
+			    border-radius: 50%;
+			    text-align: center;
+			    line-height: 30px;
+			    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.75);
+			}
+			.guitar-neck .notes .mask.a {
+			    bottom: 47px;
+			}
+			.guitar-neck .notes .mask.d {
+			    bottom: 93px;
+			}
+			.guitar-neck .notes .mask.g {
+			    bottom: 137px;
+			}
+			.guitar-neck .notes .mask.b {
+			    bottom: 181px;
+			}
+			.guitar-neck .notes .mask.high-e {
+			    bottom: 224px;
+			}
+			.controls {
+			    position: relative;
+			    margin-top: 40px;
+			    left: 50%;
+			    margin-left: -380px;
+			    width: 760px;
+			    height: 300px;
+			    text-align: center;
+			    color: #333;
+			}
+			.controls a {
+			    text-decoration: none;
+			    background: #333;
+			    color: #fff;
+			    padding: 5px 10px;
+			    margin-right: 40px;
+			}
+			.controls a.down {
+			    margin-right: 0;
+			}
+			.controls h2 {
+			    text-transform: uppercase;
+			    margin: 40px 0;
+			}
+			.controls ul li {
+			    float: left;
+			    width: 40px;
+			    height: 20px;
+			    background: #333;
+			    color: #fff;
+			    margin-right: 20px;
+			    cursor: pointer;
+			}
+			.controls ul li:last-child {
+			    margin-right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Guitar Fretboard Visualization</h1>
+		<div class="guitar-neck">
+		    <div class="fret first"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <div class="fret"></div>
+		    <ul class="dots">
+		        <li></li>
+		        <li></li>
+		        <li></li>
+		        <li></li>
+		    </ul>
+		    <ul class="open-notes">
+		        <li class="low-e">e</li>
+		        <li class="b">b</li>
+		        <li class="g">g</li>
+		        <li class="d">d</li>
+		        <li class="a">a</li>
+		        <li class="high-e">e</li>
+		    </ul>
+		    <div class="notes">
+		        <div class="mask low-e">
+		            <ul></ul>
+		        </div>
+		        <div class="mask b">
+		            <ul></ul>
+		        </div>
+		        <div class="mask g">
+		            <ul></ul>
+		        </div>
+		        <div class="mask d">
+		            <ul></ul>
+		        </div>
+		        <div class="mask a">
+		            <ul></ul>
+		        </div>
+		        <div class="mask high-e">
+		            <ul></ul>
+		        </div>
+		    </div>
+		</div>
+		<div class="controls"><a href="#" class="up">Tune 1/2 Step Up</a><a href="#" class="down">Tune 1/2 Step Down</a>
+		    <h2>Choose note to show:</h2>
+		    <ul>
+		        <li>All</li>
+		        <li>A</li>
+		        <li>A#</li>
+		        <li>B</li>
+		        <li>C</li>
+		        <li>C#</li>
+		        <li>D</li>
+		        <li>D#</li>
+		        <li>E</li>
+		        <li>F</li>
+		        <li>F#</li>
+		        <li>G</li>
+		        <li>G#</li>
+		    </ul>
+		</div>
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script>
+			var slideSpeed = 300,
+			    noteToShow = "All",
+			    canClick = true,
+			    notes = {
+			        e: ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E'],
+			        a: ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', "A"],
+			        d: ['D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D'],
+			        g: ['G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G'],
+			        b: ['B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+			    };
+			for (var i = 0; i < notes.e.length; i++) {
+			    $(".mask.low-e ul").append('<li note="' + notes.e[i] + '">' + notes.e[i] + "</li>");
+			    $(".mask.a ul").append('<li note="' + notes.a[i] + '">' + notes.a[i] + "</li>");
+			    $(".mask.d ul").append('<li note="' + notes.d[i] + '">' + notes.d[i] + "</li>");
+			    $(".mask.g ul").append('<li note="' + notes.g[i] + '">' + notes.g[i] + "</li>");
+			    $(".mask.b ul").append('<li note="' + notes.b[i] + '">' + notes.b[i] + "</li>");
+			    $(".mask.high-e ul").append('<li note="' + notes.e[i] + '">' + notes.e[i] + "</li>");
+			}
+			$(".controls a.down").click(function() {
+			    if (!canClick) return false;
+			    canClick = false;
+			    $(".mask").each(function() {
+			        var el = $(this),
+			            nextNote = el.find("li:nth-child(12)").text();
+			        el.animate({
+			            right: -268
+			        }, slideSpeed);
+			        setTimeout(function() {
+			            el.find("ul").prepend('<li note="' + nextNote + '">' + nextNote + "</li>");
+			            el.find("li:last-child").remove();
+			            el.css({
+			                right: -189
+			            });
+			        }, slideSpeed + 20);
+			    });
+			    setTimeout(function() {
+			        changeOpenNotes();
+			        showNotes(noteToShow);
+			        canClick = true;
+			    }, slideSpeed + 20);
+			    return false;
+			});
+			$(".controls a.up").click(function() {
+			    if (!canClick) return false;
+			    canClick = false;
+			    $(".mask").each(function() {
+			        var el = $(this),
+			            nextNote = el.find("li:nth-child(2)").text();
+			        $('<li note="' + nextNote + '">' + nextNote + "</li").appendTo(el.find("ul"));
+			        el.css({
+			            right: -268
+			        });
+			        el.find("li:first-child").remove();
+			        el.animate({
+			            right: -189
+			        }, slideSpeed);
+			    });
+			    changeOpenNotes();
+			    showNotes(noteToShow);
+			    setTimeout(function() {
+			        canClick = true;
+			    }, slideSpeed + 20);
+			    return false;
+			});
+			$(".controls li").click(function() {
+			    noteToShow = $(this).text();
+			    showNotes(noteToShow);
+			});
+			
+			function showNotes(noteToShow) {
+			    if (noteToShow == "All") $(".guitar-neck .notes li").animate({
+			        opacity: 1
+			    }, 500);
+			    else {
+			        $(".guitar-neck .notes li").not('[note="' + noteToShow + '"]').animate({
+			            opacity: 0
+			        }, 500);
+			        $('.guitar-neck .notes li[note="' + noteToShow + '"]').animate({
+			            opacity: 1
+			        }, 500);
+			    }
+			}
+			
+			function changeOpenNotes() {
+			    $(".notes .mask").each(function() {
+			        var el = $(this),
+			            elClass = el.attr("class").split(" ")[1],
+			            note = el.find("li:last-child").text();
+			        $(".open-notes ." + elClass).text(note);
+			    })
+			}
+		</script>
+	</body>
+</html>
